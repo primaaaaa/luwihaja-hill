@@ -33,6 +33,7 @@ Route::get('/beranda', [PageController::class, 'Beranda'])->name('beranda');
 Route::get('/tentang', [PageController::class, 'Tentang'])->name('tentang');
 Route::get('/kebijakan', [PageController::class, 'Kebijakan'])->name('kebijakan');
 Route::get('/akomodasi', [PageController::class, 'Akomodasi'])->name('akomodasi');
+Route::get('/detailakomodasi', [PageController::class, 'detailAkomodasi'])->name('detailakomodasi');
 Route::get('/fasilitas', [PageController::class, 'Fasilitas'])->name('fasilitas');
 Route::get('/galeri', [PageController::class, 'Galeri'])->name('galeri');
 

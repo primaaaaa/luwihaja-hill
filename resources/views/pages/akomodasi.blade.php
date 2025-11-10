@@ -53,7 +53,7 @@
           <p class="room-description">Kamar tipe Deluxe memiliki desain yang unik dan terbagi menjadi dua jenis, yaitu Deluxe Bed dan Super Deluxe.</p>
           <div class="room-buttons">
             <button class="btn-booking">Booking Sekarang</button>
-            <button class="btn-detail">Lihat Detail</button>
+            <a class="btn-detail" href="{{ url('/detailakomodasi') }}">Lihat Detail</a>
           </div>
         </div>
         <img src="asset/super deluxe.jpg" alt="Deluxe Room" class="room-image">
@@ -76,7 +76,7 @@
           <p class="room-description">Kamar luas untuk keluarga 3-4 orang, dengan pilihan harga dan pemandangan berbeda.</p>
           <div class="room-buttons">
             <button class="btn-booking">Booking Sekarang</button>
-            <button class="btn-detail">Lihat Detail</button>
+            <a class="btn-detail" href="{{ url('/detailakomodasi') }}">Lihat Detail</a>
           </div>
         </div>
         <img src="asset/familit roiom fr1.jpg" alt="Family Room" class="room-image">
@@ -99,7 +99,7 @@
           <p class="room-description">Kamar untuk 2 orang dewasa dengan sarapan, welcome drink, pemandangan sungai, Wi-Fi, dan fasilitas lengkap.</p>
           <div class="room-buttons">
             <button class="btn-booking">Booking Sekarang</button>
-            <button class="btn-detail">Lihat Detail</button>
+            <a class="btn-detail" href="{{ url('/detailakomodasi') }}">Lihat Detail</a>
           </div>
         </div>
         <img src="asset/queenbed1.jpg" alt="Queen Bed" class="room-image">
@@ -122,7 +122,7 @@
           <p class="room-description">Kamar untuk 2 orang dewasa dengan sarapan, welcome drink, pemandangan sungai, Wi-Fi, dan fasilitas lengkap.</p>
           <div class="room-buttons">
             <button class="btn-booking">Booking Sekarang</button>
-            <button class="btn-detail">Lihat Detail</button>
+            <a class="btn-detail" href="{{ url('/detailakomodasi') }}">Lihat Detail</a>
           </div>
         </div>
         <img src="asset/twin bed.jpg" alt="Twin Bed" class="room-image">
