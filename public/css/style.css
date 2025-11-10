@@ -881,7 +881,6 @@
         font-weight: 400;
       }
 
-      /* FIXED: Overlay & Size */
       .about-image {
         position: relative;
         border-radius: 20px;
@@ -903,19 +902,18 @@
         transition: 0.3s ease;
       }
 
-      /* Video Section */
       .video-section {
-        margin-top: 40px;
-        margin-bottom: 80px;
+        margin-top: 60px;
+        margin-bottom: 20px;
       }
 
       .video-container {
         position: relative;
-        border-radius: 20px;
+        border-radius: 30px;
         overflow: hidden;
         box-shadow: 0 12px 32px rgba(0, 0, 0, .12);
         background: #000;
-        aspect-ratio: 16 / 9;
+        height: 400px;
       }
 
       .video-container iframe {
@@ -923,54 +921,68 @@
         inset: 0;
         width: 100%;
         height: 100%;
+        object-fit: cover;
+        border: 0;
       }
 
-      /* Team Section */
+      .video-container .video-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(64, 114, 63, 0.35);
+        opacity: 1;
+        transition: opacity .3s ease;
+      }
+
+      .video-container:hover .video-overlay {
+        opacity: 0;
+      }
+
       .team-section {
-        padding: 60px 0 80px;
+        margin-top: 20px;
         text-align: center;
       }
 
-
-      .team-section h2 {
-        font-size: 2rem;
-        margin: 0 0 50px;
-        color: var(--text);
-        font-weight: 700;
+      .team-section .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
       }
 
       .team-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 40px;
-        max-width: 900px;
-        margin: 0 auto;
+        margin-top: 14px;
       }
 
-      .team-member {
+      .team-card {
+        background: #fff;
+        border: 1px solid #eee;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: 0.3s ease;
         text-align: center;
       }
 
-      .team-photo {
-        width: 200px;
-        height: 200px;
-        margin: 0 auto 20px;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: var(--shadow);
+      .team-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.1);
       }
 
-      .team-photo img {
+      .team-card img {
         width: 100%;
-        height: 100%;
+        height: 300px;
         object-fit: cover;
+        object-position: center;
       }
 
-      .team-member h3 {
+      /* Nama */
+      .team-card .room-body {
+        padding: 20px 16px;
+      }
+
+      .team-card .room-body h4 {
         font-size: 1.1rem;
-        color: var(--text);
         font-weight: 600;
         margin: 0;
+        color: #252b17;
         text-transform: uppercase;
         letter-spacing: 0.5px;
       }
