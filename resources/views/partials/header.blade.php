@@ -24,3 +24,5 @@
     <a href="{{ url('/galeri') }}">Galeri</a>
   </div>
 </nav>
+
+

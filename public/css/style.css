@@ -137,9 +137,7 @@
       .hero {
         position: relative;
         min-height: 45vh;
-        background: var(--bg)
-          url("https://www.rumah123.com/seo-cms/assets/Luwihaja_Hill_ea834e4998/Luwihaja_Hill_ea834e4998.jpg")
-          center/cover no-repeat;
+        background: var(--bg) url("https://www.rumah123.com/seo-cms/assets/Luwihaja_Hill_ea834e4998/Luwihaja_Hill_ea834e4998.jpg") center/cover no-repeat;
         color: #fff;
         display: flex;
         align-items: center;
@@ -150,7 +148,8 @@
       .hero .overlay {
         position: absolute;
         inset: 0;
-        background: rgba(64, 114, 63, 0.6); /* #40723F @ 20% */
+        background: rgba(64, 114, 63, 0.6);
+        /* #40723F @ 20% */
       }
 
       /* Hero lebih lebar */
@@ -160,7 +159,8 @@
         text-align: center;
         /* dari 800px → diperlebar */
         max-width: min(1100px, 94vw);
-        padding: 40px 24px; /* sedikit tambah padding samping biar nyaman */
+        padding: 40px 24px;
+        /* sedikit tambah padding samping biar nyaman */
       }
 
       .hero h1 {
@@ -236,6 +236,55 @@
           0 6px 18px rgba(244, 164, 58, 0.3);
       }
 
+
+      /* Fasilitas Section */
+      .facilities-section {
+        padding: 80px 0;
+        background: white;
+      }
+
+      .facilities-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+        margin-top: 20px;
+      }
+
+      .facility-card {
+        background: #fff;
+        border-radius: 1px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        border: 1px solid #eee;
+        transition: all 0.3s;
+      }
+
+      .facility-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 14px 32px rgba(0, 0, 0, .12);
+      }
+
+      .facility-image {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+      }
+
+      .facility-info {
+        padding: 24px;
+        text-align: center;
+      }
+
+      .facility-info h3 {
+        margin: 0;
+        color: var(--text);
+        font-size: 1.1rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+
       /* prefer-reduced-motion: hilangkan animasi */
       @media (prefers-reduced-motion: reduce) {
         .btn-ghost {
@@ -281,14 +330,15 @@
         direction: rtl;
       }
 
-      .content-block.reverse > * {
+      .content-block.reverse>* {
         direction: ltr;
       }
 
       .content-image .overlay {
         position: absolute;
         inset: 0;
-        background: rgba(64, 114, 63, 0.6); /* #40723F @ 20% */
+        background: rgba(64, 114, 63, 0.6);
+        /* #40723F @ 20% */
       }
 
       .content-text h2 {
@@ -315,7 +365,7 @@
         color: #6d6c6c;
       }
 
-      .content-text p + p {
+      .content-text p+p {
         margin-top: 12px;
       }
 
@@ -346,9 +396,11 @@
       .content-image .overlay {
         position: absolute;
         inset: 0;
-        background: rgba(64, 114, 63, 0.4); /* sama seperti .hero .overlay */
+        background: rgba(64, 114, 63, 0.4);
+        /* sama seperti .hero .overlay */
         z-index: 1;
-        pointer-events: none; /* biar gak ganggu klik */
+        pointer-events: none;
+        /* biar gak ganggu klik */
       }
 
       .content-image img {
@@ -364,6 +416,7 @@
         gap: 24px;
         margin-top: 20px;
       }
+
       .fac {
         background: #fff;
         border: 1px solid #eee;
@@ -374,29 +427,35 @@
         transition: background 0.25s, color 0.25s, box-shadow 0.25s,
           transform 0.25s, filter 0.2s;
       }
+
       .fac i {
         font-size: 36px;
         margin-bottom: 16px;
         color: var(--accent);
         transition: color 0.25s;
       }
+
       .fac h4 {
         margin: 0 0 10px;
         font-size: 1.2rem;
         color: #252b17;
         transition: color 0.25s;
       }
+
       .fac p {
         font-size: 0.95rem;
         color: var(--muted);
         line-height: 1.6;
         transition: color 0.25s;
-      } /* default: ikon oranye */
+      }
+
+      /* default: ikon oranye */
       .fac .icon {
         color: var(--accent);
         display: inline-flex;
         margin-bottom: 16px;
       }
+
       .fac .icon svg {
         width: 42px;
         height: 42px;
@@ -407,6 +466,7 @@
         background: var(--accent);
         border-color: transparent;
       }
+
       .fac--accent .icon,
       .fac--accent h4,
       .fac--accent p {
@@ -417,10 +477,12 @@
       .fac--accent:hover {
         filter: brightness(0.95);
       }
+
       .fac:not(.fac--accent):hover {
         background: #fff3e2;
         border-color: #ffddb2;
       }
+
       .fac--accent i,
       .fac--accent h4,
       .fac--accent p {
@@ -431,10 +493,12 @@
         transform: translateY(-4px);
         box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
       }
+
       .fac:not(.fac--accent):hover {
         background: #fff3e2;
         border-color: #ffddb2;
       }
+
       .fac--accent:hover {
         filter: brightness(0.95);
       }
@@ -444,10 +508,12 @@
           grid-template-columns: repeat(2, 1fr);
         }
       }
+
       @media (max-width: 768px) {
         .grid-fac {
           grid-template-columns: 1fr;
         }
+
         .content-image img {
           width: 100%;
           height: 340px;
@@ -518,19 +584,22 @@
       .review .quote {
         width: 56px;
         height: 56px;
-        margin: 0 auto 16px; /* center */
+        margin: 0 auto 16px;
+        /* center */
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--accent); /* ikon pakai currentColor */
+        color: var(--accent);
+        /* ikon pakai currentColor */
       }
 
       .review .quote .quote-icon {
         width: 56px;
         height: 56px;
         display: block;
-        fill: currentColor; /* penting: ikut warna di atas */
+        fill: currentColor;
+        /* penting: ikut warna di atas */
       }
 
       .review:hover {
@@ -564,11 +633,14 @@
         display: inline-block;
         margin-top: 4px;
         font-size: 0.9rem;
-        color: #98a2b3; /* abu2 lembut */
+        color: #98a2b3;
+        /* abu2 lembut */
         text-decoration: none;
       }
+
       .review .email:hover {
-        color: var(--green-800); /* hint interaktif */
+        color: var(--green-800);
+        /* hint interaktif */
         text-decoration: underline;
       }
 
@@ -621,6 +693,57 @@
         line-height: 1.7;
         padding-left: 0;
       }
+
+      /* Policy Cards Section */
+      .policy-section {
+        padding: 90px 0;
+        background: white;
+      }
+
+      .policy-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+        margin-top: 20px;
+      }
+
+      .policy-card {
+        background: #40723F;
+        padding: 60px 28px;
+        color: white;
+        text-align: center;
+        transition: all 0.3s;
+        box-shadow: var(--shadow);
+      }
+
+      .policy-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 14px 32px rgba(0, 0, 0, .15);
+      }
+
+      /* Ikon SVG */
+      .policy-icon .icon {
+        width: 48px;
+        height: 48px;
+        display: inline-block;
+        color: var(--accent);
+        margin-bottom: 24px;
+      }
+
+      .policy-card h3 {
+        font-size: 1.3rem;
+        margin: 0 0 20px;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+
+      .policy-card p {
+        font-size: 0.95rem;
+        line-height: 1.7;
+        opacity: 0.95;
+        margin: 0;
+      }
+
 
       /* Footer */
       .footer {
@@ -694,6 +817,92 @@
         opacity: 0.8;
       }
 
+      /* Gallery Section */
+      .gallery-section {
+        padding: 80px 0;
+        background: white;
+      }
+
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+        margin-top: 20px;
+        margin-bottom: 60px;
+      }
+
+      .gallery-item {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+
+      .gallery-item:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, .15);
+      }
+
+      .gallery-item img {
+        width: 100%;
+        height: 320px;
+        object-fit: cover;
+      }
+
+      /* Pagination */
+      .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-top: 40px;
+      }
+      .pagination button,
+      .pagination span,
+      .pagination a {
+        min-width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        background: white;
+        color: var(--text);
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-weight: 500;
+        text-decoration: none;
+      }
+
+      .pagination button:hover,
+      .pagination a:hover {
+        background: var(--green-900);
+        color: white;
+        border-color: var(--green-900);
+      }
+
+
+      .pagination button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .pagination button:disabled:hover {
+        background: white;
+        color: var(--text);
+        border-color: #e0e0e0;
+      }
+
+      .pagination .active {
+        background: var(--green-900);
+        color: white;
+        border-color: var(--green-900);
+        cursor: default;
+      }
+
       /* Responsive */
       @media (max-width: 1024px) {
         .grid-fac {
@@ -762,6 +971,24 @@
           grid-template-columns: 1fr;
         }
 
+        .policy-section {
+          padding: 60px 0;
+        }
+
+        .policy-grid {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+
+        .policy-card {
+          padding: 40px 30px;
+        }
+
+        .footer-content {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+
         .footer .container {
           grid-template-columns: 1fr;
           gap: 40px;
@@ -773,5 +1000,28 @@
 
         .title {
           font-size: 1.6rem;
+        }
+
+
+        .facilities-grid {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+
+        .facilities-section {
+          padding: 60px 0;
+        }
+
+        .gallery-section {
+          padding: 60px 0;
+        }
+
+        .gallery-grid {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+
+        .gallery-item img {
+          height: 260px;
         }
       }

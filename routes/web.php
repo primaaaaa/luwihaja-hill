@@ -36,4 +36,7 @@ Route::get('/akomodasi', [PageController::class, 'Akomodasi'])->name('akomodasi'
 Route::get('/fasilitas', [PageController::class, 'Fasilitas'])->name('fasilitas');
 Route::get('/galeri', [PageController::class, 'Galeri'])->name('galeri');
 
+
+Route::get('/', [PageController::class, 'Beranda'])->name('beranda');
+
 // require __DIR__.'/auth.php';
