@@ -15,6 +15,8 @@
 
 </section>
 
+
+
 <!-- Table Section -->
 <section class="table-section">
     <div class="container">
@@ -177,8 +179,85 @@
     </div>
 </section>
 
-<script>
-    // Mobile menu toggle
+    <div id="modalRefund" class="modal-refund">
+      <div class="modal-refund-content">
+        <div class="modal-refund-header">
+          <h2>Formulir Pengajuan Refund</h2>
+          <button class="close-modal-refund" onclick="closeModalRefund()">&times;</button>
+        </div>
+        <div class="modal-refund-body">
+          <form id="formRefund">
+            <div class="form-refund-row">
+              <div class="form-refund-group">
+                <label>Nama Pemesan</label>
+                <input type="text" value="Prima Yudhistira" readonly>
+              </div>
+              <div class="form-refund-group">
+                <label>Kode Reservasi</label>
+                <input type="text" value="Prima Yudhistira" readonly>
+              </div>
+            </div>
+
+            <div class="form-refund-row">
+              <div class="form-refund-group">
+                <label>Tanggal Check In</label>
+                <input type="date" value="2025-09-12" readonly>
+              </div>
+              <div class="form-refund-group">
+                <label>Tanggal Check Out</label>
+                <input type="date" value="2025-09-14" readonly>
+              </div>
+            </div>
+
+            <div class="form-refund-group">
+              <label>Alasan Refund</label>
+              <textarea placeholder="Berubah Pikiran"></textarea>
+            </div>
+
+            <div class="form-refund-row">
+              <div class="form-refund-group">
+                <label>Nominal Refund</label>
+                <input type="text" placeholder="Rp900.000">
+              </div>
+              <div class="form-refund-group">
+                <label>Bukti Pendukung (Opsional)</label>
+                <div class="file-upload-refund-wrapper">
+                  <label for="fileUploadRefund" class="file-upload-refund-label">Bukti.jpg</label>
+                  <input type="file" id="fileUploadRefund">
+                  <button type="button" class="file-upload-refund-btn" onclick="document.getElementById('fileUploadRefund').click()">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5m0 0L7 8m5-5v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <h3 class="form-refund-section-title">Rekening Pengembalian</h3>
+
+            <div class="bank-refund-row">
+              <div class="form-refund-group">
+                <label>Nama Bank</label>
+                <input type="text" placeholder="BCA">
+              </div>
+              <div class="form-refund-group">
+                <label>Nomor Rekening</label>
+                <input type="text" placeholder="920290290">
+              </div>
+              <div class="form-refund-group">
+                <label>Nama Pemilik</label>
+                <input type="text" placeholder="Prima Yudhistira">
+              </div>
+            </div>
+
+            <button type="submit" class="btn-submit-refund">Kirim Pengajuan Refund</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Mobile menu toggle
       const hamburger = document.querySelector('.hamburger');
       const nav = document.querySelector('.nav-menu');
 
@@ -211,6 +290,45 @@
           }
         });
       });
-</script>
+
+      // Button click handler - Open Modal Refund
+      const refundButtons = document.querySelectorAll('.btn-refund');
+      refundButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          openModalRefund();
+        });
+      });
+
+      // Modal Refund Functions
+      function openModalRefund() {
+        document.getElementById('modalRefund').classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModalRefund() {
+        document.getElementById('modalRefund').classList.remove('show');
+        document.body.style.overflow = 'auto';
+      }
+
+      // Close modal when clicking outside
+      document.getElementById('modalRefund').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeModalRefund();
+        }
+      });
+
+      // Form submission
+      document.getElementById('formRefund').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Pengajuan refund berhasil dikirim!');
+        closeModalRefund();
+      });
+
+      // File upload display
+      document.getElementById('fileUploadRefund').addEventListener('change', function(e) {
+        const fileName = e.target.files[0]?.name || 'Bukti.jpg';
+        document.querySelector('.file-upload-refund-label').textContent = fileName;
+      });
+    </script>
 
 @endsection
