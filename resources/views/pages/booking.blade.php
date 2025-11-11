@@ -54,19 +54,16 @@
           <input type="email" id="email" placeholder="prima@gmail.com" />
         </div>
 
-        <button class="btn-bayar" onclick="handleLanjutkan()">Lanjutkan</button>
+        <button class="btn-primary-reservasi" onclick="handleLanjutkan()">Lanjutkan</button>
       </div>
 
       <!-- Total Card -->
       <div class="total-card" id="totalCard">
         <h2>Total</h2>
 
-        <div class="room-preview" id="roomPreview">
+        <div class="room-preview-bayar" id="roomPreview">
           <div class="room-image-bayar">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
+            <img src="asset/super deluxe.jpg">
           </div>
           <div class="room-details">
             <h3>
@@ -74,7 +71,8 @@
               <span class="price" id="displayPrice">-</span>
             </h3>
             <p id="displayType">-</p>
-            <p>Kapasitas: 2-4 orang • Fasilitas lengkap</p>
+            <p>Kapasitas: 2-4 orang</p>
+            <p>Unit: 1</p>
           </div>
         </div>
 
@@ -97,7 +95,7 @@
           </div>
         </div>
 
-        <button class="btn-bayar" id="paymentBtn" onclick="handlePayment()" disabled>
+        <button class="btn-primary-reservasi-bayar" id="paymentBtn" onclick="handlePayment()" disabled>
           Lanjutkan Pembayaran
         </button>
 
@@ -134,25 +132,26 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="nomorRekening">Nomor Rekening</label>
-        <input type="text" id="nomorRekening" placeholder="8910910" />
-      </div>
-
-      <div class="form-group">
-        <label>Bukti Pembayaran</label>
-        <div class="upload-area">
-          <input type="file" id="buktiFile" accept="image/*,.pdf" onchange="handleFileUpload()" />
-          <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-          </svg>
-          <div class="upload-text">Klik untuk upload atau drag file kesini</div>
-          <div class="file-name" id="fileName"></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nomorRekening">Nomor Rekening</label>
+          <input type="text" id="nomorRekening" placeholder="8910910" />
+        </div>
+        <div class="form-group">
+          <label>Bukti Pembayaran</label>
+          <div class="upload-area">
+            <input type="file" id="buktiFile" accept="image/*,.pdf" onchange="handleFileUpload()" />
+            <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            <div class="upload-text">Klik untuk upload atau drag file kesini</div>
+            <div class="file-name" id="fileName"></div>
+          </div>
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group form-full">
         <label for="metodePembayaran">Metode Pembayaran</label>
         <select id="metodePembayaran">
           <option value="Transfer Bank">Transfer Bank</option>
@@ -161,7 +160,7 @@
         </select>
       </div>
 
-      <button class="btn-primary" onclick="submitPayment()">Kirim</button>
+      <button class="btn-primary-reservasi" onclick="submitPayment()">Kirim</button>
     </div>
   </div>
 </div>

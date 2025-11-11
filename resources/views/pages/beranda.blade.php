@@ -14,7 +14,7 @@
       fasilitas lengkap. Tempat terbaik untuk liburan bersama keluarga
       maupun pasangan.
     </p>
-    <a href="#akomodasi" class="btn btn-primary">Pesan Sekarang</a>
+    <a class="btn btn-primary" href="{{ url('/akomodasi') }}">Pesan Sekarang</a>
   </div>
 </section>
 

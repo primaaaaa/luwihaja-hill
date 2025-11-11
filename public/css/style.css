@@ -200,10 +200,10 @@
       }
 
       .btn-primary:hover {
+        border-color: var(--accent);
         background: var(--accent);
-        color: #222;
+        color: #ffffff;
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(244, 164, 58, 0.3);
       }
 
       .btn-ghost {
@@ -216,14 +216,13 @@
           background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
       }
 
-      /* hover: naik sedikit + shadow lebih besar */
       .btn-ghost:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba(244, 164, 58, 0.35);
         background: rgba(244, 164, 58, 0.08);
+        color: #f4a43a;
       }
 
-      /* aktif: “ketekan” */
       .btn-ghost:active {
         transform: translateY(0);
         box-shadow: 0 3px 10px rgba(244, 164, 58, 0.3);
@@ -1667,6 +1666,7 @@
       }
 
 
+      /* Booking Section */
       .booking-section {
         padding: 90px 0;
         background: var(--soft);
@@ -1688,8 +1688,9 @@
       }
 
       .reservasi-card h2 {
-        color: var(--green-700);
+        color: #40723F;
         font-size: 2rem;
+        text-align: center;
         margin-bottom: 30px;
         font-weight: 700;
       }
@@ -1706,8 +1707,7 @@
         font-size: 0.95rem;
       }
 
-      .form-group input,
-      .form-group select {
+      .form-group input {
         width: 100%;
         padding: 14px 16px;
         border: 1px solid #ddd;
@@ -1717,6 +1717,23 @@
         transition: all 0.2s;
       }
 
+      .form-group select {
+        width: 100%;
+        padding: 14px 18px;
+        border: 1px solid #dcdcdc;
+        border-radius: 10px;
+        background-color: #fff;
+        font-size: 0.95rem;
+        color: #333;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='14' height='10' viewBox='0 0 14 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L7 8.5L13 1.5' stroke='%23111111' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 16px center;
+        cursor: pointer;
+      }
+
       .form-group input:focus,
       .form-group select:focus {
         outline: none;
@@ -1724,10 +1741,15 @@
         box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.1);
       }
 
-      .btn-bayar {
+      input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(55%) sepia(30%) saturate(500%) hue-rotate(80deg);
+        cursor: pointer;
+      }
+
+      .btn-primary-reservasi {
         width: 100%;
         padding: 16px;
-        background: var(--green-700);
+        background: #40723F;
         color: white;
         border: none;
         border-radius: 8px;
@@ -1738,13 +1760,13 @@
         box-shadow: var(--shadow);
       }
 
-      .btn-bayar:hover {
+      .btn-primary-reservasi:hover {
         background: var(--green-800);
         transform: translateY(-2px);
         box-shadow: 0 12px 24px rgba(0, 0, 0, .12);
       }
 
-      .btn-bayar:disabled {
+      .btn-primary-reservasi:disabled {
         background: #ccc;
         cursor: not-allowed;
         transform: none;
@@ -1756,35 +1778,36 @@
         border-radius: var(--radius);
         padding: 40px;
         box-shadow: var(--shadow);
+        height: auto;
+        min-height: auto;
+        align-self: flex-start;
+
       }
 
       .total-card h2 {
-        color: var(--green-700);
+        color: #40723F;
         font-size: 2rem;
+        text-align: center;
         margin-bottom: 30px;
         font-weight: 700;
       }
 
-      .room-preview {
-        background: linear-gradient(135deg, #f0f4f1 0%, #e8ede9 100%);
+      .room-preview-bayar {
         border-radius: 12px;
-        padding: 24px;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         display: flex;
         gap: 20px;
         align-items: flex-start;
         display: none;
-        /* Hidden by default */
       }
 
-      .room-preview.show {
+      .room-preview-bayar.show {
         display: flex;
       }
 
       .room-image-bayar {
         width: 100px;
         height: 100px;
-        background: var(--green-700);
         border-radius: 8px;
         flex-shrink: 0;
         display: flex;
@@ -1792,10 +1815,9 @@
         justify-content: center;
       }
 
-      .room-image-bayar svg {
-        width: 48px;
-        height: 48px;
-        color: white;
+      .room-image-bayar img {
+        width: 100px;
+        height: 100px;
       }
 
       .room-details {
@@ -1812,8 +1834,8 @@
       }
 
       .room-details .price {
-        color: var(--green-700);
-        font-weight: 700;
+        color: #252B17;
+        font-weight: 600;
       }
 
       .room-details p {
@@ -1848,7 +1870,7 @@
 
       .price-row.total {
         border: none;
-        padding: 20px;
+        padding: 16px 20px;
         background: #f0f8f4;
         border-radius: 8px;
         margin-top: 16px;
@@ -1856,14 +1878,40 @@
 
       .price-row.total span:first-child {
         color: var(--text);
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .price-row.total span:last-child {
+        color: #40723F;
         font-size: 1.1rem;
         font-weight: 700;
       }
 
-      .price-row.total span:last-child {
-        color: var(--green-700);
-        font-size: 1.4rem;
-        font-weight: 700;
+      .btn-primary-reservasi-bayar {
+        width: 100%;
+        padding: 16px;
+        background: #40723F;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: var(--shadow);
+      }
+
+      .btn-primary-reservasi-bayar:hover {
+        background: #498348;
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, .12);
+      }
+
+      .btn-primary-reservasi-bayar:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
       }
 
       .info-text {
@@ -1961,14 +2009,23 @@
         margin-bottom: 20px;
       }
 
+      .form-full {
+        grid-column: 1 / -1;
+      }
+
       .upload-area {
         border: 2px dashed #ddd;
         border-radius: 8px;
-        padding: 24px;
+        padding: 20px;
         text-align: center;
         cursor: pointer;
         transition: all 0.2s;
         position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 120px;
       }
 
       .upload-area:hover {
@@ -1987,23 +2044,24 @@
       }
 
       .upload-icon {
-        width: 48px;
-        height: 48px;
-        margin: 0 auto 12px;
+        width: 40px;
+        height: 40px;
+        margin: 0 auto 10px;
         color: #40723F;
       }
 
       .upload-text {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         color: var(--muted);
       }
 
       .file-name {
         margin-top: 8px;
         font-size: 0.85rem;
-        color: var(--green-700);
+        color: #40723F;
         font-weight: 600;
       }
+
 
       .success-section {
         padding: 90px 0;
@@ -2320,6 +2378,10 @@
           margin-top: 15px;
           flex-wrap: wrap;
         }
+
+           .booking-section { padding: 60px 0; }
+        .booking-grid { grid-template-columns: 1fr; gap: 30px; }
+        .reservasi-card, .total-card { padding: 30px 24px; }
       }
 
       /* Responsive */
