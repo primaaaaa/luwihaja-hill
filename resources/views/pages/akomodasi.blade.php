@@ -52,7 +52,7 @@
           </div>
           <p class="room-description">Kamar tipe Deluxe memiliki desain yang unik dan terbagi menjadi dua jenis, yaitu Deluxe Bed dan Super Deluxe.</p>
           <div class="room-buttons">
-            <button class="btn-booking">Booking Sekarang</button>
+            <a class="btn-booking" href="{{ url('/booking') }}">Booking Sekarang</a>
             <a class="btn-detail" href="{{ url('/detailakomodasi') }}">Lihat Detail</a>
           </div>
         </div>
@@ -75,7 +75,7 @@
           </div>
           <p class="room-description">Kamar luas untuk keluarga 3-4 orang, dengan pilihan harga dan pemandangan berbeda.</p>
           <div class="room-buttons">
-            <button class="btn-booking">Booking Sekarang</button>
+            <a class="btn-booking" href="{{ url('/booking') }}">Booking Sekarang</a>
             <a class="btn-detail" href="{{ url('/detailakomodasi') }}">Lihat Detail</a>
           </div>
         </div>
@@ -98,7 +98,7 @@
           </div>
           <p class="room-description">Kamar untuk 2 orang dewasa dengan sarapan, welcome drink, pemandangan sungai, Wi-Fi, dan fasilitas lengkap.</p>
           <div class="room-buttons">
-            <button class="btn-booking">Booking Sekarang</button>
+            <a class="btn-booking" href="{{ url('/booking') }}">Booking Sekarang</a>
             <a class="btn-detail" href="{{ url('/detailakomodasi') }}">Lihat Detail</a>
           </div>
         </div>
@@ -121,7 +121,7 @@
           </div>
           <p class="room-description">Kamar untuk 2 orang dewasa dengan sarapan, welcome drink, pemandangan sungai, Wi-Fi, dan fasilitas lengkap.</p>
           <div class="room-buttons">
-            <button class="btn-booking">Booking Sekarang</button>
+            <a class="btn-booking" href="{{ url('/booking') }}">Booking Sekarang</a>
             <a class="btn-detail" href="{{ url('/detailakomodasi') }}">Lihat Detail</a>
           </div>
         </div>

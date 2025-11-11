@@ -78,4 +78,24 @@ class PageController extends Controller
 
         return view('pages.galeri', compact('photos'));
     }
+
+    public function Booking()
+    {
+        return view('pages.booking');
+    }
+
+     public function pembayaranSukses()
+    {
+        return view('pages.pembayaransukses');
+    }
+
+    public function riwayatpembayaran()
+    {
+        return view('pages.riwayatpembayaran');
+    }
+
+    public function riwayatreservasi()
+    {
+        return view('pages.riwayatreservasi');
+    }
 }

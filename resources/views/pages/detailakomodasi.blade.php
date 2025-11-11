@@ -23,9 +23,9 @@
                     <img src="asset/super deluxe.jpg" alt="Twin Bed Room">
                     <div class="rd-text">
                         <div class="rd-title">
-                            <h3>Twin Bed Room</h3>
+                            <h3>Deluxe Room</h3>
                             <div class="rdt-right">
-                                <a href="#" class="booking-btn">Booking Sekarang</a>
+                                <a class="booking-btn" href="{{ url('/booking') }}">Booking Sekarang</a>
                                 <a href="#" class="bagikan-text">Bagikan</a>
                                 <div class="social-share">
                                     <!-- Facebook Share -->
