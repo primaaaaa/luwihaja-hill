@@ -46,7 +46,7 @@
                             </div>
                         </div>
                         <h2>Rp700.000<span>/Malam</span></h2>
-                        <table>
+                        <table class="detail-table">
                             <tbody>
                                 <tr>
                                     <td class="r-o">Unit:</td>

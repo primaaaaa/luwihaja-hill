@@ -1340,26 +1340,37 @@
         font-size: 18px;
       }
 
-      .room-details-item .rd-text table {
+      .room-details-item .rd-text .detail-table,
+      .room-details-item .rd-text .detail-table td,
+      .room-details-item .rd-text .detail-table tr {
+        all: unset;
+        display: table-cell;
+        font-size: 16px;
+        color: #19191a;
+        padding: 6px 0;
+        line-height: 28px;
+      }
+
+      .room-details-item .rd-text .detail-table {
+        display: table;
         margin-bottom: 32px;
       }
 
-      .room-details-item .rd-text table tbody tr td {
-        font-size: 16px;
-        color: #19191a;
-        line-height: 30px;
+      .room-details-item .rd-text .detail-table tr {
+        display: table-row;
       }
 
-      .room-details-item .rd-text table tbody tr td.r-o {
-        width: 120px;
+      .room-details-item .rd-text .detail-table td.r-o {
+        width: 150px;
+        font-weight: 600;
         color: #000;
-        line-height: 30px;
       }
 
-      .room-details-item .rd-text table tbody tr td.status-tersedia {
+      .room-details-item .rd-text .detail-table .status-tersedia {
         color: #40723F;
-        font-weight: 620;
+        font-weight: 650;
       }
+
 
       .room-details-item .rd-text p {
         color: #000;
@@ -2065,12 +2076,12 @@
         box-shadow: 0 6px 16px rgba(209, 158, 19, 0.3);
       }
 
-        /* Table Section */
-      .table-section { 
-        padding: 80px 0; 
-        background: white; 
+      /* Table Section */
+      .table-section {
+        padding: 80px 0;
+        background: white;
       }
-      
+
       /* Header with Search */
       .section-header {
         display: flex;
@@ -2137,7 +2148,7 @@
         overflow-x: auto;
         background: white;
         border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       }
 
       table {
@@ -2157,7 +2168,7 @@
         color: #6c757d;
         border-bottom: 2px solid #e9ecef;
       }
-      
+
       td {
         text-align: center;
       }
@@ -2232,7 +2243,7 @@
         color: #842029;
       }
 
-        .pagination-wrapper {
+      .pagination-wrapper {
         margin-top: 30px;
         display: flex;
         justify-content: space-between;
@@ -2246,7 +2257,7 @@
 
 
 
-      
+
 
 
 
