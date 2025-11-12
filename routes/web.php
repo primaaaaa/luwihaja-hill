@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminController;
+// use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
-use Illuminate\Foundation\Application;
+// use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
 
@@ -30,4 +31,7 @@ Route::get('/galeri', [PageController::class, 'Galeri'])->name('galeri');
 
 Route::get('/', [PageController::class, 'Beranda'])->name('beranda');
 
+
+// Rute Admin
+Route::get('/admin/dashboard', [AdminController::class, 'Dashboard'])->name('dashboard');
 // require __DIR__.'/auth.php';
