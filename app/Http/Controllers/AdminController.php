@@ -21,4 +21,13 @@ class AdminController extends Controller{
     public function Ulasan(){
         return view('pages.admin.manajemenulasan');
     }   
+    public function CMS(){
+        return view('pages.admin.cms');
+    }   
+    public function Refund(){
+        return view('pages.admin.manajemenrefund');
+    }   
+    public function Pembayaran(){
+        return view('pages.admin.manajemenpembayaran');
+    }   
 }

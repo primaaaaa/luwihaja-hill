@@ -9,7 +9,7 @@
         <x-side-link href="/admin/reservasi" :active="request()->is('admin/reservasi')">Reservasi</x-side-link>
         <x-side-link href="/admin/ulasan" :active="request()->is('admin/ulasan')">Ulasan</x-side-link>
         <x-side-link href="/admin/cms" :active="request()->is('admin/cms')">CMS</x-side-link>
-        <x-side-link href="/admin/refund" :active="request()->is('admin.refund')">Refund</x-side-link>
+        <x-side-link href="/admin/refund" :active="request()->is('admin/refund')">Refund</x-side-link>
         <x-side-link href="/admin/pembayaran" :active="request()->is('admin/pembayaran')">Pembayaran</x-side-link>
         <x-side-link href="/admin/signout" :active="request()->is('admin/signout')">Sign Out</x-side-link>
       
