@@ -1,3 +1,5 @@
+<!-- Komponen untuk header di halaman admin -->
+
 <div class="topbar">
         <h4>Dashboard</h4>
         <div class="profile">

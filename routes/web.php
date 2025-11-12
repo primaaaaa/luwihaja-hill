@@ -34,4 +34,7 @@ Route::get('/', [PageController::class, 'Beranda'])->name('beranda');
 
 // Rute Admin
 Route::get('/admin/dashboard', [AdminController::class, 'Dashboard'])->name('dashboard');
+Route::get('/admin/kamar', [AdminController::class, 'Kamar'])->name('dashboard');
+Route::get('/admin/reservasi', [AdminController::class, 'Reservasi'])->name('dashboard');
+Route::get('/admin/ulasan', [AdminController::class, 'Ulasan'])->name('dashboard');
 // require __DIR__.'/auth.php';
