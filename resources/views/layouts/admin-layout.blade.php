@@ -14,9 +14,9 @@
 
     <div class="main-content">
       <!-- Header -->
-      <x-admin-header></x-admin-header>
+      <x-admin-header header="{{ $header }}"></x-admin-header>
     <!-- Isi Main Konten -->
-      @yield('admin-content');
+      @yield('admin-content')
     </div>
   </div>
 </body>

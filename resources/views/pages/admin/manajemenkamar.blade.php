@@ -1,4 +1,5 @@
 @extends('layouts.admin-layout')
+@props(['header' => 'Kamar'])
 @section('admin-content')
 
 <div class="p-4">
