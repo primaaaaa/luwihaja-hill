@@ -24,7 +24,6 @@ Route::get('/riwayatpembayaran', [PageController::class, 'riwayatpembayaran'])->
 Route::get('/riwayatreservasi', [PageController::class, 'riwayatreservasi'])->name('riwayatreservasi');
 
 
-
 Route::get('/fasilitas', [PageController::class, 'Fasilitas'])->name('fasilitas');
 Route::get('/galeri', [PageController::class, 'Galeri'])->name('galeri');
 

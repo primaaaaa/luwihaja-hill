@@ -194,3 +194,54 @@ input:focus { outline: none; }
     .welcome-text h1 { font-size: 2.8rem; }
     .form-container { padding: 40px 35px; }
 }
+
+@media (max-width: 768px) {
+        .container { 
+            flex-direction: column; 
+        }
+        
+        /* Hide left section on mobile */
+        .left-section { 
+            display: none;
+        }
+        
+        .right-section {
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .form-container { 
+            padding: 30px 20px;
+            max-width: 100%;
+        }
+        
+        .form-header h2 {
+            font-size: 24px;
+        }
+        
+        .form-header h3 {
+            font-size: 32px;
+            margin-bottom: 35px;
+        }
+        
+        input {
+            padding: 14px 50px 14px 16px;
+            font-size: 0.9rem;
+        }
+        
+        .btn {
+            padding: 13px 16px;
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .form-header h2 {
+            font-size: 22px;
+        }
+        
+        .form-header h3 {
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+    }
