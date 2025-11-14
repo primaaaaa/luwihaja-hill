@@ -62,7 +62,7 @@ class PageController extends Controller
             'sungai.jpg'
         ];
 
-        $perPage = 8; // banyak gambar per halaman
+        $perPage = 8; 
         $currentPage = $request->get('page', 1);
         $offset = ($currentPage - 1) * $perPage;
 
