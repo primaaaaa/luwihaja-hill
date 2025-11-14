@@ -54,6 +54,11 @@
           <input type="email" id="email" placeholder="prima@gmail.com" />
         </div>
 
+        <div class="form-group">
+          <label for="notelp">No. Telepon</label>
+          <input type="notl;" id="notl;" placeholder="0871871878" />
+        </div>
+
         <button class="btn-primary-reservasi" onclick="handleLanjutkan()">Lanjutkan</button>
       </div>
 
@@ -108,7 +113,6 @@
   </div>
 </section>
 
-<!-- Modal Pembayaran -->
 <div id="paymentModal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
@@ -138,15 +142,17 @@
           <input type="text" id="nomorRekening" placeholder="8910910" />
         </div>
         <div class="form-group">
-          <label>Bukti Pembayaran</label>
-          <div class="upload-area">
+          <label for="buktiPembayaran">Bukti Pembayaran</label>
+          <div class="file-upload-wrapper">
             <input type="file" id="buktiFile" accept="image/*,.pdf" onchange="handleFileUpload()" />
-            <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-            </svg>
-            <div class="upload-text">Klik untuk upload atau drag file kesini</div>
-            <div class="file-name" id="fileName"></div>
+            <label for="buktiFile" class="file-upload-label-unified" id="fileLabel">
+              <span class="file-name-text">Pilih file</span>
+              <svg class="upload-icon-inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                style="margin-left: auto">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+            </label>
           </div>
         </div>
       </div>
@@ -159,8 +165,9 @@
           <option value="Cash">Cash</option>
         </select>
       </div>
-
-      <button class="btn-primary-reservasi" onclick="submitPayment()">Kirim</button>
+      <button class="btn-primary-reservasi" onclick="window.location.href='/pembayaransukses'">
+        Kirim
+      </button>
     </div>
   </div>
 </div>
@@ -289,14 +296,21 @@
         document.getElementById('paymentModal').classList.remove('show');
       }
 
-      function handleFileUpload() {
-        const fileInput = document.getElementById('buktiFile');
-        const fileName = document.getElementById('fileName');
-        
-        if (fileInput.files.length > 0) {
-          fileName.textContent = '✓ ' + fileInput.files[0].name;
-        }
-      }
+     function handleFileUpload() {
+  const fileInput = document.getElementById('buktiFile');
+  const fileLabel = document.getElementById('fileLabel');
+  
+  if (fileInput.files.length > 0) {
+    const fileName = fileInput.files[0].name;
+    fileLabel.textContent = fileName;
+    fileLabel.style.color = 'var(--green-900)';
+    fileLabel.style.fontWeight = '500';
+  } else {
+    fileLabel.textContent = 'Pilih file...';
+    fileLabel.style.color = '#6c757d';
+    fileLabel.style.fontWeight = '400';
+  }
+}
 
       function submitPayment() {
         const namaPemilik = document.getElementById('namaPemilik').value;
