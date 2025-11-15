@@ -147,8 +147,7 @@
             <input type="file" id="buktiFile" accept="image/*,.pdf" onchange="handleFileUpload()" />
             <label for="buktiFile" class="file-upload-label-unified" id="fileLabel">
               <span class="file-name-text">Pilih file</span>
-              <svg class="upload-icon-inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                style="margin-left: auto">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px; color: #198754;">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
@@ -173,8 +172,7 @@
 </div>
 
 <script>
-  // Mobile menu toggle
-      const hamburger = document.querySelector('.hamburger');
+  const hamburger = document.querySelector('.hamburger');
       const nav = document.querySelector('.nav-menu');
 
       hamburger.addEventListener('click', () => {
