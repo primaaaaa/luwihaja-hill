@@ -3,7 +3,9 @@
 @section('admin-content')
 
 <div class="p-4">
-    <x-card-main title="Daftar Reservasi"></x-card-main>
+    <x-card-main title="Daftar Reservasi">
+        <x-data-table :headers="$tableHeader"></x-data-table>
+    </x-card-main>
 </div>
 
 @endsection

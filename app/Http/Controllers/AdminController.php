@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kamar;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
@@ -11,23 +12,36 @@ class AdminController extends Controller{
     }
 
     public function Kamar(){
-        return view('pages.admin.manajemenkamar');
+        return view('pages.admin.manajemenkamar', [
+            'rooms' => Kamar::showAll(),
+            'tableHeader' => ['Kode Kamar', 'Unit', 'Kapasitas', 'Kategori', 'Status', 'Aksi']
+        ]);
     }
 
     public function Reservasi(){
-        return view('pages.admin.manajemenreservasi');
+        return view('pages.admin.manajemenreservasi', [
+            'tableHeader' => ['Kode Reservasi', 'Nama Tamu', 'Tanggal Check-In', 'Tanggal Check-Out', 'Status', 'Aksi']
+        ]);
     }
 
     public function Ulasan(){
-        return view('pages.admin.manajemenulasan');
+        return view('pages.admin.manajemenulasan', [
+            'tableHeader' => ['Nama Tamu', 'Kode Reservasi', 'Rating', 'Komentar', 'Tanggal Ulasan', 'Aksi']
+        ]);
     }   
     public function CMS(){
-        return view('pages.admin.cms');
+        return view('pages.admin.cms', [
+            'tableHeader' => ['Kode Galeri', 'File', 'Tanggal Upload', 'Tanggal Asli']
+        ]);
     }   
     public function Refund(){
-        return view('pages.admin.manajemenrefund');
+        return view('pages.admin.manajemenrefund', [
+           'tableHeader' => ['Kode Refund', 'Kode Reservasi', 'Nama Tamu', 'Tanggal Pengajuan', 'Status', 'Aksi'] 
+        ]);
     }   
     public function Pembayaran(){
-        return view('pages.admin.manajemenpembayaran');
+        return view('pages.admin.manajemenpembayaran', [
+            'tableHeader' => ['Kode Reservasi', 'Nama Tamu', 'Tanggal Pembayaran', 'Jumlah', 'Status', 'Aksi']
+        ]);
     }   
 }
