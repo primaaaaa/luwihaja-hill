@@ -753,7 +753,7 @@
       /* Footer */
       .footer {
         padding: 90px 0 0;
-        background: #f8f9fa;
+        background: #fff;
       }
 
       .footer .container {
@@ -861,6 +861,10 @@
       }
 
       .fab.fa-instagram {
+        color: #f4a43a;
+      }
+
+      .fas.fa-envelope {
         color: #f4a43a;
       }
 
