@@ -1,7 +1,7 @@
 <header class="top-bar">
   <div class="container">
     <a class="brand" href="{{ url('/') }}">
-      {{-- <img src="asset/logo.png" alt="Logo" />   --}}
+      <img src="asset/logo_top.png" alt="Logo" />  
       Luwihaja<span>Hill</span>
     </a>
     <div class="auth">

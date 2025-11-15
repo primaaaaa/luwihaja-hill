@@ -2,18 +2,27 @@
   <div class="container">
     <div>
       <h4 class="brand brand--footer">Luwihaja <span>Hill</span></h4>
-      <p>0822-1955-1822<br />villa@contoh.id</p>
+      <div class="footer-contact">
+        <a href="https://wa.me/6282219551822" target="_blank" class="contact-item">
+          <i class="fab fa-whatsapp"></i>
+          <span>0822-1955-1822</span>
+        </a>
+        <a href="https://instagram.com/villadancafeair" target="_blank" class="contact-item">
+          <i class="fab fa-instagram"></i>
+          <span>@villadancafeair</span>
+        </a>
+      </div>
     </div>
 
     <div>
       <h4 class="foot-title">Tautan Cepat</h4>
       <ul class="foot-links">
-        <li><a href="#beranda">Beranda</a></li>
-        <li><a href="#tentang">Tentang Kami</a></li>
-        <li><a href="#kebijakan">Kebijakan & Syarat</a></li>
-        <li><a href="#fasilitas">Fasilitas</a></li>
-        <li><a href="#akomodasi">Akomodasi</a></li>
-        <li><a href="#faq">FAQs</a></li>
+        <li><a href="{{ url('/') }}">Beranda</a></li>
+        <li><a href="{{ url('/tentang') }}">Tentang Kami</a></li>
+        <li><a href="{{ url('/kebijakan') }}">Kebijakan & Syarat</a></li>
+        <li><a href="{{ url('/fasilitas') }}">Fasilitas</a></li>
+        <li><a href="{{ url('/akomodasi') }}">Akomodasi</a></li>
+        <li><a href="{{ url('/faq') }}">FAQs</a></li>
       </ul>
     </div>
 
