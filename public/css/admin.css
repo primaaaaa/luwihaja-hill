@@ -1,7 +1,8 @@
 body {
     background-color: #f7f8fa;
     font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto,
-            Arial, sans-serif;}
+        Arial, sans-serif;
+}
 
 /* Sidebar */
 .sidebar {
@@ -346,7 +347,7 @@ body {
 }
 
 .custom-table thead th {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     color: #9ca3af;
     text-transform: none;
@@ -359,7 +360,7 @@ body {
 .custom-table tbody td {
     padding: 16px 15px;
     vertical-align: middle;
-    font-size: 13px;
+    font-size: 14px;
     color: #111827;
     border-bottom: 1px solid #f3f4f6;
     font-weight: 500;
@@ -378,10 +379,11 @@ body {
 .badge-status {
     padding: 5px 14px;
     border-radius: 6px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
     border: 1px solid;
-    min-width: 85px;
+    min-width: 120px;
+    max-width: 130px;
     text-align: center;
     display: inline-block;
     font-family: 'Poppins', sans-serif;
@@ -457,7 +459,7 @@ body {
 
 .dropdown-item {
     padding: 8px 16px;
-    font-size: 12px;
+    font-size: 14px;
     color: #374151;
     font-family: 'Poppins', sans-serif;
     font-weight: 400;
@@ -495,6 +497,7 @@ body {
 
 .btn-edit {
     background-color: transparent;
+    font-size: 15px;
     color: #40723f;
 }
 
@@ -505,6 +508,7 @@ body {
 
 .btn-detail {
     background-color: transparent;
+        font-size: 15px;
     color: #40723f;
 }
 
@@ -515,6 +519,8 @@ body {
 
 .btn-delete {
     background-color: transparent;
+        font-size: 15px;
+
     color: #40723f;
 }
 
@@ -530,7 +536,7 @@ body {
     height: 38px;
     padding: 0 18px;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     display: flex;
     align-items: center;
@@ -627,7 +633,7 @@ body {
 
 /* Form Labels */
 .detail-container .form-label {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     color: #374151;
     margin-bottom: 8px;
@@ -640,7 +646,7 @@ body {
     background-color: #f9fafb;
     border: 1px solid #e5e7eb;
     color: #111827;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 400;
     padding: 10px 14px;
     border-radius: 8px;
@@ -705,10 +711,10 @@ body {
 }
 
 .kamar-modal {
-    transform: scale(0.88); 
+    transform: scale(0.88);
     transform-origin: top center;
     border-radius: 10px !important;
-     max-width: 750px; 
+    max-width: 750px;
 }
 
 .kamar-input {
@@ -788,17 +794,17 @@ body {
 /*modal hapus*/
 
 .delete-modal-dialog {
-    max-width: 420px;       
+    max-width: 420px;
 }
 
 
 .delete-modal {
     border-radius: 10px;
-    padding: 16px 14px;   
+    padding: 16px 14px;
 }
 
 .delete-modal-body {
-    padding: 24px 20px !important;  
+    padding: 24px 20px !important;
 }
 
 .delete-close {
@@ -812,7 +818,7 @@ body {
     color: #252B17;
     font-size: 19px;
     font-weight: 450;
-     line-height: 1.6; 
+    line-height: 1.6;
 }
 
 .btn-tidak {
@@ -862,196 +868,198 @@ body {
     text-decoration: none;
 }
 
-    /* Modal Upload */
-    .cms-modal-header {
-        background-color: #f8f9fa;
-        border-bottom: 1px solid #dee2e6;
-        padding: 1rem 1.5rem;
-    }
+/* Modal Upload */
+.cms-modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem 1.5rem;
+}
 
-    .cms-modal-title {
-        font-weight: 600;
-        color: #333;
-        font-size: 1.1rem;
-    }
+.cms-modal-title {
+    font-weight: 600;
+    color: #333;
+    font-size: 1.1rem;
+}
 
-    .cms-upload-area {
-        border: 2px dashed #ccc;
-        border-radius: 8px;
-        padding: 60px 20px;
-        text-align: center;
-        background-color: #fafff5;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
+.cms-upload-area {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #fafff5;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
-    .cms-upload-area:hover {
-        border-color: #4A7C59;
-        background-color: #f0fff0;
-    }
+.cms-upload-area:hover {
+    border-color: #4A7C59;
+    background-color: #f0fff0;
+}
 
-    .cms-upload-area.dragover {
-        border-color: #4A7C59;
-        background-color: #e8f5e9;
-    }
+.cms-upload-area.dragover {
+    border-color: #4A7C59;
+    background-color: #e8f5e9;
+}
 
-    .cms-upload-icon {
-        font-size: 48px;
-        color: #999;
-        margin-bottom: 15px;
-    }
+.cms-upload-icon {
+    font-size: 48px;
+    color: #999;
+    margin-bottom: 15px;
+}
 
-    .cms-upload-text {
-        color: #666;
-        font-size: 14px;
-        margin-bottom: 8px;
-    }
+.cms-upload-text {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
 
-    .cms-upload-text a {
-        color: #4A7C59;
-        text-decoration: underline;
-    }
+.cms-upload-text a {
+    color: #4A7C59;
+    text-decoration: underline;
+}
 
-    .cms-upload-formats {
-        color: #999;
-        font-size: 12px;
-    }
+.cms-upload-formats {
+    color: #999;
+    font-size: 12px;
+}
 
-    .cms-btn-unggah, .cms-btn-batal {
-        padding: 10px 40px;
-        border-radius: 6px;
-        font-weight: 500;
-        border: none;
-    }
+.cms-btn-unggah,
+.cms-btn-batal {
+    padding: 10px 40px;
+    border-radius: 6px;
+    font-weight: 500;
+    border: none;
+}
 
-    .cms-btn-unggah {
-        background-color: #4A7C59;
-        color: white;
-    }
+.cms-btn-unggah {
+    background-color: #4A7C59;
+    color: white;
+}
 
-    .cms-btn-unggah:hover {
-        background-color: #3d6449;
-        color: white;
-    }
+.cms-btn-unggah:hover {
+    background-color: #3d6449;
+    color: white;
+}
 
-    .cms-btn-batal {
-        background-color: #5a7c59;
-        color: white;
-    }
+.cms-btn-batal {
+    background-color: #5a7c59;
+    color: white;
+}
 
-    .cms-btn-batal:hover {
-        background-color: #4a6449;
-        color: white;
-    }
+.cms-btn-batal:hover {
+    background-color: #4a6449;
+    color: white;
+}
 
-    /* Modal Detail */
-    .cms-detail-modal .modal-dialog {
-        max-width: 600px;
-    }
+/* Modal Detail */
+.cms-detail-modal .modal-dialog {
+    max-width: 600px;
+}
 
-    .cms-detail-image {
-        width: 100%;
-        height: auto;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
+.cms-detail-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
-    #cmsFileInput {
-        display: none;
-    }
+#cmsFileInput {
+    display: none;
+}
 
-    .cms-file-list {
-        margin-top: 1rem;
-    }
+.cms-file-list {
+    margin-top: 1rem;
+}
 
-    .cms-file-item {
-        padding: 0.75rem;
-        background-color: #d4edda;
-        border: 1px solid #c3e6cb;
-        border-radius: 6px;
-        margin-bottom: 0.5rem;
-        display: flex;
-        align-items: center;
-    }
+.cms-file-item {
+    padding: 0.75rem;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
 
-    .cms-file-item i {
-        margin-right: 0.5rem;
-        color: #155724;
-    }
+.cms-file-item i {
+    margin-right: 0.5rem;
+    color: #155724;
+}
 
-    /* chart dashbodr */
+/* chart dashbodr */
 
-    .chart-container {
-        background: white;
-        border-radius: 12px;
-        padding: 24px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        margin-top: 24px;
-    }
+.chart-container {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-top: 24px;
+}
 
-    .chart-title {
-        font-size: 18px;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 20px;
-    }
+.chart-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+}
 
-    .chart-wrapper {
-        position: relative;
-        height: 300px;
-    }
+.chart-wrapper {
+    position: relative;
+    height: 300px;
+}
 
 @media (max-width: 768px) {
     .stats-container {
         flex-direction: column;
     }
-    
+
     .card-stat {
         border-right: none;
         border-bottom: 1px solid #e5e7eb;
     }
-    
+
     .card-stat:last-child {
         border-bottom: none;
     }
 
-     .table-header {
+    .table-header {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .table-actions {
         width: 100%;
         flex-direction: column;
     }
-    
+
     .search-box {
         width: 100%;
     }
-    
-    .filter-btn, .btn-add {
+
+    .filter-btn,
+    .btn-add {
         width: 100%;
         justify-content: center;
     }
-    
+
     .table-footer {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .action-buttons {
         flex-wrap: wrap;
     }
 
-      .detail-container {
+    .detail-container {
         padding: 25px 20px;
     }
-    
+
     .detail-title {
         font-size: 20px;
         margin-bottom: 20px;
     }
-    
+
     .detail-container .btn {
         width: 100%;
         justify-content: center;
