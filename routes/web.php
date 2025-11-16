@@ -39,4 +39,9 @@ Route::get('/admin/ulasan', [AdminController::class, 'Ulasan'])->name('manajemen
 Route::get('/admin/cms', [AdminController::class, 'CMS'])->name('cms');
 Route::get('/admin/refund', [AdminController::class, 'Refund'])->name('manajemenrefund');
 Route::get('/admin/pembayaran', [AdminController::class, 'Pembayaran'])->name('manajemenpembayaran');
+Route::get('/admin/kamar-detail', [AdminController::class, 'DetailKamar'])->name(name: 'kamar-detail');
+Route::get('/admin/pembayaran-detail', [AdminController::class, 'DetailPembayaran'])->name('pembayaran-detail');
+Route::get('/admin/refund-detail', [AdminController::class, 'DetailRefund'])->name('refund-detail');
+Route::get('/admin/reservasi-detail', [AdminController::class, 'DetailReservasi'])->name('reservasi-detail');
+Route::get('/admin/ulasan-detail', [AdminController::class, 'DetailUlasan'])->name('ulasan-detail');
 // require __DIR__.'/auth.php';

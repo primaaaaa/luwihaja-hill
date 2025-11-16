@@ -4,43 +4,25 @@
 
 @php
 $refunds = [
-    [
-        'nama_tamu' => 'Prima',
-        'kode_reservasi' => 'V101',
-        'kode_refund' => 'RF01',
-        'tanggal_pengajuan' => '2025-09-14',
-        'status' => 'Menunggu'
-    ],
-    [
-        'nama_tamu' => 'Aretta',
-        'kode_reservasi' => 'V103',
-        'kode_refund' => 'RF03',
-        'tanggal_pengajuan' => '2025-09-14',
-        'status' => 'Disetujui'
-    ],
-    [
-        'nama_tamu' => 'Alhamid',
-        'kode_reservasi' => 'V104',
-        'kode_refund' => 'RF04',
-        'tanggal_pengajuan' => '2025-09-14',
-        'status' => 'Ditolak'
-    ]
+    ['id' => 1, 'kode_refund' => 'RF01', 'kode_reservasi' => 'V101', 'nama_tamu' => 'Prima', 'tanggal_pengajuan' => '2025-09-14', 'status' => 'Menunggu'],
+    ['id' => 2, 'kode_refund' => 'RF03', 'kode_reservasi' => 'V103', 'nama_tamu' => 'Aretta', 'tanggal_pengajuan' => '2025-09-14', 'status' => 'Disetujui'],
+    ['id' => 3, 'kode_refund' => 'RF04', 'kode_reservasi' => 'V104', 'nama_tamu' => 'Alhamid', 'tanggal_pengajuan' => '2025-09-14', 'status' => 'Ditolak'],
 ];
 @endphp
 
 <div class="p-4">
     <x-data-table 
         title="Daftar Pengajuan Refund"
-        :headers="['Nama Tamu', 'Kode Reservasi', 'Kode Refund', 'Tanggal Pengajuan', 'Status']" 
+        :headers="$tableHeader"
         :addButton="false"
         :exportButton="false"
         :filterOptions="['Menunggu', 'Disetujui', 'Ditolak']">
 
         @foreach ($refunds as $refund)
         <tr>
-            <td>{{ $refund['nama_tamu'] }}</td>
-            <td>{{ $refund['kode_reservasi'] }}</td>
             <td>{{ $refund['kode_refund'] }}</td>
+            <td>{{ $refund['kode_reservasi'] }}</td>
+            <td>{{ $refund['nama_tamu'] }}</td>
             <td>{{ $refund['tanggal_pengajuan'] }}</td>
             <td>
                 @php
@@ -52,7 +34,6 @@ $refunds = [
                     };
                 @endphp
                 
-                <!-- Status Dropdown -->
                 <div class="dropdown">
                     <button class="btn badge-status {{ $statusClass }} dropdown-toggle" 
                             type="button" 
@@ -70,9 +51,9 @@ $refunds = [
             </td>
             <td>
                 <div class="action-buttons">
-                    <button class="btn-action btn-detail" title="Lihat Detail">
+                    <a href="{{ route('refund-detail') }}" class="btn-action btn-detail">
                         <i class="bi bi-eye-fill"></i>
-                    </button>
+                    </a>
                 </div>
             </td>
         </tr>

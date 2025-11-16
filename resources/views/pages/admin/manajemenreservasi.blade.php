@@ -4,41 +4,45 @@
 
 @php
 $reservations = [
-[
-'nama_tamu' => 'Ahmad Rizki',
-'kode_reservasi' => 'RSV001',
-'checkin' => '20 Nov 2024',
-'checkout' => '23 Nov 2024',
-'status' => 'Menunggu'
-],
-[
-'nama_tamu' => 'Siti Nurhaliza',
-'kode_reservasi' => 'RSV002',
-'checkin' => '16 Nov 2024',
-'checkout' => '18 Nov 2024',
-'status' => 'Dibatalkan'
-],
-[
-'nama_tamu' => 'Budi Santoso',
-'kode_reservasi' => 'RSV003',
-'checkin' => '10 Nov 2024',
-'checkout' => '15 Nov 2024',
-'status' => 'Selesai'
-]
+    [
+        'id' => 1,
+        'kode_reservasi' => 'RSV001',
+        'nama_tamu' => 'Ahmad Rizki',
+        'checkin' => '20 Nov 2024',
+        'checkout' => '23 Nov 2024',
+        'status' => 'Menunggu'
+    ],
+    [
+        'id' => 2,
+        'kode_reservasi' => 'RSV002',
+        'nama_tamu' => 'Siti Nurhaliza',
+        'checkin' => '16 Nov 2024',
+        'checkout' => '18 Nov 2024',
+        'status' => 'Check In'
+    ],
+    [
+        'id' => 3,
+        'kode_reservasi' => 'RSV003',
+        'nama_tamu' => 'Budi Santoso',
+        'checkin' => '10 Nov 2024',
+        'checkout' => '15 Nov 2024',
+        'status' => 'Selesai'
+    ],
 ];
 @endphp
+
 <div class="p-4">
     <x-data-table 
         title="Daftar Reservasi"
-        :headers="['Nama Tamu', 'Kode Reservasi', 'Tanggal Check-in', 'Tanggal Check-out', 'Status']" 
+        :headers="$tableHeader"
         :addButton="false"
         :filterOptions="['Menunggu Konfirmasi', 'Check In', 'Selesai', 'Dibatalkan']" 
         :exportButton="true">
 
         @foreach ($reservations as $reservation)
         <tr>
-            <td>{{ $reservation['nama_tamu'] }}</td>
             <td>{{ $reservation['kode_reservasi'] }}</td>
+            <td>{{ $reservation['nama_tamu'] }}</td>
             <td>{{ $reservation['checkin'] }}</td>
             <td>{{ $reservation['checkout'] }}</td>
             <td>
@@ -52,7 +56,6 @@ $reservations = [
                     };
                 @endphp
                 
-                <!-- Status Dropdown -->
                 <div class="dropdown">
                     <button class="btn badge-status {{ $statusClass }} dropdown-toggle" 
                             type="button" 
@@ -71,10 +74,10 @@ $reservations = [
             </td>
             <td>
                 <div class="action-buttons">
-                    <button class="btn-action btn-detail" title="Detail">
+                        <a href="{{ route('reservasi-detail') }}" class="btn-action btn-detail">
                         <i class="bi bi-eye-fill"></i>
-                    </button>
-                    <button class="btn-action btn-delete" title="Hapus">
+                    </a>
+                    <button class="btn-action btn-delete">
                         <i class="bi bi-trash-fill"></i>
                     </button>
                 </div>

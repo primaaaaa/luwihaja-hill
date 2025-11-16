@@ -610,6 +610,95 @@ body {
     margin: 0 2px;
 }
 
+.detail-container {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 35px 40px;
+    margin-top: 20px;
+}
+
+.detail-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 30px 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Form Labels */
+.detail-container .form-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 8px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Form Controls - Readonly Style */
+.detail-container .form-control[readonly],
+.detail-container .form-select[disabled] {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    color: #111827;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: default;
+    font-family: 'Poppins', sans-serif;
+}
+
+.detail-container .form-control[readonly]:focus,
+.detail-container .form-select[disabled]:focus {
+    background-color: #f9fafb;
+    border-color: #e5e7eb;
+    box-shadow: none;
+}
+
+/* Textarea */
+.detail-container textarea.form-control[readonly] {
+    resize: none;
+    line-height: 1.6;
+}
+
+/* Buttons */
+.detail-container .btn {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.2s;
+}
+
+.detail-container .btn-secondary {
+    background-color: #6b7280;
+    border: none;
+    color: white;
+}
+
+.detail-container .btn-secondary:hover {
+    background-color: #4b5563;
+}
+
+.detail-container .btn-success {
+    background-color: #40723f;
+    border: none;
+    color: white;
+}
+
+.detail-container .btn-success:hover {
+    background-color: #2d5a2e;
+}
+
+.detail-container .btn i {
+    font-size: 16px;
+}
+
 @media (max-width: 768px) {
     .stats-container {
         flex-direction: column;
@@ -650,5 +739,19 @@ body {
     
     .action-buttons {
         flex-wrap: wrap;
+    }
+
+      .detail-container {
+        padding: 25px 20px;
+    }
+    
+    .detail-title {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .detail-container .btn {
+        width: 100%;
+        justify-content: center;
     }
 }

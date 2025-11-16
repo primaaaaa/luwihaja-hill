@@ -4,34 +4,16 @@
 
 @php
 $reviews = [
-    [
-        'nama_tamu' => 'Prima Yudhistira',
-        'kode_reservasi' => 'V101',
-        'rating' => '5.0',
-        'komentar' => 'Bagus, Mantap, dan...',
-        'tanggal' => '2025-09-14'
-    ],
-    [
-        'nama_tamu' => 'Eko Prasetyo',
-        'kode_reservasi' => 'V106',
-        'rating' => '4.8',
-        'komentar' => 'Nyaman dan bersih...',
-        'tanggal' => '2025-09-09'
-    ],
-    [
-        'nama_tamu' => 'Rina Wati',
-        'kode_reservasi' => 'V107',
-        'rating' => '5.0',
-        'komentar' => 'Pemandangan indah...',
-        'tanggal' => '2025-09-08'
-    ]
+    ['id' => 1, 'nama_tamu' => 'Prima Yudhistira', 'kode_reservasi' => 'V101', 'rating' => '5.0', 'komentar' => 'Bagus, Mantap, dan...', 'tanggal' => '2025-09-14'],
+    ['id' => 2, 'nama_tamu' => 'Ahmad Rizki', 'kode_reservasi' => 'V102', 'rating' => '4.5', 'komentar' => 'Pelayanan ramah...', 'tanggal' => '2025-09-13'],
+    ['id' => 3, 'nama_tamu' => 'Siti Nurhaliza', 'kode_reservasi' => 'V103', 'rating' => '5.0', 'komentar' => 'Sangat memuaskan!', 'tanggal' => '2025-09-12'],
 ];
 @endphp
 
 <div class="p-4">
     <x-data-table 
         title="Daftar Ulasan"
-        :headers="['Nama Tamu', 'Kode Reservasi', 'Rating', 'Komentar', 'Tanggal Ulasan']" 
+        :headers="$tableHeader"
         :addButton="false"
         :exportButton="false"
         :filterOptions="[]">
@@ -45,10 +27,10 @@ $reviews = [
             <td>{{ $review['tanggal'] }}</td>
             <td>
                 <div class="action-buttons">
-                    <button class="btn-action btn-detail" title="Detail">
+                    <a href="{{ route('ulasan-detail') }}" class="btn-action btn-detail">
                         <i class="bi bi-eye-fill"></i>
-                    </button>
-                    <button class="btn-action btn-delete" title="Hapus">
+                    </a>
+                    <button class="btn-action btn-delete">
                         <i class="bi bi-trash-fill"></i>
                     </button>
                 </div>
