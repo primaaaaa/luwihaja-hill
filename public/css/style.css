@@ -2791,11 +2791,6 @@
           gap: 16px;
         }
 
-        .auth a {
-          display: none;
-        }
-
-
         .hamburger {
           display: block;
         }
@@ -2989,6 +2984,222 @@
         .total-card {
           padding: 30px 24px;
         }
+
+        .table-section {
+          padding: 40px 0;
+        }
+
+        /* Header Mobile */
+        .section-header {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 16px;
+          margin-bottom: 24px;
+        }
+
+        .section-title {
+          font-size: 1.5rem;
+          text-align: center;
+        }
+
+        .search-wrapper {
+          justify-content: stretch;
+        }
+
+        .search-box-riwayat {
+          max-width: 100%;
+        }
+
+        /* Hide Table, Show Cards */
+        .table-wrapper {
+          box-shadow: none;
+          background: transparent;
+        }
+
+        table {
+          display: block;
+        }
+
+        thead {
+          display: none;
+        }
+
+        tbody {
+          display: block;
+        }
+
+        tbody tr {
+          display: flex;
+          flex-direction: column;
+          background: white;
+          border-radius: 12px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          margin-bottom: 16px;
+          padding: 20px;
+          transition: all 0.2s;
+        }
+
+        tbody tr:hover {
+          background: white;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+          transform: translateY(-2px);
+        }
+
+        td {
+          display: block;
+          text-align: left;
+          padding: 10px 0;
+          border: none;
+          position: relative;
+          padding-left: 140px;
+        }
+
+        td::before {
+          content: attr(data-label);
+          position: absolute;
+          left: 0;
+          font-weight: 600;
+          color: #6c757d;
+          font-size: 0.85rem;
+        }
+
+
+        /* ========== UNTUK HALAMAN RESERVASI (6 kolom tanpa button) ========== */
+        /* Urutan tetap: Nama, Kode, Check-in, Check-out, Kode Kamar, Status */
+        tbody tr td:nth-child(1):not(:has(button)) {
+          order: 1;
+        }
+
+        tbody tr td:nth-child(2):not(:has(button)) {
+          order: 2;
+        }
+
+        tbody tr td:nth-child(3):not(:has(button)) {
+          order: 3;
+        }
+
+        tbody tr td:nth-child(4):not(:has(button)) {
+          order: 4;
+        }
+
+        tbody tr td:nth-child(5):not(:has(button)) {
+          order: 5;
+        }
+
+        tbody tr td:nth-child(6):not(:has(button)) {
+          order: 6;
+        }
+
+        tbody tr td:nth-child(1):not(:has(button))::before {
+          content: "Nama Tamu";
+        }
+
+        tbody tr td:nth-child(2):not(:has(button))::before {
+          content: "Kode Reservasi";
+        }
+
+        tbody tr td:nth-child(3):not(:has(button))::before {
+          content: "Check-in";
+        }
+
+        tbody tr td:nth-child(4):not(:has(button))::before {
+          content: "Check-out";
+        }
+
+        tbody tr td:nth-child(5):not(:has(button))::before {
+          content: "Kode Kamar";
+        }
+
+        tbody tr td:nth-child(6):not(:has(button))::before {
+          content: "Status";
+        }
+
+
+        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(1) {
+          order: 1;
+        }
+
+        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(2) {
+          order: 2;
+        }
+
+        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(3) {
+          order: 3;
+        }
+
+        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(4) {
+          order: 4;
+        }
+
+        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(5) {
+          order: 5;
+        }
+
+        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(6) {
+          order: 6;
+        }
+
+        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(1)::before {
+          content: "Nama Tamu";
+        }
+
+        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(2)::before {
+          content: "Kode Reservasi";
+        }
+
+        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(3)::before {
+          content: "Check-in";
+        }
+
+        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(4)::before {
+          content: "Check-out";
+        }
+
+        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(5)::before {
+          content: "Kode Kamar";
+        }
+
+        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(6)::before {
+          content: "Status";
+        }
+
+        .btn-refund {
+          width: fit-content;
+          justify-content: center;
+          padding: 8px 15px;
+          font-size: 0.8rem;
+          gap: 4px;
+        }
+
+        .btn-refund svg {
+          width: 14px;
+          height: 14px;
+        }
+
+        .badge {
+          display: inline-block;
+          padding: 6px 12px;
+        }
+
+        .pagination-wrapper {
+          flex-direction: column;
+          gap: 16px;
+          align-items: center;
+        }
+
+        .pagination-info {
+          text-align: center;
+          font-size: 0.85rem;
+        }
+
+        .pagination {
+          justify-content: center;
+        }
+
+        .pagination button {
+          padding: 8px 12px;
+          font-size: 0.9rem;
+        }
       }
 
       @media (max-width: 1024px) {
@@ -3036,5 +3247,39 @@
 
         .brand gap {
           gap: 8px;
+        }
+
+        .section-title {
+          font-size: 1.25rem;
+        }
+
+        tbody tr {
+          padding: 16px;
+        }
+
+        td {
+          padding: 8px 0;
+          padding-left: 120px;
+          font-size: 0.9rem;
+        }
+
+        td::before {
+          font-size: 0.8rem;
+        }
+
+        .btn-refund {
+          font-size: 0.75rem;
+          padding: 7px 10px;
+          gap: 3px;
+        }
+
+        .btn-refund svg {
+          width: 13px;
+          height: 13px;
+        }
+
+        .badge {
+          font-size: 0.8rem;
+          padding: 5px 10px;
         }
       }

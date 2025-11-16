@@ -34,13 +34,13 @@
 
     <!-- Video Section -->
     <div class="video-container">
-      <iframe src="https://www.youtube.com/embed/xAroI25ocvE?si=1Oc8dUuF6srfwJul" title="Luwihaja Hill Video"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
+      <iframe src="https://www.youtube.com/embed/xAroI25ocvE?rel=0&modestbranding=1" title="Luwihaja Hill Video"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
       </iframe>
       <div class="video-overlay"></div>
     </div>
-  </div>
 </section>
 
 <!-- Team Section -->
@@ -75,5 +75,27 @@
     </div>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const overlay = document.querySelector('.video-overlay');
+  const iframe = document.querySelector('.video-container iframe');
+  
+  if (overlay && iframe) {
+    overlay.addEventListener('click', function() {
+      // Hide overlay with animation
+      this.style.opacity = '0';
+      setTimeout(() => {
+        this.style.display = 'none';
+      }, 300);
+      
+      const src = iframe.src;
+      if (src.indexOf('autoplay=1') === -1) {
+        iframe.src = src + '&autoplay=1';
+      }
+    });
+  }
+});
+</script>
 
 @endsection
