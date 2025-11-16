@@ -2807,6 +2807,100 @@
           font-size: 1rem;
         }
 
+        .grid-fac {
+          grid-template-columns: 1fr !important;
+          gap: 16px;
+        }
+
+        .fac {
+          padding: 20px;
+        }
+
+        .fac .icon {
+          width: 50px;
+          height: 50px;
+        }
+
+        .fac .icon svg {
+          width: 28px;
+          height: 28px;
+        }
+
+        .fac h4 {
+          font-size: 1.1rem;
+          margin: 12px 0 8px;
+        }
+
+        .fac p {
+          font-size: 0.9rem;
+          line-height: 1.5;
+        }
+
+        .reviews {
+          grid-template-columns: 1fr !important;
+          gap: 20px;
+        }
+
+        .review {
+          padding: 24px 20px;
+        }
+
+        .quote-icon {
+          width: 32px;
+          height: 32px;
+        }
+
+        .review p {
+          font-size: 0.95rem;
+          line-height: 1.6;
+          margin: 16px 0;
+        }
+
+        .review .author {
+          font-size: 1rem;
+          margin-bottom: 4px;
+        }
+
+        .review .email {
+          font-size: 0.85rem;
+        }
+      }
+
+      /* Akomodasi Rooms */
+      @media (max-width: 768px) {
+        .rooms {
+          grid-template-columns: 1fr !important;
+          gap: 20px;
+        }
+
+        .room {
+          max-width: 100%;
+        }
+
+        .room img {
+          height: 250px;
+          object-fit: cover;
+        }
+
+        .room-body h4 {
+          font-size: 1.1rem;
+        }
+
+        .faq {
+          gap: 12px;
+        }
+
+        .faq details summary {
+          font-size: 0.95rem;
+          padding: 16px;
+        }
+
+        .faq details p {
+          font-size: 0.9rem;
+          padding: 12px 16px 16px;
+          line-height: 1.6;
+        }
+
         .content-block,
         .content-block.reverse {
           grid-template-columns: 1fr;
@@ -2989,7 +3083,6 @@
           padding: 40px 0;
         }
 
-        /* Header Mobile */
         .section-header {
           flex-direction: column;
           align-items: stretch;
@@ -3010,25 +3103,24 @@
           max-width: 100%;
         }
 
-        /* Hide Table, Show Cards */
-        .table-wrapper {
+        .table-section .table-wrapper {
           box-shadow: none;
           background: transparent;
         }
 
-        table {
+        .table-section table {
           display: block;
         }
 
-        thead {
+        .table-section thead {
           display: none;
         }
 
-        tbody {
+        .table-section tbody {
           display: block;
         }
 
-        tbody tr {
+        .table-section tbody tr {
           display: flex;
           flex-direction: column;
           background: white;
@@ -3039,13 +3131,13 @@
           transition: all 0.2s;
         }
 
-        tbody tr:hover {
+        .table-section tbody tr:hover {
           background: white;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
           transform: translateY(-2px);
         }
 
-        td {
+        .table-section td {
           display: block;
           text-align: left;
           padding: 10px 0;
@@ -3054,7 +3146,7 @@
           padding-left: 140px;
         }
 
-        td::before {
+        .table-section td::before {
           content: attr(data-label);
           position: absolute;
           left: 0;
@@ -3063,103 +3155,99 @@
           font-size: 0.85rem;
         }
 
-
-        /* ========== UNTUK HALAMAN RESERVASI (6 kolom tanpa button) ========== */
-        /* Urutan tetap: Nama, Kode, Check-in, Check-out, Kode Kamar, Status */
-        tbody tr td:nth-child(1):not(:has(button)) {
+        .table-section tbody tr:has(button) td:nth-child(1) {
           order: 1;
         }
 
-        tbody tr td:nth-child(2):not(:has(button)) {
+        .table-section tbody tr:has(button) td:nth-child(2) {
           order: 2;
         }
 
-        tbody tr td:nth-child(3):not(:has(button)) {
+        .table-section tbody tr:has(button) td:nth-child(3) {
           order: 3;
         }
 
-        tbody tr td:nth-child(4):not(:has(button)) {
+        .table-section tbody tr:has(button) td:nth-child(4) {
           order: 4;
         }
 
-        tbody tr td:nth-child(5):not(:has(button)) {
-          order: 5;
-        }
-
-        tbody tr td:nth-child(6):not(:has(button)) {
+        .table-section tbody tr:has(button) td:nth-child(5) {
           order: 6;
         }
 
-        tbody tr td:nth-child(1):not(:has(button))::before {
+        .table-section tbody tr:has(button) td:nth-child(6) {
+          order: 5;
+        }
+
+        .table-section tbody tr:has(button) td:nth-child(1)::before {
           content: "Nama Tamu";
         }
 
-        tbody tr td:nth-child(2):not(:has(button))::before {
+        .table-section tbody tr:has(button) td:nth-child(2)::before {
           content: "Kode Reservasi";
         }
 
-        tbody tr td:nth-child(3):not(:has(button))::before {
+        .table-section tbody tr:has(button) td:nth-child(3)::before {
           content: "Check-in";
         }
 
-        tbody tr td:nth-child(4):not(:has(button))::before {
+        .table-section tbody tr:has(button) td:nth-child(4)::before {
           content: "Check-out";
         }
 
-        tbody tr td:nth-child(5):not(:has(button))::before {
-          content: "Kode Kamar";
+        .table-section tbody tr:has(button) td:nth-child(5)::before {
+          content: "Aksi";
         }
 
-        tbody tr td:nth-child(6):not(:has(button))::before {
+        .table-section tbody tr:has(button) td:nth-child(6)::before {
           content: "Status";
         }
 
-
-        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(1) {
+        .table-section tbody tr:not(:has(button)) td:nth-child(1) {
           order: 1;
         }
 
-        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(2) {
+        .table-section tbody tr:not(:has(button)) td:nth-child(2) {
           order: 2;
         }
 
-        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(3) {
+        .table-section tbody tr:not(:has(button)) td:nth-child(3) {
           order: 3;
         }
 
-        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(4) {
+        .table-section tbody tr:not(:has(button)) td:nth-child(4) {
           order: 4;
         }
 
-        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(5) {
+        .table-section tbody tr:not(:has(button)) td:nth-child(5) {
           order: 5;
         }
 
-        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(6) {
+        .table-section tbody tr:not(:has(button)) td:nth-child(6) {
           order: 6;
         }
 
-        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(1)::before {
+        .table-section tbody tr:not(:has(button)) td:nth-child(1)::before {
           content: "Nama Tamu";
         }
 
-        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(2)::before {
+        .table-section tbody tr:not(:has(button)) td:nth-child(2)::before {
           content: "Kode Reservasi";
         }
 
-        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(3)::before {
+        .table-section tbody tr:not(:has(button)) td:nth-child(3)::before {
           content: "Check-in";
         }
 
-        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(4)::before {
+        .table-section tbody tr:not(:has(button)) td:nth-child(4)::before {
           content: "Check-out";
         }
 
-        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(5)::before {
+        .table-section tbody tr:not(:has(button)) td:nth-child(5)::before {
           content: "Kode Kamar";
         }
 
-        tbody tr:has(td:nth-child(5):not(:has(button))) td:nth-child(6)::before {
+        .table-section tbody tr:not(:has(button)) td:nth-child(6)::before {
           content: "Status";
         }
 
@@ -3199,6 +3287,36 @@
         .pagination button {
           padding: 8px 12px;
           font-size: 0.9rem;
+        }
+
+        .detail-table {
+          width: 100%;
+          display: table;
+        }
+
+        .detail-table tbody {
+          display: table-row-group;
+        }
+
+        .detail-table tr {
+          display: table-row;
+        }
+
+        .detail-table td {
+          display: table-cell;
+          padding: 10px 8px;
+          font-size: 0.9rem;
+          position: static;
+          padding-left: 8px;
+        }
+
+        .detail-table td::before {
+          content: none;
+        }
+
+        .detail-table .r-o {
+          font-weight: 600;
+          width: 40%;
         }
       }
 
@@ -3253,17 +3371,17 @@
           font-size: 1.25rem;
         }
 
-        tbody tr {
+        .table-section tbody tr {
           padding: 16px;
         }
 
-        td {
+        .table-section td {
           padding: 8px 0;
           padding-left: 120px;
           font-size: 0.9rem;
         }
 
-        td::before {
+        .table-section td::before {
           font-size: 0.8rem;
         }
 
@@ -3281,5 +3399,69 @@
         .badge {
           font-size: 0.8rem;
           padding: 5px 10px;
+        }
+
+        .detail-table td {
+          padding: 8px 6px;
+          font-size: 0.85rem;
+        }
+
+        .detail-table .r-o {
+          width: 35%;
+        }
+
+        .title.center {
+          font-size: 1.5rem;
+        }
+
+        .section {
+          padding: 40px 0;
+        }
+
+        .fac {
+          padding: 18px;
+        }
+
+        .fac .icon {
+          width: 45px;
+          height: 45px;
+        }
+
+        .fac .icon svg {
+          width: 24px;
+          height: 24px;
+        }
+
+        .fac h4 {
+          font-size: 1rem;
+        }
+
+        .fac p {
+          font-size: 0.85rem;
+        }
+
+        .review {
+          padding: 20px 16px;
+        }
+
+        .quote-icon {
+          width: 28px;
+          height: 28px;
+        }
+
+        .review p {
+          font-size: 0.9rem;
+        }
+
+        .review .author {
+          font-size: 0.95rem;
+        }
+
+        .review .email {
+          font-size: 0.8rem;
+        }
+
+        .room img {
+          height: 220px;
         }
       }

@@ -22,7 +22,7 @@
   <div class="container">
     <!-- Header with Title and Search -->
     <div class="section-header">
-      <h2 class="section-title">Daftar Pengajuan Refund</h2>
+      <h2 class="section-title">Daftar Pembayaran</h2>
 
       <div class="search-wrapper">
         <div class="search-box-riwayat">
