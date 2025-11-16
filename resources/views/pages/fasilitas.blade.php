@@ -21,7 +21,7 @@
       <div class="facilities-grid">
         <div class="facility-card">
           <img
-            src="asset/luwiahaja.webp"
+            src="asset/office.jpeg"
             alt="Office"
             class="facility-image"
           />

@@ -25,8 +25,9 @@
         <li><a href="{{ url('/') }}">Beranda</a></li>
         <li><a href="{{ url('/tentang') }}">Tentang Kami</a></li>
         <li><a href="{{ url('/kebijakan') }}">Kebijakan & Syarat</a></li>
-        <li><a href="{{ url('/fasilitas') }}">Fasilitas</a></li>
         <li><a href="{{ url('/akomodasi') }}">Akomodasi</a></li>
+        <li><a href="{{ url('/fasilitas') }}">Fasilitas</a></li>
+        <li><a href="{{ url('/galeri') }}">Galeri</a></li>
         <li><a href="{{ url('/faq') }}">FAQs</a></li>
       </ul>
     </div>
