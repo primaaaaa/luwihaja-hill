@@ -1,9 +1,9 @@
 <!-- Komponen untuk Sidebar di halaman admin -->
-<div class="sidebar d-flex flex-column px-3">
-    <div class="brand">
+<<div class="sidebar d-flex flex-column px-3">
+    <a href="/" class="brand text-decoration-none">
         <img src="{{ asset('asset/logo_top.png') }}" alt="Luwihaja Hill" class="logo-img">
         <span class="brand-text">Luwihaja Hill</span>
-    </div>
+    </a>
     
     <nav class="nav flex-column">
         <x-side-link href="/admin/dashboard" :active="request()->is('admin/dashboard')">
