@@ -51,8 +51,8 @@ $refunds = [
             </td>
             <td>
                 <div class="action-buttons">
-                    <a href="{{ route('refund-detail') }}" class="btn-action btn-detail">
-                        <i class="bi bi-eye-fill"></i>
+                    <a href="{{ route('refund-detail') }}" class="btn-lihat-detail">
+                        Lihat Detail
                     </a>
                 </div>
             </td>

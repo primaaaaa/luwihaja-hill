@@ -95,10 +95,6 @@ $pembayaran = [
                     <input type="text" class="form-control" value="{{ $pembayaran['nama_pemilik'] }}" readonly>
                 </div>
             </div>
-
-            <a href="{{ url('/admin/pembayaran') }}" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> Kembali
-            </a>
         </form>
     </div>
 </div>

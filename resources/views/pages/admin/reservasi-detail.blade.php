@@ -61,9 +61,6 @@ $reservasi = [
                 <input type="text" class="form-control" value="{{ $reservasi['total_harga'] }}" readonly>
             </div>
 
-            <a href="{{ url('/admin/reservasi') }}" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> Kembali
-            </a>
         </form>
     </div>
 </div>

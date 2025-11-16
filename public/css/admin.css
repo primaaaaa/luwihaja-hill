@@ -221,8 +221,8 @@ body {
     background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    margin-top: 20px;
+    padding: 20px;
+    margin-top: 7px;
 }
 
 /* Table Title - Sendiri di atas */
@@ -615,7 +615,6 @@ body {
     border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     padding: 35px 40px;
-    margin-top: 20px;
 }
 
 .detail-title {
@@ -698,6 +697,309 @@ body {
 .detail-container .btn i {
     font-size: 16px;
 }
+
+/* modal kamar */
+
+.modal-body {
+    padding: 20px 30px !important;
+}
+
+.kamar-modal {
+    transform: scale(0.88); 
+    transform-origin: top center;
+    border-radius: 10px !important;
+     max-width: 750px; 
+}
+
+.kamar-input {
+    border-radius: 7px !important;
+    padding: 10px 12px !important;
+    border: 1.4px solid #CCC !important;
+    font-size: 14px;
+    color: #666;
+}
+
+.kamar-input::placeholder {
+    color: #666;
+}
+
+.kamar-input:focus {
+    box-shadow: none !important;
+    border-color: #40723f !important;
+}
+
+.form-label {
+    font-weight: 550;
+    color: #666;
+    font-size: 15px;
+}
+
+.upload-wrapper {
+    border: 1.4px solid #CCC;
+    padding: 10px 12px !important;
+    border-radius: 7px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.upload-wrapper span {
+    color: #666;
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    content: '';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #666;
+    pointer-events: none;
+}
+
+.custom-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none !important;
+}
+
+.tombol-simpan {
+    background-color: #2F6F2F !important;
+    border-radius: 7px !important;
+    font-weight: 550;
+    font-size: 17px;
+}
+
+.modal-header .btn-close {
+    position: absolute;
+    right: 15px;
+}
+
+/*modal hapus*/
+
+.delete-modal-dialog {
+    max-width: 420px;       
+}
+
+
+.delete-modal {
+    border-radius: 10px;
+    padding: 16px 14px;   
+}
+
+.delete-modal-body {
+    padding: 24px 20px !important;  
+}
+
+.delete-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 10;
+}
+
+.delete-title {
+    color: #252B17;
+    font-size: 19px;
+    font-weight: 450;
+     line-height: 1.6; 
+}
+
+.btn-tidak {
+    border: 1.5px solid #40723F;
+    background-color: #fff;
+    color: #40723F;
+    border-radius: 8px;
+    padding: 10px 35px;
+    font-weight: 600;
+}
+
+.btn-tidak:hover {
+    background-color: #f8f9fa;
+}
+
+.btn-ya {
+    background-color: #40723F;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 35px;
+    font-weight: 600;
+}
+
+.btn-ya:hover {
+    background-color: #265a26;
+}
+
+/* button lihat detail di tabel */
+.btn-lihat-detail {
+    display: inline-block;
+    padding: 8px 17px;
+    background-color: #40723F;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-lihat-detail:hover {
+    background-color: #3d6449;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    color: white;
+    text-decoration: none;
+}
+
+    /* Modal Upload */
+    .cms-modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 1rem 1.5rem;
+    }
+
+    .cms-modal-title {
+        font-weight: 600;
+        color: #333;
+        font-size: 1.1rem;
+    }
+
+    .cms-upload-area {
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        padding: 60px 20px;
+        text-align: center;
+        background-color: #fafff5;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .cms-upload-area:hover {
+        border-color: #4A7C59;
+        background-color: #f0fff0;
+    }
+
+    .cms-upload-area.dragover {
+        border-color: #4A7C59;
+        background-color: #e8f5e9;
+    }
+
+    .cms-upload-icon {
+        font-size: 48px;
+        color: #999;
+        margin-bottom: 15px;
+    }
+
+    .cms-upload-text {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .cms-upload-text a {
+        color: #4A7C59;
+        text-decoration: underline;
+    }
+
+    .cms-upload-formats {
+        color: #999;
+        font-size: 12px;
+    }
+
+    .cms-btn-unggah, .cms-btn-batal {
+        padding: 10px 40px;
+        border-radius: 6px;
+        font-weight: 500;
+        border: none;
+    }
+
+    .cms-btn-unggah {
+        background-color: #4A7C59;
+        color: white;
+    }
+
+    .cms-btn-unggah:hover {
+        background-color: #3d6449;
+        color: white;
+    }
+
+    .cms-btn-batal {
+        background-color: #5a7c59;
+        color: white;
+    }
+
+    .cms-btn-batal:hover {
+        background-color: #4a6449;
+        color: white;
+    }
+
+    /* Modal Detail */
+    .cms-detail-modal .modal-dialog {
+        max-width: 600px;
+    }
+
+    .cms-detail-image {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    #cmsFileInput {
+        display: none;
+    }
+
+    .cms-file-list {
+        margin-top: 1rem;
+    }
+
+    .cms-file-item {
+        padding: 0.75rem;
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        border-radius: 6px;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .cms-file-item i {
+        margin-right: 0.5rem;
+        color: #155724;
+    }
+
+    /* chart dashbodr */
+
+    .chart-container {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-top: 24px;
+    }
+
+    .chart-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .chart-wrapper {
+        position: relative;
+        height: 300px;
+    }
 
 @media (max-width: 768px) {
     .stats-container {

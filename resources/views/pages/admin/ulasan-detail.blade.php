@@ -60,10 +60,6 @@ $ulasan = [
                 <label class="form-label">Ulasan</label>
                 <textarea class="form-control" rows="4" readonly>{{ $ulasan['ulasan'] }}</textarea>
             </div>
-
-            <a href="{{ url('/admin/ulasan') }}" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> Kembali
-            </a>
         </form>
     </div>
 </div>

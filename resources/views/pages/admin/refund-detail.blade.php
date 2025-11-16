@@ -93,10 +93,6 @@ $refund = [
                 <label class="form-label">Alasan Refund</label>
                 <input type="text" class="form-control" value="{{ $refund['alasan_refund'] }}" readonly>
             </div>
-
-            <a href="{{ url('/admin/refund') }}" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> Kembali
-            </a>
         </form>
     </div>
 </div>
