@@ -3,6 +3,7 @@ body {
     font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto,
         Arial, sans-serif;
 }
+
 /* Sidebar */
 .sidebar {
     position: fixed;
@@ -163,7 +164,7 @@ body {
     font-weight: 500;
 }
 
-/* Cards */
+/* Cards dahsboatd*/
 
 .stats-container {
     background-color: #fff;
@@ -631,6 +632,7 @@ body {
     margin: 0 2px;
 }
 
+/* section detail */
 .detail-container {
     background-color: #fff;
     border-radius: 12px;
@@ -658,9 +660,9 @@ body {
 /* Form Controls - Readonly Style */
 .detail-container .form-control[readonly],
 .detail-container .form-select[disabled] {
-    background-color: #f9fafb;
+    background-color: #ffff;
     border: 1px solid #e5e7eb;
-    color: #111827;
+    color: #252B17;
     font-size: 15px;
     font-weight: 400;
     padding: 10px 14px;
@@ -1025,17 +1027,74 @@ body {
 }
 
 @media (max-width: 768px) {
+    .topbar {
+        left: 0;
+        padding: 14px 20px;
+    }
+
+    .topbar h4 {
+        font-size: 16px;
+    }
+
+    .profile {
+        gap: 10px;
+        margin-right: 0;
+    }
+
+    .profile .profile-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .profile .profile-info {
+        display: none;
+    }
+
     .stats-container {
         flex-direction: column;
+        padding: 15px;
     }
 
     .card-stat {
         border-right: none;
         border-bottom: 1px solid #e5e7eb;
+        padding: 16px 20px;
+        flex: 1;
+        min-width: 100%;
     }
 
     .card-stat:last-child {
         border-bottom: none;
+    }
+
+    .card-stat .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    .card-stat .stat-info h6 {
+        font-size: 12px;
+    }
+
+    .card-stat .stat-info h2 {
+        font-size: 26px;
+    }
+
+    .chart-container {
+        padding: 16px;
+        margin-top: 20px;
+        max-width: 100%;
+    }
+
+    .chart-title {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+
+    .chart-wrapper {
+        height: 220px;
     }
 
     .table-container {
@@ -1174,5 +1233,44 @@ body {
     .btn-export {
         padding: 0 14px;
         font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .topbar {
+        padding: 12px 16px;
+    }
+
+    .topbar h4 {
+        font-size: 15px;
+    }
+
+    .profile .profile-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+
+    .card-stat {
+        padding: 14px 16px;
+        gap: 15px;
+    }
+
+    .card-stat .stat-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+
+    .card-stat .stat-info h6 {
+        font-size: 11px;
+    }
+
+    .card-stat .stat-info h2 {
+        font-size: 24px;
+    }
+
+    .chart-wrapper {
+        height: 200px;
     }
 }
