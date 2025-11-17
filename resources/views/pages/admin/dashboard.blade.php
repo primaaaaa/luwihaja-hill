@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
             datasets: [{
                 label: 'Online Sales',
                 data: [14, 17, 7, 15, 12, 16, 20],
-                backgroundColor: '#4A7C59',
+                backgroundColor: '#40723F',
                 borderRadius: 4,
                 barThickness: 40
             }]
