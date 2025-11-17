@@ -50,7 +50,7 @@
 
     <div class="rooms">
       <article class="room">
-        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop"
+        <img src="asset/tim.jpg"
           alt="Lulu Fatimah" />
         <div class="room-body">
           <h4>nama ketua</h4>
@@ -58,16 +58,16 @@
       </article>
 
       <article class="room">
-        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop"
-          alt="wakil" />
+        <img src="asset/tim2.jpg"
+          alt="Widodo" />
         <div class="room-body">
           <h4>nama wakil</h4>
         </div>
       </article>
 
       <article class="room">
-        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=400&auto=format&fit=crop"
-          alt="Haryanto" />
+        <img src="asset/tim2.jpg"
+          alt="" />
         <div class="room-body">
           <h4>nama wakil</h4>
         </div>
