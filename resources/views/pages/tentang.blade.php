@@ -53,15 +53,15 @@
         <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop"
           alt="Lulu Fatimah" />
         <div class="room-body">
-          <h4>LULU FATIMAH</h4>
+          <h4>nama ketua</h4>
         </div>
       </article>
 
       <article class="room">
         <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop"
-          alt="Widodo" />
+          alt="wakil" />
         <div class="room-body">
-          <h4>WIDODO</h4>
+          <h4>nama wakil</h4>
         </div>
       </article>
 
@@ -69,7 +69,7 @@
         <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=400&auto=format&fit=crop"
           alt="Haryanto" />
         <div class="room-body">
-          <h4>HARYANTO</h4>
+          <h4>nama wakil</h4>
         </div>
       </article>
     </div>
@@ -83,7 +83,6 @@
   
   if (overlay && iframe) {
     overlay.addEventListener('click', function() {
-      // Hide overlay with animation
       this.style.opacity = '0';
       setTimeout(() => {
         this.style.display = 'none';

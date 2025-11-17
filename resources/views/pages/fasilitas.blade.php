@@ -48,7 +48,7 @@
 
         <div class="facility-card">
           <img
-            src="asset/luwiahaja.webp"
+            src="asset/parkiran.jpeg"
             alt="Parkiran"
             class="facility-image"
           />
