@@ -1216,6 +1216,37 @@ body {
     .chart-wrapper {
         height: 220px;
     }
+
+     /* .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .sidebar .logo-img {
+        width: 42px;
+        height: 42px;
+    }
+
+    .sidebar .brand-text {
+        font-size: 17px;
+    }
+
+    .sidebar .nav-link {
+        padding: 10px 16px;
+    }
+
+    .sidebar .nav-link i {
+        font-size: 18px;
+        width: 22px;
+    }
+
+    .sidebar .nav-link span {
+        font-size: 14px;
+    }*/
 }
 
 /* Tablet Responsive */
