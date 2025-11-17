@@ -53,7 +53,7 @@
         <img src="asset/tim.jpg"
           alt="Lulu Fatimah" />
         <div class="room-body">
-          <h4>nama ketua</h4>
+          <h4>Lulu Fatimah</h4>
         </div>
       </article>
 
@@ -61,7 +61,7 @@
         <img src="asset/tim2.jpg"
           alt="Widodo" />
         <div class="room-body">
-          <h4>nama wakil</h4>
+          <h4>Widodo</h4>
         </div>
       </article>
 
@@ -69,7 +69,7 @@
         <img src="asset/tim2.jpg"
           alt="" />
         <div class="room-body">
-          <h4>nama wakil</h4>
+          <h4>Tim Administrasi & Operasional</h4>
         </div>
       </article>
     </div>
