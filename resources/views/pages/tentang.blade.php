@@ -58,7 +58,7 @@
       </article>
 
       <article class="room">
-        <img src="asset/tim2.jpg"
+        <img src="asset/tim3.jpg"
           alt="Widodo" />
         <div class="room-body">
           <h4>Widodo</h4>
