@@ -2,26 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
-class Kamar{
-    protected $kode_tipe;
-    protected $unit;
-    protected $kapasitas;
-    protected $kategori;
-    protected $status;
+class Kamar extends Model{
+    protected $table = 'villa_types';
+    // protected $primaryKey = 'kode_tipe';
+  
+    protected $fillable = ['kode_tipe' ,'name', 'main_image', 'quantity', 'price_per_night', 'capacity', 'description'];
     
-    public static function showAll() {
-        return [
-                [
-                    'kode_tipe' => 'K101',
-                    'unit' => 'Single Bed',
-                    'kapasitas' => 2,
-                    'kategori' => 'Single Bed',
-                    'status' => 'Tersedia'
-                ]
-            ];
-    }
 } 
 
 ?>

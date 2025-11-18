@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('villa_types', function (Blueprint $table) {
             $table->id();
-            
+            $table->string('kode_tipe')->unique();
             $table->string('name');
             $table->string('main_image')->nullable();
             $table->integer('quantity');

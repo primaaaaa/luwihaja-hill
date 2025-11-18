@@ -2,20 +2,6 @@
 @props(['header' => 'Detail Kamar'])
 @section('admin-content')
 
-@php
-$kamar = [
-    'nama_unit' => 'Family Room I',
-    'kapasitas' => '4',
-    'kode_tipe' => 'K104',
-    'status' => 'Tersedia',
-    'harga_weekday' => 'Rp300.000',
-    'harga_weekend' => 'Rp400.000',
-    'kategori' => 'Family Room',
-    'foto' => 'Foto.jpg',
-    'deskripsi' => 'Kamar luas untuk keluarga 3-4 orang, dengan pilihan harga dan pemandangan berbeda.'
-];
-@endphp
-
 <div class="p-4">
     <div class="detail-container">
         <h4 class="detail-title">Detail Kamar</h4>
@@ -23,50 +9,50 @@ $kamar = [
         <form>
             <div class="mb-3">
                 <label class="form-label">Nama Unit</label>
-                <input type="text" class="form-control" value="{{ $kamar['nama_unit'] }}" readonly>
+                <input type="text" class="form-control" value="{{ $room->name }}" readonly>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Kapasitas Kamar</label>
-                <input type="text" class="form-control" value="{{ $kamar['kapasitas'] }}" readonly>
+                <input type="text" class="form-control" value="{{ $room->capacity }}" readonly>
             </div>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Kode Tipe</label>
-                    <input type="text" class="form-control" value="{{ $kamar['kode_tipe'] }}" readonly>
+                    <input type="text" class="form-control" value="{{ $room->kode_tipe }}" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Status Kamar</label>
-                    <input type="text" class="form-control" value="{{ $kamar['status'] }}" readonly>
+                    <input type="text" class="form-control" value="{{ $room->status }}" readonly>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Harga Weekday</label>
-                    <input type="text" class="form-control" value="{{ $kamar['harga_weekday'] }}" readonly>
+                    <input type="text" class="form-control" value="{{ $room->price_per_night }}" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Harga Weekend</label>
-                    <input type="text" class="form-control" value="{{ $kamar['harga_weekend'] }}" readonly>
+                    <input type="text" class="form-control" value="{{ $room->price_per_night + 100000 }}" readonly>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Kategori Kamar</label>
-                    <input type="text" class="form-control" value="{{ $kamar['kategori'] }}" readonly>
+                    <input type="text" class="form-control" value="{{ $room->kategori }}" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Foto Kamar</label>
-                    <input type="text" class="form-control" value="{{ $kamar['foto'] }}" readonly>
+                    <input type="text" class="form-control" value="{{ $room->main_image }}" readonly>
                 </div>
             </div>
 
             <div class="mb-4">
                 <label class="form-label">Deskripsi Kamar</label>
-                <textarea class="form-control" rows="3" readonly>{{ $kamar['deskripsi'] }}</textarea>
+                <textarea class="form-control" rows="3" readonly>{{ $room->deskripsi }}</textarea>
             </div>
 
             {{-- <a href="{{ url('/admin/kamar') }}" class="btn btn-secondary">

@@ -16,8 +16,8 @@ class AdminController extends Controller
     public function Kamar()
     {
         return view('pages.admin.manajemenkamar', [
-            'rooms' => Kamar::showAll(),
-            'tableHeader' => ['Kode Kamar', 'Unit', 'Kapasitas', 'Kategori', 'Status']
+            'rooms' => Kamar::all(),
+            'tableHeader' => ['Kode Kamar', 'Unit', 'Kapasitas', 'Jumlah', 'Status']
         ]);
     }
 
@@ -53,9 +53,12 @@ class AdminController extends Controller
         ]);
     }
 
-    public function DetailKamar()
+    public function DetailKamar(Kamar $kamar) 
     {
-        return view('pages.admin.kamar-detail');
+        
+        return view('pages.admin.kamar-detail', [
+           'room' => $kamar
+        ]);
     }
 
     public function DetailPembayaran()

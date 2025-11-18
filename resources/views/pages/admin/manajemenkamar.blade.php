@@ -9,13 +9,13 @@
 
         @foreach ($rooms as $room)
         <tr>
-            <td>{{ $room['kode_tipe'] }}</td>
-            <td>{{ $room['unit'] }}</td>
-            <td>{{ $room['kapasitas'] }}</td>
-            <td>{{ $room['kategori'] }}</td>
+            <td>{{ $room->kode_tipe }}</td>
+            <td>{{ $room->name }}</td>
+            <td>{{ $room->capacity }}</td>
+            <td>{{ $room->quantity }}</td>
             <td>
                 @php
-                $statusClass = match($room['status']) {
+                $statusClass = match($room->status) {
                 'Nonaktif' => 'badge-nonaktif',
                 'Tersedia' => 'badge-tersedia',
                 'Terisi' => 'badge-terisi',
@@ -47,7 +47,7 @@
                         <i class="bi bi-pencil-fill"></i>
                     </button>
 
-                    <a href="{{ route('kamar-detail') }}" class="btn-action btn-detail">
+                    <a href="kamar-detail/{{ $room->kode_tipe }}" class="btn-action btn-detail">
                         <i class="bi bi-eye-fill"></i>
                     </a>
 
