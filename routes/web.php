@@ -3,7 +3,6 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
-
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -21,7 +20,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'Dashboard'])->name('dashboard');
         Route::get('/kamar', [AdminController::class, 'Kamar'])->name('manajemenkamar');
         Route::get('/kamar', [AdminController::class, 'Kamar'])->name('admin.kamar');
-        Route::get('/kamar-detail/{id:kode_tipe}', [AdminController::class, 'detailKamar'])->name('admin.kamar-detail');
+        Route::get('/kamar-detail/{id:$kode_tipe}', [AdminController::class, 'detailKamar'])->name('admin.kamar-detail');
         Route::post('/kamar/store', [AdminController::class, 'storeKamar'])->name('admin.kamar.store');
         Route::put('/kamar/update/{id}', [AdminController::class, 'updateKamar'])->name('admin.kamar.update');
         Route::patch('/kamar/status/{id}', [AdminController::class, 'updateStatusKamar'])->name('admin.kamar.status');
@@ -48,46 +47,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/pembayaransukses/{id}', [PageController::class, 'pembayaranSukses'])->name('pages.pembayaransukses');
     Route::get('/riwayatpembayaran', [PageController::class, 'riwayatpembayaran'])->name('riwayatpembayaran');
     Route::get('/riwayatreservasi', [PageController::class, 'riwayatreservasi'])->name('riwayatreservasi');
->>>>>>> aretta
 
     Route::post('/ulasan/store', [PageController::class, 'storeUlasan'])->name('ulasan.store');
 });
 
-<<<<<<< HEAD
-Route::middleware('auth')->group(function () {
-    Route::get('/booking', [PageController::class, 'Booking'])->name('booking');
-    Route::get('/pembayaransukses', [PageController::class, 'pembayaranSukses'])->name('pembayaransukses');
-    Route::get('/riwayatpembayaran', [PageController::class, 'riwayatpembayaran'])->name('riwayatpembayaran');
-    Route::get('/riwayatreservasi', [PageController::class, 'riwayatreservasi'])->name('riwayatreservasi');
-    Route::get('/akomodasi', [PageController::class, 'Akomodasi'])->name('akomodasi');
-    Route::get('/detailakomodasi', [PageController::class, 'detailAkomodasi'])->name('detailakomodasi');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-});
-
-
-Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
-    
-    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
-});
-
-// Rute Admin
-Route::get('/admin/dashboard', [AdminController::class, 'Dashboard'])->name('dashboard');
-Route::get('/admin/kamar', [AdminController::class, 'Kamar'])->name('manajemenkamar');
-Route::get('/admin/reservasi', [AdminController::class, 'Reservasi'])->name('manajemenreservasi');
-Route::get('/admin/ulasan', [AdminController::class, 'Ulasan'])->name('manajemenulasan');
-Route::get('/admin/cms', [AdminController::class, 'CMS'])->name('cms');
-Route::get('/admin/refund', [AdminController::class, 'Refund'])->name('manajemenrefund');
-Route::get('/admin/pembayaran', [AdminController::class, 'Pembayaran'])->name('manajemenpembayaran');
-Route::get('/admin/kamar-detail', [AdminController::class, 'DetailKamar'])->name(name: 'kamar-detail');
-Route::get('/admin/pembayaran-detail', [AdminController::class, 'DetailPembayaran'])->name('pembayaran-detail');
-Route::get('/admin/refund-detail', [AdminController::class, 'DetailRefund'])->name('refund-detail');
-Route::get('/admin/reservasi-detail', [AdminController::class, 'DetailReservasi'])->name('reservasi-detail');
-Route::get('/admin/ulasan-detail', [AdminController::class, 'DetailUlasan'])->name('ulasan-detail');
-// require __DIR__.'/auth.php';
-=======
 Route::get('/', [PageController::class, 'Beranda'])->name('beranda');
 Route::get('/beranda', [PageController::class, 'Beranda']);
 Route::get('/tentang', [PageController::class, 'Tentang'])->name('tentang');
@@ -97,4 +60,3 @@ Route::get('/detailakomodasi/{id}', [PageController::class, 'detailAkomodasi'])-
 Route::post('/check-availability', [PageController::class, 'checkAvailability'])->name('check.availability');
 Route::get('/fasilitas', [PageController::class, 'Fasilitas'])->name('fasilitas');
 Route::get('/galeri', [PageController::class, 'Galeri'])->name('galeri');
->>>>>>> aretta
