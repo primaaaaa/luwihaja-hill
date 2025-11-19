@@ -126,12 +126,12 @@ class AdminController extends Controller
             ->with('success', 'Kamar berhasil dihapus!');
     }
 
-    public function detailKamar($id)
+    public function detailKamar(Kamar $id)
     {
-        $kamar = Kamar::findOrFail($id);
+        // $kamar = Kamar::find($id);
 
         return view('pages.admin.kamar-detail', [
-            'kamar' => $kamar
+            'kamar' => $id
         ]);
     }
 

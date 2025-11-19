@@ -88,7 +88,7 @@
                         <i class="bi bi-pencil-fill"></i>
                     </button>
 
-                    <a href="{{ route('admin.kamar-detail', $room->id_tipe_villa) }}" class="btn-action btn-detail">
+                    <a href="{{ route('admin.kamar-detail', $room->kode_tipe) }}" class="btn-action btn-detail">
                         <i class="bi bi-eye-fill"></i>
                     </a>
 

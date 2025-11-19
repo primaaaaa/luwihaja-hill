@@ -11,12 +11,12 @@
             <span>Dashboard</span>
         </x-side-link>
 
-        <x-side-link href="/admin/kamar" :active="request()->is('admin/kamar')">
+        <x-side-link href="/admin/kamar" :active="request()->is('admin/kamar') || request()->is('admin/kamar-detail/*')">
             <i class="bi bi-door-closed-fill"></i>
             <span>Kamar</span>
         </x-side-link>
 
-        <x-side-link href="/admin/reservasi" :active="request()->is('admin/reservasi')">
+        <x-side-link href="/admin/reservasi" :active="request()->is('admin/reservasi') || request()->is('admin/reservasi-detail/*')">
             <i class="bi bi-people-fill"></i>
             <span>Reservasi</span>
         </x-side-link>
@@ -36,7 +36,7 @@
             <span>Refund</span>
         </x-side-link>
 
-        <x-side-link href="/admin/pembayaran" :active="request()->is('admin/pembayaran')">
+        <x-side-link href="/admin/pembayaran" :active="request()->is('admin/pembayaran') || request()->is('admin/pembayaran-detail/*') ">
             <i class="bi bi-cash-stack"></i>
             <span>Pembayaran</span>
         </x-side-link>

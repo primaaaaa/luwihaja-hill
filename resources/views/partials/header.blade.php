@@ -70,11 +70,11 @@
 
 <nav class="nav-menu">
   <div class="container">
-    <a href="{{ url('/') }}">Beranda</a>
-    <a href="{{ url('/tentang') }}">Tentang Kami</a>
-    <a href="{{ url('/kebijakan') }}">Kebijakan & Syarat</a>
-    <a href="{{ url('/akomodasi') }}">Akomodasi</a>
-    <a href="{{ url('/fasilitas') }}">Fasilitas</a>
-    <a href="{{ url('/galeri') }}">Galeri</a>
+    <x-nav-link href="/" :active="request()->is('/')">Beranda</x-nav-link>
+    <x-nav-link href="/tentang" :active="request()->is('tentang')">Tentang Kami</x-nav-link>
+    <x-nav-link href="/kebijakan" :active="request()->is('kebijakan')">Kebijakan & Syarat</x-nav-link>
+    <x-nav-link href="/akomodasi" :active="request()->is('akomodasi')">Akomodasi</x-nav-link>
+    <x-nav-link href="/fasilitas" :active="request()->is('fasilitas')">Fasilitas</x-nav-link>
+    <x-nav-link href="/galeri" :active="request()->is('galeri')">Galeri</x-nav-link>
   </div>
 </nav>
