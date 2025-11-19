@@ -1,7 +1,8 @@
+@guest
 <header class="top-bar">
   <div class="container">
     <a class="brand" href="{{ url('/') }}">
-      <img src="asset/logo_top.png" alt="Logo" />  
+      <img src="{{ asset('asset/logo_top.png') }}" alt="Logo" />
       Luwihaja<span>Hill</span>
     </a>
     <div class="auth">
@@ -13,46 +14,59 @@
     </div>
   </div>
 </header>
+@endguest
 
-{{-- kalau udah login --}}
-
-{{-- <header class="top-bar">
+@auth
+<header class="top-bar">
   <div class="container">
     <a class="brand" href="{{ url('/') }}">
-      <img src="asset/logo_top.png" alt="Logo" />  
+      <img src="{{ asset('asset/logo_top.png') }}" alt="Logo" />
       Luwihaja<span>Hill</span>
     </a>
+
     <div class="auth">
-      {{-- Ikon User dengan Dropdown --}}
-      {{-- <div class="user-menu">
+
+      {{-- MENU USER --}}
+      <div class="user-menu">
         <button class="user-icon" id="userMenuBtn">
           <i class="fa-solid fa-user"></i>
         </button>
+
         <div class="user-dropdown" id="userDropdown">
           <div class="user-info">
-            <span class="user-name">John Doe</span>
-            <span class="user-email">johndoe@example.com</span>
+            <span class="user-name">{{ Auth::user()->nama }}</span>
+            <span class="user-email">{{ Auth::user()->email }}</span>
           </div>
+
           <hr>
+
           <a href="{{ url('/riwayatreservasi') }}">
             <i class="fa-solid fa-calendar-check"></i> Reservasi Saya
           </a>
-          <a href="{{ url('/riwayatpembayaran') }}">
+
+          <a href="{{ url('/riwayatreservasi') }}">
             <i class="fa-solid fa-credit-card"></i> Pembayaran Saya
           </a>
+
           <hr>
-          <a href="{{ url('/logout') }}" class="logout-btn">
-            <i class="fa-solid fa-right-from-bracket"></i> Logout
-          </a>
+
+          <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="logout-btn">
+              <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+          </form>
         </div>
       </div>
-      
+
       <button class="hamburger" aria-label="Menu">
         <i class="fa-solid fa-bars"></i>
       </button>
+
     </div>
   </div>
-</header> --}} 
+</header>
+@endauth
 
 <nav class="nav-menu">
   <div class="container">
@@ -64,5 +78,3 @@
     <a href="{{ url('/galeri') }}">Galeri</a>
   </div>
 </nav>
-
-

@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Login - Luwihaja Hill</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  {{-- @vite(entrypoints: ['resources/css/auth.css', 'resources/js/auth.js']) --}}
-    <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
-    <script src="{{ asset('js/auth.js') }}" defer></script></head>
+  <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+  <script src="{{ asset('js/auth.js') }}" defer></script>
+</head>
 <body>
     <div class="container">
         <div class="left-section"
@@ -31,7 +32,20 @@
                     <h3>Luwihaja Hill</h3>
                 </div>
 
+                @if(session('error'))
+                    <div class="alert alert-error">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
                 <form id="loginForm">
+                    @csrf
                     <!-- EMAIL -->
                     <div class="input-group">
                         <div class="input-wrapper" id="emailWrapper">
@@ -58,11 +72,11 @@
                         <div class="error-message" id="passwordError">Anda belum mengisi field ini.</div>
                     </div>
 
-                    <button type="submit" class="btn">Login</button>
+                    <button type="submit" class="btn" id="loginBtn">Login</button>
                 </form>
 
                 <div class="form-footer">
-                    Belum mempunyai akun? <a href="/register">Register</a>
+                    Belum mempunyai akun? <a href="{{ route('register') }}">Register</a>
                 </div>
             </div>
         </div>

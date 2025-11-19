@@ -1445,6 +1445,15 @@
         font-weight: 650;
       }
 
+      .room-details-item .rd-text .detail-table .status-tidak-tersedia {
+        color: #dc3545;
+        font-weight: 650;
+      }
+
+      .status-tidak-tersedia {
+          color: #dc3545;
+          font-weight: bold;
+      }
 
       .room-details-item .rd-text p {
         color: #000;
@@ -2715,15 +2724,32 @@
         background: #f8f9fa;
       }
 
-      .user-dropdown .logout-btn {
+      .logout-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 15px;
+        background: none;
+        border: none;
         color: #dc3545;
+        text-decoration: none;
+        transition: background 0.2s;
+        font-size: 0.95rem;
+        cursor: pointer;
+        text-align: left;
+        font-family: inherit;
         border-radius: 0 0 8px 8px;
       }
 
-      .user-dropdown .logout-btn:hover {
+      .logout-btn:hover {
         background: #fee;
       }
 
+      .logout-btn i {
+        width: 16px;
+        text-align: center;
+      }
 
 
 
