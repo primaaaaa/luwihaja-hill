@@ -7,6 +7,9 @@
     <div class="auth">
       <a href="{{ route('login') }}">Login</a>
       <a href="{{ route('register') }}">Register</a>
+      <a href="{{ url('/logout') }}" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </a>
       <button class="hamburger" aria-label="Menu">
         <i class="fa-solid fa-bars"></i>
       </button>

@@ -31,7 +31,8 @@
                     <h3>Luwihaja Hill</h3>
                 </div>
 
-                <form id="loginForm">
+                <form method="POST"  id="loginForm">
+                    @csrf
                     <!-- EMAIL -->
                     <div class="input-group">
                         <div class="input-wrapper" id="emailWrapper">
