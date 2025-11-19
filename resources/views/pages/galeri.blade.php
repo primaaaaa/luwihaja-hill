@@ -15,40 +15,43 @@
 
 <section class="gallery-section">
     <div class="container">
+        <div class="container">
 
-        <div class="gallery-grid">
-            @foreach($photos as $photo)
-            <div class="gallery-item">
-                <img src="{{ asset('asset/' . $photo) }}" alt="Foto Galeri Luwihaja Hill">
+            <div class="gallery-grid">
+                @foreach($photos as $photo)
+                <div class="gallery-item">
+                    <img src="{{ asset('storage/galeri/' . $photo->file) }}" alt="Foto Galeri">
+                </div>
+                @endforeach
             </div>
-            @endforeach
-        </div>
 
-        <div class="pagination">
-            
-            @if ($photos->onFirstPage())
+            {{ $photos->links() }}
+
+            <div class="pagination">
+
+                @if ($photos->onFirstPage())
                 <button disabled><i class="fa-solid fa-chevron-left"></i></button>
-            @else
-                <a href="{{ $photos->previousPageUrl() }}" rel="prev"><i class="fa-solid fa-chevron-left"></i></a>
-            @endif
-
-            @for ($page = 1; $page <= $photos->lastPage(); $page++)
-                @if ($page == $photos->currentPage())
-                    <span class="active">{{ $page }}</span>
                 @else
-                    <a href="{{ $photos->url($page) }}">{{ $page }}</a>
+                <a href="{{ $photos->previousPageUrl() }}" rel="prev"><i class="fa-solid fa-chevron-left"></i></a>
                 @endif
-            @endfor
 
-            @if ($photos->hasMorePages())
-                <a href="{{ $photos->nextPageUrl() }}" rel="next"><i class="fa-solid fa-chevron-right"></i></a>
-            @else
-                <button disabled><i class="fa-solid fa-chevron-right"></i></button>
-            @endif
+                @for ($page = 1; $page <= $photos->lastPage(); $page++)
+                    @if ($page == $photos->currentPage())
+                    <span class="active">{{ $page }}</span>
+                    @else
+                    <a href="{{ $photos->url($page) }}">{{ $page }}</a>
+                    @endif
+                    @endfor
+
+                    @if ($photos->hasMorePages())
+                    <a href="{{ $photos->nextPageUrl() }}" rel="next"><i class="fa-solid fa-chevron-right"></i></a>
+                    @else
+                    <button disabled><i class="fa-solid fa-chevron-right"></i></button>
+                    @endif
+
+            </div>
 
         </div>
-
-    </div>
 </section>
 
 @endsection

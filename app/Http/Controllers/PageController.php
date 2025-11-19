@@ -3,6 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Models\Kamar;
+use App\Models\Reservasi;
+use App\Models\Ulasan;
+use App\Models\Galeri;
+use App\Models\User;
+use App\Models\Pembayaran;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -22,14 +30,215 @@ class PageController extends Controller
         return view('pages.kebijakan');
     }
 
-    public function Akomodasi()
+    public function Akomodasi(Request $request)
     {
-        return view('pages.akomodasi');
+        $search = $request->input('search');
+
+        $query = Kamar::query();
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_unit', 'LIKE', "%{$search}%")
+                    ->orWhere('kategori', 'LIKE', "%{$search}%")
+                    ->orWhere('kode_tipe', 'LIKE', "%{$search}%")
+                    ->orWhere('deskripsi', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $rooms = $query->orderBy('id_tipe_villa', 'asc')->paginate(10);
+
+        $featuredRooms = Kamar::where('status', 'Tersedia')
+            ->whereNotNull('foto_kamar')
+            ->inRandomOrder()
+            ->limit(5)
+            ->get();
+
+        if ($featuredRooms->isEmpty()) {
+            $featuredRooms = Kamar::where('status', 'Tersedia')
+                ->inRandomOrder()
+                ->limit(5)
+                ->get();
+        }
+
+        $rooms = $query->orderBy('id_tipe_villa', 'asc')->paginate(5);
+
+        foreach ($rooms as $room) {
+            $room->average_rating = Ulasan::whereHas('reservasi', function ($q) use ($room) {
+                $q->where('id_tipe_villa', $room->id_tipe_villa);
+            })->avg('rating') ?? 0;
+        }
+
+        return view('pages.akomodasi', compact('rooms', 'featuredRooms'));
+
     }
 
-    public function detailAkomodasi()
+    public function detailAkomodasi($id)
     {
-        return view('pages.detailakomodasi');
+        $room = Kamar::findOrFail($id);
+
+        $today = date('Y-m-d');
+        $tomorrow = date('Y-m-d', strtotime('+1 day'));
+
+        $totalKamar = Kamar::where('id_tipe_villa', $room->id_tipe_villa)
+            ->where('status', 'Tersedia')
+            ->count();
+
+        $bookedKamarToday = Reservasi::where('id_tipe_villa', $room->id_tipe_villa)
+            ->whereIn('status', ['Menunggu', 'Dikonfirmasi'])
+            ->where(function ($query) use ($today) {
+                $query->where('tgl_checkin', '<=', $today)
+                    ->where('tgl_checkout', '>', $today);
+            })
+            ->count();
+
+        $availableToday = $totalKamar - $bookedKamarToday;
+        $statusToday = $availableToday > 0 ? 'Tersedia' : 'Tidak Tersedia';
+        $availableRoomsToday = $availableToday;
+
+        $ulasan = Ulasan::whereHas('reservasi', function ($query) use ($room) {
+            $query->where('id_tipe_villa', $room->id_tipe_villa);
+        })
+            ->with(['user', 'reservasi'])
+            ->orderBy('tgl_ulasan', 'desc')
+            ->get();
+
+        $averageRating = $ulasan->avg('rating') ?? 0;
+        $totalUlasan = $ulasan->count();
+
+        $canReview = false;
+        $completedReservations = collect();
+
+        if (Auth::check()) {
+            $completedReservations = Reservasi::where('id_user', Auth::id())
+                ->where('id_tipe_villa', $room->id_tipe_villa)
+                ->where('status', 'Selesai')
+                ->whereDoesntHave('ulasan')
+                ->orderBy('tgl_checkout', 'desc')
+                ->get();
+
+            $canReview = false;
+            if (Auth::check()) {
+                $canReview = Reservasi::where('id_user', Auth::id())
+                    ->where('id_tipe_villa', $room->id_tipe_villa)
+                    ->where('status', 'Selesai')
+                    ->exists();
+            }
+        }
+
+        return view('pages.detailakomodasi', compact(
+            'room',
+            'ulasan',
+            'averageRating',
+            'totalUlasan',
+            'canReview',
+            'completedReservations',
+            'statusToday',
+            'availableRoomsToday'
+        ));
+    }
+    public function checkAvailability(Request $request)
+    {
+        $request->validate([
+            'id_tipe_villa' => 'required|exists:tipe_villa,id_tipe_villa',
+            'check_in' => 'required|date|after_or_equal:today',
+            'check_out' => 'required|date|after:check_in',
+        ], [
+            'check_in.after_or_equal' => 'Tanggal check-in tidak boleh sebelum hari ini.',
+            'check_out.after' => 'Tanggal check-out harus setelah check-in.',
+        ]);
+
+        $totalKamar = Kamar::where('id_tipe_villa', $request->id_tipe_villa)
+            ->where('status', 'Tersedia')
+            ->count();
+
+        $bookedKamar = Reservasi::where('id_tipe_villa', $request->id_tipe_villa)
+            ->whereIn('status', ['Menunggu', 'Dikonfirmasi'])
+            ->where(function ($query) use ($request) {
+                $query->where(function ($q) use ($request) {
+                    $q->whereBetween('tgl_checkin', [$request->check_in, $request->check_out]);
+                })
+                    ->orWhere(function ($q) use ($request) {
+                        $q->whereBetween('tgl_checkout', [$request->check_in, $request->check_out]);
+                    })
+                    ->orWhere(function ($q) use ($request) {
+                        $q->where('tgl_checkin', '<=', $request->check_in)
+                            ->where('tgl_checkout', '>=', $request->check_out);
+                    });
+            })
+            ->count();
+
+        $availableKamar = $totalKamar - $bookedKamar;
+
+        if ($availableKamar <= 0) {
+            return redirect()->back()
+                ->with('availability_status', 'unavailable')
+                ->with('availability_message', 'Maaf, kamar tidak tersedia untuk tanggal yang dipilih.')
+                ->with('available_rooms', 0)
+                ->with('status_display', 'Tidak Tersedia')
+                ->withInput();
+        }
+
+        return redirect()->back()
+            ->with('availability_status', 'available')
+            ->with('availability_message', "Kamar tersedia! Terdapat {$availableKamar} kamar untuk tanggal tersebut.")
+            ->with('available_rooms', $availableKamar)
+            ->with('status_display', 'Tersedia')
+            ->withInput();
+    }
+    public function storeUlasan(Request $request)
+    {
+        if (!Auth::check()) {
+            return redirect()->back()
+                ->with('error_ulasan', 'Anda harus login terlebih dahulu untuk memberikan ulasan.');
+        }
+
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'komentar' => 'required|string|min:10',
+            'id_tipe_villa' => 'required|exists:tipe_villa,id_tipe_villa',
+        ], [
+            'rating.required' => 'Rating harus dipilih.',
+            'komentar.required' => 'Komentar harus diisi.',
+            'komentar.min' => 'Komentar minimal 10 karakter.',
+        ]);
+
+        $hasCompletedReservation = Reservasi::where('id_user', Auth::id())
+            ->where('id_tipe_villa', $request->id_tipe_villa)
+            ->where('status', 'Selesai')
+            ->exists();
+
+        if (!$hasCompletedReservation) {
+            return redirect()->back()
+                ->with('error_ulasan', 'Anda harus menyelesaikan reservasi terlebih dahulu untuk memberikan ulasan.');
+        }
+
+        $existingUlasan = Ulasan::whereHas('reservasi', function ($query) use ($request) {
+            $query->where('id_tipe_villa', $request->id_tipe_villa);
+        })
+            ->where('id_user', Auth::id())
+            ->exists();
+
+        if ($existingUlasan) {
+            return redirect()->back()
+                ->with('error_ulasan', 'Anda sudah memberikan ulasan untuk villa ini.');
+        }
+
+        $reservasi = Reservasi::where('id_user', Auth::id())
+            ->where('id_tipe_villa', $request->id_tipe_villa)
+            ->where('status', 'Selesai')
+            ->orderBy('tgl_checkout', 'desc')
+            ->first();
+
+        Ulasan::create([
+            'id_reservasi' => $reservasi->id_reservasi,
+            'id_user' => Auth::id(),
+            'rating' => $request->rating,
+            'isi_ulasan' => $request->komentar,
+            'tgl_ulasan' => now()->toDateString(),
+        ]);
+
+        return redirect()->back()
+            ->with('success_ulasan', 'Terima kasih! Ulasan Anda telah berhasil dikirim.');
     }
 
     public function Fasilitas()
@@ -37,69 +246,186 @@ class PageController extends Controller
         return view('pages.fasilitas');
     }
 
-    public function Galeri(Request $request)
+    public function Galeri()
     {
-        $images = [
-            'api unggun.jpg',
-            'cafe.jpg',
-            'deluexeroomm.jpg',
-            'familit roiom fr1.jpg',
-            'fasil4.jpg',
-            'gazebo.jpg',
-            'hiasan.jpg',
-            'hiasan1.jpg',
-            'hiasan3.jpg',
-            'hiasan22.jpg',
-            'home.jpg',
-            'kamar.jpg',
-            'kamar1.jpg',
-            'kamartwinbed1.jpg',
-            'kamartwinbed2.jpg',
-            'luwiahaja.webp',
-            'market.webp',
-            'mushola.webp',
-            'queenbed1.jpg',
-            'sungai.jpg'
-        ];
-
-        $perPage = 8; 
-        $currentPage = $request->get('page', 1);
-        $offset = ($currentPage - 1) * $perPage;
-
-        $pagedData = array_slice($images, $offset, $perPage);
-
-        $photos = new LengthAwarePaginator(
-            $pagedData,
-            count($images),
-            $perPage,
-            $currentPage,
-            ['path' => $request->url()]
-        );
+        $photos = Galeri::paginate(6);
 
         return view('pages.galeri', compact('photos'));
     }
 
-    public function Booking()
+    public function Booking(Request $request)
     {
-        return view('pages.booking');
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu untuk melakukan booking.');
+        }
+
+        $user = Auth::user();
+
+        $selectedRoom = null;
+        if ($request->has('room')) {
+            $selectedRoom = Kamar::find($request->room);
+        }
+
+        $rooms = Kamar::where('status', 'Tersedia')->get();
+
+        return view('pages.booking', compact('user', 'selectedRoom', 'rooms'));
     }
 
-     public function pembayaranSukses()
+    public function storeBooking(Request $request)
     {
-        return view('pages.pembayaransukses');
+        $validated = $request->validate([
+            'id_tipe_villa' => 'required|exists:tipe_villa,id_tipe_villa',
+            'check_in' => 'required|date|after_or_equal:today',
+            'check_out' => 'required|date|after:check_in',
+            'total_harga' => 'required|numeric|min:0',
+
+            'nama_pemilik' => 'required|string|max:100',
+            'nama_bank' => 'required|string|max:50',
+            'nomor_rekening' => 'required|string|max:30',
+            'metode_pembayaran' => 'required|in:Transfer Bank,Kartu Kredit,E-Wallet',
+            'bukti_pembayaran' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+        ], [
+            'id_tipe_villa.required' => 'Pilih tipe villa terlebih dahulu.',
+            'id_tipe_villa.exists' => 'Tipe villa tidak valid.',
+            'check_in.required' => 'Tanggal check-in harus diisi.',
+            'check_in.after_or_equal' => 'Tanggal check-in tidak boleh sebelum hari ini.',
+            'check_out.required' => 'Tanggal check-out harus diisi.',
+            'check_out.after' => 'Tanggal check-out harus setelah check-in.',
+            'total_harga.required' => 'Total harga harus diisi.',
+            'total_harga.min' => 'Total harga tidak valid.',
+
+            'nama_pemilik.required' => 'Nama pemilik rekening harus diisi.',
+            'nama_pemilik.max' => 'Nama pemilik maksimal 100 karakter.',
+            'nama_bank.required' => 'Nama bank harus diisi.',
+            'nama_bank.max' => 'Nama bank maksimal 50 karakter.',
+            'nomor_rekening.required' => 'Nomor rekening harus diisi.',
+            'nomor_rekening.max' => 'Nomor rekening maksimal 30 karakter.',
+            'metode_pembayaran.required' => 'Metode pembayaran harus dipilih.',
+            'metode_pembayaran.in' => 'Metode pembayaran tidak valid.',
+            'bukti_pembayaran.required' => 'Bukti pembayaran harus diupload.',
+            'bukti_pembayaran.mimes' => 'Bukti pembayaran harus berupa file jpeg, png, jpg, atau pdf.',
+            'bukti_pembayaran.max' => 'Ukuran file maksimal 2MB.',
+        ]);
+
+        $hasConflict = Reservasi::where('id_tipe_villa', $request->id_tipe_villa)
+            ->whereIn('status', ['Menunggu', 'Dikonfirmasi'])
+            ->where(function ($query) use ($request) {
+                $query->whereBetween('tgl_checkin', [$request->check_in, $request->check_out])
+                    ->orWhereBetween('tgl_checkout', [$request->check_in, $request->check_out])
+                    ->orWhere(function ($q) use ($request) {
+                        $q->where('tgl_checkin', '<=', $request->check_in)
+                            ->where('tgl_checkout', '>=', $request->check_out);
+                    });
+            })
+            ->exists();
+
+        if ($hasConflict) {
+            return redirect()->back()
+                ->with('error', 'Maaf, kamar tidak tersedia untuk tanggal yang dipilih.')
+                ->withInput();
+        }
+
+        $kodeReservasi = 'RES-' . strtoupper(substr(uniqid(), -6));
+        $kodePembayaran = 'PAY-' . strtoupper(substr(uniqid(), -6));
+        $buktiBayar = null;
+
+        try {
+            DB::beginTransaction();
+
+            $reservasi = Reservasi::create([
+                'kode_reservasi' => $kodeReservasi,
+                'id_user' => Auth::id(),
+                'id_tipe_villa' => $request->id_tipe_villa,
+                'tgl_checkin' => $request->check_in,
+                'tgl_checkout' => $request->check_out,
+                'total_harga' => $request->total_harga,
+                'status' => 'Menunggu',
+            ]);
+
+            if ($request->hasFile('bukti_pembayaran')) {
+                $file = $request->file('bukti_pembayaran');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+
+                $uploadPath = public_path('uploads/bukti_pembayaran');
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+
+                $file->move($uploadPath, $fileName);
+                $buktiBayar = 'uploads/bukti_pembayaran/' . $fileName;
+            }
+
+            Pembayaran::create([
+                'id_reservasi' => $reservasi->id_reservasi,
+                'kode_pembayaran' => $kodePembayaran,
+                'tgl_pembayaran' => now()->format('Y-m-d'),
+                'bukti_pembayaran' => $buktiBayar,
+                'nomor_rekening' => $request->nomor_rekening,
+                'nama_pemilik' => $request->nama_pemilik,
+                'nama_bank' => $request->nama_bank,
+                'metode_pembayaran' => $request->metode_pembayaran,
+                'status' => 'Menunggu',
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('pages.pembayaransukses', $reservasi->id_reservasi)
+                ->with('success', 'Reservasi dan pembayaran berhasil dibuat!');
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            if (isset($buktiBayar) && file_exists(public_path($buktiBayar))) {
+                unlink(public_path($buktiBayar));
+            }
+
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+
+    public function pembayaranSukses($id)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $reservasi = Reservasi::with(['kamar', 'pembayaran'])
+            ->where('id_reservasi', $id)
+            ->where('id_user', Auth::id())
+            ->firstOrFail();
+
+        return view('pages.pembayaransukses', compact('reservasi'));
     }
 
     public function riwayatpembayaran()
     {
-        return view('pages.riwayatpembayaran');
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $pembayarans = Pembayaran::with('reservasi.kamar')
+            ->whereHas('reservasi', function ($query) {
+                $query->where('id_user', Auth::id());
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('pages.riwayatpembayaran', compact('pembayarans'));
     }
 
     public function riwayatreservasi()
     {
-        return view('pages.riwayatreservasi');
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $reservasis = Reservasi::with(['kamar', 'pembayaran'])
+            ->where('id_user', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('pages.riwayatreservasi', compact('reservasis'));
     }
 }
-
-
-
-

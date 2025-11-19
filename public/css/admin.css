@@ -99,6 +99,55 @@ body {
     color: white;
 }
 
+
+
+.sidebar form {
+    margin: 5px 0;
+    padding: 0 20px;
+}
+
+.sidebar .side-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #6b7280;
+    font-weight: 500;
+    border-radius: 10px;
+    padding: 12px 0;
+    margin: 0;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    text-align: left;
+}
+
+.sidebar .side-link i {
+    font-size: 20px;
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+    color: #dc3545;
+}
+
+.sidebar .side-link span {
+    flex: 1;
+    color: #dc3545;
+}
+
+.sidebar .side-link:hover {
+    background-color: #fee;
+    color: #dc3545;
+}
+
+.sidebar .side-link:hover i {
+    color: #dc3545;
+}
+
 /* Main content */
 .main-content {
     flex-grow: 1;

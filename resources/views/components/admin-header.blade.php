@@ -6,8 +6,8 @@
             <i class="bi bi-person-fill"></i>
         </div>
         <div class="profile-info">
-            <strong>Prima</strong>
-            <small>Admin</small>
+            <strong>{{ Auth::user()->nama }}</strong>
+            <small>{{ Auth::user()->role }}</small>
         </div>
     </div>
 </div>
