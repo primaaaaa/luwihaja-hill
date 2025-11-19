@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (isValid) {
-            alert('Login berhasil! Selamat datang kembali.');
-            form.reset();
+            alert('Login berhasil!');
+            form.submit();
         }
     });
 
