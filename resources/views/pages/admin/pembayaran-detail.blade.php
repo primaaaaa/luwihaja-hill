@@ -19,7 +19,6 @@
                 </div>
             </div>
 
-            <!-- Row: Kode Reservasi & Tanggal Pembayaran -->
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Kode Reservasi</label>
@@ -31,7 +30,6 @@
                 </div>
             </div>
 
-            <!-- Row: Tanggal Check-In & Check-Out -->
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tanggal Check-In</label>
@@ -43,7 +41,6 @@
                 </div>
             </div>
 
-            <!-- Row: Nominal Pembayaran & Bukti Pembayaran -->
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Nominal Pembayaran</label>
@@ -65,7 +62,6 @@
                 </div>
             </div>
 
-            <!-- Row: Metode Pembayaran & Nama Bank -->
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Metode Pembayaran</label>
@@ -77,7 +73,6 @@
                 </div>
             </div>
 
-            <!-- Row: Nomor Rekening & Nama Pemilik -->
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Nomor Rekening</label>
@@ -89,7 +84,6 @@
                 </div>
             </div>
 
-            <!-- Row: Status Pembayaran & Nama Unit -->
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Status Pembayaran</label>
