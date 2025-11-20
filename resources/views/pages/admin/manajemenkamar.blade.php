@@ -47,9 +47,9 @@
                         <i class="bi bi-pencil-fill"></i>
                     </button>
 
-                    <a href="{{ route('kamar-detail') }}" class="btn-action btn-detail">
-                        <i class="bi bi-eye-fill"></i>
-                    </a>
+<a href="{{ route('admin.kamar-detail', $room->id_tipe_villa) }}" class="btn-action btn-detail">
+    <i class="bi bi-eye-fill"></i>
+</a>
 
                     <button class="btn-action btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal">
                         <i class="bi bi-trash-fill"></i>
@@ -229,7 +229,7 @@
 <div class="modal fade" id="deleteModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered delete-modal-dialog">
         <div class="modal-content delete-modal">
-            
+
             <button type="button" class="btn-close delete-close" data-bs-dismiss="modal"></button>
 
             <div class="modal-body text-center delete-modal-body">

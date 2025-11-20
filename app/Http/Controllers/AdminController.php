@@ -127,15 +127,11 @@ class AdminController extends Controller
         return redirect()->route('admin.kamar')
             ->with('success', 'Kamar berhasil dihapus!');
     }
+public function detailKamar(Kamar $kamar)
+{
+    return view('pages.admin.kamar-detail', compact('kamar'));
+}
 
-    public function detailKamar(Kamar $id)
-    {
-        $kamar = Kamar::find($id);
-
-        return view('pages.admin.kamar-detail', [
-            'kamar' => $id
-        ]);
-    }
 
     public function Reservasi()
     {
@@ -214,9 +210,9 @@ class AdminController extends Controller
                 $uniqueName = time() . '_' . Str::random(10) . '_' . $originalName;
 
                 Storage::disk('public')->putFileAs(
-                    'galeri',    
-                    $file,         
-                    $uniqueName    
+                    'galeri',
+                    $file,
+                    $uniqueName
                 );
 
                 Galeri::create([

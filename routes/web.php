@@ -20,7 +20,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'Dashboard'])->name('dashboard');
         Route::get('/kamar', [AdminController::class, 'Kamar'])->name('manajemenkamar');
         Route::get('/kamar', [AdminController::class, 'Kamar'])->name('admin.kamar');
-        Route::get('/kamar-detail/{id:$kode_tipe}', [AdminController::class, 'detailKamar'])->name('admin.kamar-detail');
+        Route::get('/admin/kamar-detail/{kamar}', [AdminController::class, 'detailKamar'])
+            ->name('admin.kamar-detail');
         Route::post('/kamar/store', [AdminController::class, 'storeKamar'])->name('admin.kamar.store');
         Route::put('/kamar/update/{id}', [AdminController::class, 'updateKamar'])->name('admin.kamar.update');
         Route::patch('/kamar/status/{id}', [AdminController::class, 'updateStatusKamar'])->name('admin.kamar.status');
