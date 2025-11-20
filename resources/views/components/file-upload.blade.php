@@ -8,7 +8,7 @@
 
 <label class="form-label">{{$label}}</label>
 <label class="upload-wrapper">
-    <input type="{{ $type }}" name="foto_kamar" accept="image/*" hidden class="file-input-add">
+    <input type="{{ $type }}" name="{{ $name }}" accept="image/*" hidden class="file-input-add">
         <span class="file-name-display">{{$value ? basename($value) : 'Upload Foto'}}</span>
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
                 style="width: 22px; height: 22px; color: #198754;">

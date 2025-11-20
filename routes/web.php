@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/kamar', [AdminController::class, 'Kamar'])->name('manajemenkamar');
         Route::get('/kamar', [AdminController::class, 'Kamar'])->name('admin.kamar');
 
-        Route::get('/admin/kamar-detail/{kamar:kode_tipe}', [AdminController::class, 'detailKamar'])
+        Route::get('/kamar-detail/{kamar:kode_tipe}', [AdminController::class, 'detailKamar'])
             ->name('admin.kamar-detail');
 
         Route::post('/kamar/store', [AdminController::class, 'storeKamar'])->name('admin.kamar.store');

@@ -5,7 +5,7 @@
     'value' => '',
     'required' => false,
     'placeholder' => '',
-    'min',
+    'min' => null,
     'readonly' => false
     ])
 

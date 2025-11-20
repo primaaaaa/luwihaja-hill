@@ -5,7 +5,8 @@
     'disabled' => false,
     'value' => '',      // Nilai dari database (misal: "Deluxe Bed")
     'option' => [],     // Array pilihan (misal: ['Deluxe Bed', 'Queen Bed'])
-    'placeholder' => null
+    'placeholder' => null,
+    'selected' => null
 ])
  
     <label class="form-label">{{ $label }}</label>
@@ -22,7 +23,14 @@
                     {{ $placeholder }}
                 </option>
             @endif
-        
+
+            <!-- Selected Logic -->
+            @if ($selected)
+            <option value="{{ $selected }}" disabled {{ $selected ? 'selected' : '' }}>
+                {{ $selected }}
+            </option>
+            @endif
+            
             {{-- Looping Array Option --}}
             @foreach ($option as $opt)
                 <option value="{{ $opt }}" {{ $value == $opt ? 'selected' : '' }}>
