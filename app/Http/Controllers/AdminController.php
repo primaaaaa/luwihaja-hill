@@ -128,14 +128,11 @@ class AdminController extends Controller
             ->with('success', 'Kamar berhasil dihapus!');
     }
 
-    public function detailKamar(Kamar $id)
+    public function detailKamar(Kamar $kamar)
     {
-        // $kamar = Kamar::find($id);
-
-        return view('pages.admin.kamar-detail', [
-            'kamar' => $id
-        ]);
+        return view('pages.admin.kamar-detail', compact('kamar'));
     }
+
 
     public function Reservasi()
     {
@@ -214,9 +211,9 @@ class AdminController extends Controller
                 $uniqueName = time() . '_' . Str::random(10) . '_' . $originalName;
 
                 Storage::disk('public')->putFileAs(
-                    'galeri',    
-                    $file,         
-                    $uniqueName    
+                    'galeri',
+                    $file,
+                    $uniqueName
                 );
 
                 Galeri::create([
@@ -310,7 +307,7 @@ class AdminController extends Controller
 
         return view('pages.admin.pembayaran-detail', compact('pembayaran'));
     }
-
+    
     public function DetailRefund()
     {
         return view('pages.admin.refund-detail');
@@ -320,7 +317,6 @@ class AdminController extends Controller
     {
         $reservasi = Reservasi::with(['user', 'kamar'])
             ->findOrFail($id);
-
         return view('pages.admin.reservasi-detail', compact('reservasi'));
     }
 }

@@ -44,7 +44,7 @@
             <i class="fa-solid fa-calendar-check"></i> Reservasi Saya
           </a>
 
-          <a href="{{ url('/riwayatreservasi') }}">
+          <a href="{{ url('/riwayatpembayaran') }}">
             <i class="fa-solid fa-credit-card"></i> Pembayaran Saya
           </a>
 

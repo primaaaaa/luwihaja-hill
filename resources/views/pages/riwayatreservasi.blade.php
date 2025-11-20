@@ -58,10 +58,12 @@
                         <td>{{ $r->kamar->kode_tipe }}</td>
 
                         <td>
-                            @if ($r->status == 'konfirmasi')
-                            <span class="badge badge-success">Konfirmasi</span>
-                            @elseif ($r->status == 'dibatalkan')
+                            @if (strtolower($r->status) == 'dikonfirmasi' || strtolower($r->status) == 'konfirmasi')
+                            <span class="badge badge-success">Dikonfirmasi</span>
+                            @elseif (strtolower($r->status) == 'dibatalkan' || strtolower($r->status) == 'batal')
                             <span class="badge badge-danger">Dibatalkan</span>
+                            @elseif (strtolower($r->status) == 'selesai' || strtolower($r->status) == 'completed')
+                            <span class="badge badge-info">Selesai</span>
                             @else
                             <span class="badge badge-warning">Menunggu</span>
                             @endif
@@ -84,7 +86,7 @@
 
 @push('scripts')
 <script>
-    const searchInput = document.getElementById('searchReservasi');
+    const searchInput = document.getElementById('searchInput');
     const tableBody = document.getElementById('reservasiTable');
     const rows = tableBody.querySelectorAll('tr');
 
