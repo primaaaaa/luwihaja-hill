@@ -69,7 +69,6 @@ class PageController extends Controller
         }
 
         return view('pages.akomodasi', compact('rooms', 'featuredRooms'));
-
     }
 
     public function detailAkomodasi($id)
@@ -325,12 +324,15 @@ class PageController extends Controller
                 ->withInput();
         }
 
-        $kodeReservasi = 'RES-' . strtoupper(substr(uniqid(), -6));
-        $kodePembayaran = 'PAY-' . strtoupper(substr(uniqid(), -6));
         $buktiBayar = null;
 
         try {
             DB::beginTransaction();
+
+            // Generate kode reservasi berurutan
+            $lastReservasi = Reservasi::orderBy('id_reservasi', 'desc')->first();
+            $nextNumber = $lastReservasi ? ($lastReservasi->id_reservasi + 1) : 1;
+            $kodeReservasi = 'RES-' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
 
             $reservasi = Reservasi::create([
                 'kode_reservasi' => $kodeReservasi,
@@ -354,6 +356,11 @@ class PageController extends Controller
                 $file->move($uploadPath, $fileName);
                 $buktiBayar = 'uploads/bukti_pembayaran/' . $fileName;
             }
+
+            // Generate kode pembayaran berurutan
+            $lastPembayaran = Pembayaran::orderBy('id_pembayaran', 'desc')->first();
+            $nextPayNumber = $lastPembayaran ? ($lastPembayaran->id_pembayaran + 1) : 1;
+            $kodePembayaran = 'PAY-' . str_pad($nextPayNumber, 6, '0', STR_PAD_LEFT);
 
             Pembayaran::create([
                 'id_reservasi' => $reservasi->id_reservasi,
@@ -383,7 +390,6 @@ class PageController extends Controller
                 ->withInput();
         }
     }
-
 
     public function pembayaranSukses($id)
     {
