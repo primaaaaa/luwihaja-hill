@@ -206,7 +206,7 @@
         </div>
 
         {{-- Delete Modal for each room --}}
-        <x-delete-modal :id="$room->id_tipe_villa" :nama="$room->nama_unit" :route="admin.kamar.delete"></x-delete-modal>
+        <x-delete-modal :id="$room->id_tipe_villa" :nama="$room->nama_unit" :route='kamar.delete'></x-delete-modal>
         @endforeach
 
     </x-data-table>
