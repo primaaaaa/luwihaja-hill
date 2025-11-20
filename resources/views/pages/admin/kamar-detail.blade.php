@@ -3,15 +3,28 @@
 @section('admin-content')
 
 @php
-$extension = pathinfo($kamar->foto_kamar, PATHINFO_EXTENSION);
+$fotoPath = $kamar->foto_kamar ? public_path('storage/' . $kamar->foto_kamar) : null;
+$fotoExists = $fotoPath && file_exists($fotoPath);
+$extension = $fotoExists ? pathinfo($kamar->foto_kamar, PATHINFO_EXTENSION) : null;
 @endphp
 
-@if(in_array(strtolower($extension), ['jpg','jpeg','png','gif']))
-<img src="{{ asset('storage/kamar/' . $kamar->foto_kamar) }}" class="img-fluid">
-@elseif(strtolower($extension) == 'mp4')
-<video controls class="w-100">
-    <source src="{{ asset('storage/kamar/' . $kamar->foto_kamar) }}" type="video/mp4">
-</video>
+{{-- Tampilkan foto/video hanya jika file benar-benar ada --}}
+@if($fotoExists)
+    @if(in_array(strtolower($extension), ['jpg','jpeg','png','gif']))
+    <img src="{{ asset('storage/' . $kamar->foto_kamar) }}" class="img-fluid" alt="Foto {{ $kamar->nama_unit }}">
+    @elseif(strtolower($extension) == 'mp4')
+    <video controls class="w-100">
+        <source src="{{ asset('storage/' . $kamar->foto_kamar) }}" type="video/mp4">
+    </video>
+    @endif
+@else
+    {{-- Placeholder jika foto tidak ada --}}
+    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
+        <div class="text-center text-muted">
+            <i class="bi bi-image fs-1"></i>
+            <p class="mt-2">Foto tidak tersedia</p>
+        </div>
+    </div>
 @endif
 
 
@@ -44,11 +57,11 @@ $extension = pathinfo($kamar->foto_kamar, PATHINFO_EXTENSION);
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Harga Weekday</label>
-                    <input type="text" class="form-control" value="{{ $kamar->harga_weekday }}" readonly>
+                    <input type="text" class="form-control" value="Rp {{ number_format($kamar->harga_weekday, 0, ',', '.') }}" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Harga Weekend</label>
-                    <input type="text" class="form-control" value="{{ $kamar->harga_weekend }}" readonly>
+                    <input type="text" class="form-control" value="Rp {{ number_format($kamar->harga_weekend, 0, ',', '.') }}" readonly>
                 </div>
             </div>
 
@@ -59,11 +72,10 @@ $extension = pathinfo($kamar->foto_kamar, PATHINFO_EXTENSION);
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Foto Kamar</label>
-                    @if($kamar->foto_kamar)
+                    @if($fotoExists)
                     <input type="text" class="form-control" value="{{ $kamar->foto_kamar }}" readonly
                         data-bs-toggle="modal" data-bs-target="#fotoModal{{ $kamar->id }}"
-                        style="cursor: pointer; text-decoration: none; color: inherit;">
-
+                        style="cursor: pointer;">
                     @else
                     <input type="text" class="form-control" value="Tidak ada foto tersedia" readonly>
                     @endif
@@ -74,32 +86,29 @@ $extension = pathinfo($kamar->foto_kamar, PATHINFO_EXTENSION);
                 <label class="form-label">Deskripsi Kamar</label>
                 <textarea class="form-control" rows="3" readonly>{{ $kamar->deskripsi }}</textarea>
             </div>
-
-            {{-- <a href="{{ url('/admin/kamar') }}" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> Kembali
-            </a> --}}
         </form>
     </div>
 </div>
 
 
 {{-- Modal Foto Kamar --}}
+@if($fotoExists)
 <div class="modal fade" id="fotoModal{{ $kamar->id }}" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Foto Kamar: {{ $kamar->nama_unit }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body text-center">
-                @if($kamar->foto_kamar)
-                <img src="{{ asset('storage/' . $kamar->foto_kamar) }}" class="img-fluid">
-                @else
-                <p>Tidak ada foto tersedia</p>
-                @endif
+                <img src="{{ asset('storage/' . $kamar->foto_kamar) }}" 
+                     class="img-fluid" 
+                     alt="Foto {{ $kamar->nama_unit }}"
+                     onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23ddd%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22%3ENo Image%3C/text%3E%3C/svg%3E';">
             </div>
         </div>
     </div>
 </div>
+@endif
 
 @endsection
