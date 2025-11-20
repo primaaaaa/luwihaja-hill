@@ -130,7 +130,7 @@ class AdminController extends Controller
 
     public function detailKamar(Kamar $id)
     {
-        // $kamar = Kamar::find($id);
+        $kamar = Kamar::find($id);
 
         return view('pages.admin.kamar-detail', [
             'kamar' => $id
