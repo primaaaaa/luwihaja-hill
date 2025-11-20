@@ -119,6 +119,7 @@
                         <div class="modal-body">
                             <div class="row g-3">
                                 <div class="col-md-6">
+                                    
                                     <label class="form-label">Unit Kamar</label>
                                     <input type="text" class="form-control kamar-input" name="nama_unit"
                                         value="{{ $room->nama_unit }}" required>

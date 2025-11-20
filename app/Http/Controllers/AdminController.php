@@ -18,7 +18,11 @@ class AdminController extends Controller
 {
     public function Dashboard()
     {
-        return view('pages.admin.dashboard');
+        return view('pages.admin.dashboard' ,[
+            'jml_kamar' => Kamar::count(),
+            'jml_reservasi' => Reservasi::count(),
+            'jml_ulasan' => Ulasan::count()
+        ]);
     }
 
     public function Kamar()

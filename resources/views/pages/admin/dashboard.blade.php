@@ -3,9 +3,9 @@
 @section('admin-content')
  <div class="p-4">
     <div class="stats-container">
-        <x-stat-card title="Total Kamar" :jumlah="10"></x-stat-card>
-        <x-stat-card title="Total Reservasi" :jumlah="5"></x-stat-card>
-        <x-stat-card title="Total Ulasan" :jumlah="4"></x-stat-card>
+        <x-stat-card title="Total Kamar" :jumlah="$jml_kamar"></x-stat-card>
+        <x-stat-card title="Total Reservasi" :jumlah="$jml_reservasi"></x-stat-card>
+        <x-stat-card title="Total Ulasan" :jumlah="$jml_ulasan"></x-stat-card>
     </div>
 
     <div class="chart-container">
