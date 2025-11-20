@@ -73,7 +73,7 @@
               @php
               $statusClean = trim($pembayaran->status);
               @endphp
-              
+
               @if($statusClean === 'Lunas')
               <span class="badge badge-success">Lunas</span>
               @elseif($statusClean === 'Batal')
@@ -86,14 +86,20 @@
             </td>
 
             <td>
-              @if($statusClean === 'Menunggu')
+              @php
+              $checkoutDate = $pembayaran->reservasi->tgl_checkout ?? null;
+              $today = \Carbon\Carbon::today();
+              @endphp
+
+              @if($statusClean === 'Menunggu' || ($statusClean === 'Lunas' && $checkoutDate &&
+              $today->lt(\Carbon\Carbon::parse($checkoutDate))))
               <button class="btn-refund" onclick="openModalRefund(
-                '{{ $pembayaran->id_pembayaran }}',
-                '{{ $pembayaran->reservasi->kode_reservasi }}',
-                '{{ $pembayaran->reservasi->tgl_checkin }}',
-                '{{ $pembayaran->reservasi->tgl_checkout }}',
-                '{{ $pembayaran->reservasi->total_harga }}'
-              )">
+    '{{ $pembayaran->id_pembayaran }}',
+    '{{ $pembayaran->reservasi->kode_reservasi }}',
+    '{{ $pembayaran->reservasi->tgl_checkin }}',
+    '{{ $pembayaran->reservasi->tgl_checkout }}',
+    '{{ $pembayaran->reservasi->total_harga }}'
+)">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
                 </svg>
@@ -104,6 +110,7 @@
                 {{ $statusClean === 'Lunas' ? 'Pembayaran Selesai' : 'Dibatalkan' }}
               </span>
               @endif
+
             </td>
           </tr>
           @empty
@@ -131,7 +138,8 @@
     @if($pembayarans->hasPages())
     <div class="pagination-wrapper">
       <div class="pagination-info">
-        Menampilkan {{ $pembayarans->firstItem() ?? 0 }} sampai {{ $pembayarans->lastItem() ?? 0 }} dari {{ $pembayarans->total() }} data
+        Menampilkan {{ $pembayarans->firstItem() ?? 0 }} sampai {{ $pembayarans->lastItem() ?? 0 }} dari {{
+        $pembayarans->total() }} data
       </div>
       <div class="pagination">
         {{-- Previous Page --}}
@@ -162,7 +170,11 @@
   </div>
 </section>
 
+@endsection
+
+@push('scripts')
 <script>
+  // Search functionality
   const searchInput = document.getElementById('searchInput');
   const tableBody = document.getElementById('tableBody');
   const rows = tableBody.querySelectorAll('tr');
@@ -180,9 +192,34 @@
     });
   });
 
+  // Modal refund functions
   function openModalRefund(idPembayaran, kodeReservasi, checkIn, checkOut, totalHarga) {
     document.getElementById('id_pembayaran').value = idPembayaran;
     document.getElementById('kode_reservasi_display').value = kodeReservasi;
     document.getElementById('check_in_display').value = checkIn;
     document.getElementById('check_out_display').value = checkOut;
     document.getElementById('nominal_refund_display').value = 'Rp ' + parseInt(totalHarga).toLocaleString('id-ID');
+    
+    document.getElementById('modalRefund').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModalRefund() {
+    document.getElementById('modalRefund').classList.remove('show');
+    document.body.style.overflow = 'auto';
+  }
+
+  // Close modal when clicking outside
+  document.getElementById('modalRefund')?.addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeModalRefund();
+    }
+  });
+
+  // File upload display
+  document.getElementById('fileUploadRefund')?.addEventListener('change', function(e) {
+    const fileName = e.target.files[0]?.name || 'Pilih file';
+    document.querySelector('.file-name-text').textContent = fileName;
+  });
+</script>
+@endpush

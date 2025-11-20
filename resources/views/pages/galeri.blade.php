@@ -25,8 +25,6 @@
                 @endforeach
             </div>
 
-            {{ $photos->links() }}
-
             <div class="pagination">
 
                 @if ($photos->onFirstPage())
@@ -50,6 +48,7 @@
                     @endif
 
             </div>
+
 
         </div>
 </section>
