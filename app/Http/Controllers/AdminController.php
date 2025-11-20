@@ -127,10 +127,11 @@ class AdminController extends Controller
         return redirect()->route('admin.kamar')
             ->with('success', 'Kamar berhasil dihapus!');
     }
-public function detailKamar(Kamar $kamar)
-{
-    return view('pages.admin.kamar-detail', compact('kamar'));
-}
+    
+    public function detailKamar(Kamar $kamar)
+    {
+        return view('pages.admin.kamar-detail', compact('kamar'));
+    }
 
 
     public function Reservasi()
