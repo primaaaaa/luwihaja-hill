@@ -20,8 +20,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'Dashboard'])->name('dashboard');
         Route::get('/kamar', [AdminController::class, 'Kamar'])->name('manajemenkamar');
         Route::get('/kamar', [AdminController::class, 'Kamar'])->name('admin.kamar');
+
         Route::get('/admin/kamar-detail/{kamar:kode_tipe}', [AdminController::class, 'detailKamar'])
             ->name('admin.kamar-detail');
+
         Route::post('/kamar/store', [AdminController::class, 'storeKamar'])->name('admin.kamar.store');
         Route::put('/kamar/update/{id}', [AdminController::class, 'updateKamar'])->name('admin.kamar.update');
         Route::patch('/kamar/status/{id}', [AdminController::class, 'updateStatusKamar'])->name('admin.kamar.status');
@@ -32,15 +34,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/reservasi-detail/{id}', [AdminController::class, 'DetailReservasi'])->name('reservasi-detail');
         Route::get('/ulasan', [AdminController::class, 'Ulasan'])->name('manajemenulasan');
         Route::get('/ulasan/detail/{id}', [AdminController::class, 'DetailUlasan'])->name('ulasan-detail');
+        Route::delete('/ulasan/{id}', [AdminController::class, 'deleteUlasan'])->name('admin.ulasan.delete');
         Route::get('/cms', [AdminController::class, 'CMS'])->name('cms');
         Route::post('/cms/upload', [AdminController::class, 'storeGaleri'])->name('cms.upload');
         Route::delete('/cms/delete/{id}', [AdminController::class, 'deleteGaleri'])->name('cms.delete');
         Route::get('/refund', [AdminController::class, 'Refund'])->name('manajemenrefund');
+        Route::post('/refund/{id}/update-status', [AdminController::class, 'updateStatusRefund'])->name('refund.update-status');
+        Route::get('/refund/{id}', [AdminController::class, 'DetailRefund'])->name('refund-detail');
         Route::get('/pembayaran', [AdminController::class, 'Pembayaran'])->name('manajemenpembayaran');
         Route::post('pembayaran/{id}/update-status', [AdminController::class, 'updateStatusPembayaran'])->name('pembayaran-update-status');
         Route::get('/pembayaran-detail/{id}', [AdminController::class, 'DetailPembayaran'])->name('pembayaran-detail');
         Route::get('/kamar-detail', [AdminController::class, 'DetailKamar'])->name('kamar-detail');
-        Route::get('/refund-detail', [AdminController::class, 'DetailRefund'])->name('refund-detail');
     });
 
     Route::get('/booking', [PageController::class, 'Booking'])->name('booking')->middleware('auth');
@@ -48,7 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pembayaransukses/{id}', [PageController::class, 'pembayaranSukses'])->name('pages.pembayaransukses');
     Route::get('/riwayatpembayaran', [PageController::class, 'riwayatpembayaran'])->name('riwayatpembayaran');
     Route::get('/riwayatreservasi', [PageController::class, 'riwayatreservasi'])->name('riwayatreservasi');
-
+    Route::post('/refund/store', [PageController::class, 'storeRefund'])->name('refund.store');
     Route::post('/ulasan/store', [PageController::class, 'storeUlasan'])->name('ulasan.store');
 });
 

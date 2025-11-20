@@ -107,9 +107,9 @@ namespace App\Models{
  * @property int $id_refund
  * @property string $kode_refund
  * @property int $id_reservasi
- * @property string $tgl_pengajuan
+ * @property \Illuminate\Support\Carbon $tgl_pengajuan
  * @property string|null $alasan_refund
- * @property string $nominal_refund
+ * @property numeric $nominal_refund
  * @property string|null $bukti_pendukung
  * @property string|null $nama_bank_tujuan
  * @property string|null $norek_tujuan
@@ -117,10 +117,17 @@ namespace App\Models{
  * @property string $status
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $bukti_url
+ * @property-read mixed $nominal_format
+ * @property-read mixed $status_badge
  * @property-read \App\Models\Reservasi $reservasi
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund disetujui()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund ditolak()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund menunggu()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund status($status)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund whereAlasanRefund($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund whereBuktiPendukung($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund whereCreatedAt($value)
@@ -156,6 +163,7 @@ namespace App\Models{
  * @property-read \App\Models\Kamar $kamar
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Pembayaran> $pembayaran
  * @property-read int|null $pembayaran_count
+ * @property-read \App\Models\Refund|null $refund
  * @property-read \App\Models\Ulasan|null $ulasan
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservasi aktif()

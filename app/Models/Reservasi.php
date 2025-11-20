@@ -42,7 +42,7 @@ class Reservasi extends Model
         return $this->belongsTo(Kamar::class, 'id_tipe_villa', 'id_tipe_villa');
     }
 
-     public function ulasan()
+    public function ulasan()
     {
         return $this->hasOne(Ulasan::class, 'id_reservasi', 'id_reservasi');
     }
@@ -68,7 +68,7 @@ class Reservasi extends Model
     {
         return $query->whereIn('status', ['Menunggu', 'Dikonfirmasi']);
     }
-    
+
     public function getDurasiAttribute()
     {
         if ($this->tgl_checkin && $this->tgl_checkout) {
@@ -80,5 +80,10 @@ class Reservasi extends Model
     public function pembayaran()
     {
         return $this->hasMany(Pembayaran::class, 'id_reservasi', 'id_reservasi');
+    }
+
+    public function refund()
+    {
+        return $this->hasOne(Refund::class, 'id_reservasi', 'id_reservasi');
     }
 }

@@ -2,14 +2,6 @@
 @props(['header' => 'Refund'])
 @section('admin-content')
 
-@php
-$refunds = [
-    ['id' => 1, 'kode_refund' => 'RF01', 'kode_reservasi' => 'V101', 'nama_tamu' => 'Prima', 'tanggal_pengajuan' => '2025-09-14', 'status' => 'Menunggu'],
-    ['id' => 2, 'kode_refund' => 'RF03', 'kode_reservasi' => 'V103', 'nama_tamu' => 'Aretta', 'tanggal_pengajuan' => '2025-09-14', 'status' => 'Disetujui'],
-    ['id' => 3, 'kode_refund' => 'RF04', 'kode_reservasi' => 'V104', 'nama_tamu' => 'Alhamid', 'tanggal_pengajuan' => '2025-09-14', 'status' => 'Ditolak'],
-];
-@endphp
-
 <div class="p-4">
     <x-data-table 
         title="Daftar Pengajuan Refund"
@@ -18,15 +10,15 @@ $refunds = [
         :exportButton="false"
         :filterOptions="['Menunggu', 'Disetujui', 'Ditolak']">
 
-        @foreach ($refunds as $refund)
+        @forelse ($refunds as $refund)
         <tr>
-            <td>{{ $refund['kode_refund'] }}</td>
-            <td>{{ $refund['kode_reservasi'] }}</td>
-            <td>{{ $refund['nama_tamu'] }}</td>
-            <td>{{ $refund['tanggal_pengajuan'] }}</td>
+            <td>{{ $refund->kode_refund }}</td>
+            <td>{{ $refund->reservasi->kode_reservasi ?? '-' }}</td>
+            <td>{{ $refund->reservasi->user->nama ?? '-' }}</td>
+            <td>{{ \Carbon\Carbon::parse($refund->tgl_pengajuan)->format('d-m-Y') }}</td>
             <td>
                 @php
-                    $statusClass = match($refund['status']) {
+                    $statusClass = match($refund->status) {
                         'Menunggu' => 'badge-dipesan',
                         'Disetujui' => 'badge-tersedia',
                         'Ditolak' => 'badge-nonaktif',
@@ -37,29 +29,96 @@ $refunds = [
                 <div class="dropdown">
                     <button class="btn badge-status {{ $statusClass }} dropdown-toggle" 
                             type="button" 
-                            id="statusDropdown{{ $loop->index }}" 
+                            id="statusDropdown{{ $refund->id_refund }}" 
                             data-bs-toggle="dropdown" 
                             aria-expanded="false">
-                        {{ $refund['status'] }}
+                        {{ $refund->status }}
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="statusDropdown{{ $loop->index }}">
-                        <li><a class="dropdown-item" href="#">Menunggu</a></li>
-                        <li><a class="dropdown-item" href="#">Disetujui</a></li>
-                        <li><a class="dropdown-item" href="#">Ditolak</a></li>
+                    <ul class="dropdown-menu" aria-labelledby="statusDropdown{{ $refund->id_refund }}">
+                        <li>
+                            <a class="dropdown-item update-status" 
+                               href="#" 
+                               data-id="{{ $refund->id_refund }}" 
+                               data-status="Menunggu">
+                                Menunggu
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item update-status" 
+                               href="#" 
+                               data-id="{{ $refund->id_refund }}" 
+                               data-status="Disetujui">
+                                Disetujui
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item update-status" 
+                               href="#" 
+                               data-id="{{ $refund->id_refund }}" 
+                               data-status="Ditolak">
+                                Ditolak
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </td>
             <td>
                 <div class="action-buttons">
-                    <a href="{{ route('refund-detail') }}" class="btn-lihat-detail">
+                    <a href="{{ route('refund-detail', $refund->id_refund) }}" class="btn-lihat-detail">
                         Lihat Detail
                     </a>
                 </div>
             </td>
         </tr>
-        @endforeach
+        @empty
+        <tr>
+            <td colspan="6" style="text-align: center; padding: 40px; color: #6c757d;">
+                <p>Belum ada pengajuan refund</p>
+            </td>
+        </tr>
+        @endforelse
 
     </x-data-table>
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Update status refund
+    document.querySelectorAll('.update-status').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const refundId = this.dataset.id;
+            const newStatus = this.dataset.status;
+            
+            if (confirm(`Apakah Anda yakin ingin mengubah status menjadi "${newStatus}"?`)) {
+                // Kirim request update status
+                fetch(`/admin/refund/${refundId}/update-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Gagal mengubah status');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan');
+                });
+            }
+        });
+    });
+});
+</script>
+@endpush
