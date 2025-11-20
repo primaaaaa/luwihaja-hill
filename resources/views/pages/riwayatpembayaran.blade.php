@@ -62,44 +62,49 @@
         <tbody id="tableBody">
           @forelse($pembayarans as $pembayaran)
           <tr>
-
             <td>{{ Auth::user()->nama }}</td>
-
             <td>{{ $pembayaran->kode_pembayaran }}</td>
-
             <td>{{ $pembayaran->reservasi->kode_reservasi ?? '-' }}</td>
-
             <td style="font-weight: 600; color: #198754;">
               Rp {{ number_format($pembayaran->reservasi->total_harga ?? 0, 0, ',', '.') }}
             </td>
 
             <td>
-              @if($pembayaran->status == 'Menunggu')
-              <span class="badge badge-warning">Menunggu</span>
-              @elseif($pembayaran->status == 'Lunas')
+              @php
+              $statusClean = trim($pembayaran->status);
+              @endphp
+              
+              @if($statusClean === 'Lunas')
               <span class="badge badge-success">Lunas</span>
-              @elseif($pembayaran->status == 'Batal')
+              @elseif($statusClean === 'Batal')
               <span class="badge badge-danger">Batal</span>
+              @elseif($statusClean === 'Menunggu')
+              <span class="badge badge-warning">Menunggu</span>
               @else
-              <span class="badge badge-secondary">{{ $pembayaran->status }}</span>
+              <span class="badge badge-secondary">{{ $statusClean }}</span>
               @endif
             </td>
 
             <td>
+              @if($statusClean === 'Menunggu')
               <button class="btn-refund" onclick="openModalRefund(
-            '{{ $pembayaran->id_pembayaran }}',
-            '{{ $pembayaran->reservasi->kode_reservasi }}',
-            '{{ $pembayaran->reservasi->tgl_checkin }}',
-            '{{ $pembayaran->reservasi->tgl_checkout }}',
-            '{{ $pembayaran->reservasi->total_harga }}'
-          )">
+                '{{ $pembayaran->id_pembayaran }}',
+                '{{ $pembayaran->reservasi->kode_reservasi }}',
+                '{{ $pembayaran->reservasi->tgl_checkin }}',
+                '{{ $pembayaran->reservasi->tgl_checkout }}',
+                '{{ $pembayaran->reservasi->total_harga }}'
+              )">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
                 </svg>
                 Refund
               </button>
+              @else
+              <span class="text-muted" style="font-size: 14px;">
+                {{ $statusClean === 'Lunas' ? 'Pembayaran Selesai' : 'Dibatalkan' }}
+              </span>
+              @endif
             </td>
-
           </tr>
           @empty
           <tr>
@@ -119,8 +124,6 @@
           </tr>
           @endforelse
         </tbody>
-
-
       </table>
     </div>
 
@@ -128,8 +131,7 @@
     @if($pembayarans->hasPages())
     <div class="pagination-wrapper">
       <div class="pagination-info">
-        Menampilkan {{ $pembayarans->firstItem() ?? 0 }} sampai {{ $pembayarans->lastItem() ?? 0 }} dari {{
-        $pembayarans->total() }} data
+        Menampilkan {{ $pembayarans->firstItem() ?? 0 }} sampai {{ $pembayarans->lastItem() ?? 0 }} dari {{ $pembayarans->total() }} data
       </div>
       <div class="pagination">
         {{-- Previous Page --}}
@@ -160,91 +162,6 @@
   </div>
 </section>
 
-<!-- Modal Refund -->
-{{-- <div id="modalRefund" class="modal-refund">
-  <div class="modal-refund-content">
-    <div class="modal-refund-header">
-      <h2>Formulir Pengajuan Refund</h2>
-      <button class="close-modal-refund" onclick="closeModalRefund()">&times;</button>
-    </div>
-    <div class="modal-refund-body">
-      <form id="formRefund" method="POST" action="{{ route('refund.store') }}" enctype="multipart/form-data">
-        @csrf
-
-        <input type="hidden" id="id_pembayaran" name="id_pembayaran" value="">
-
-        <div class="form-refund-row">
-          <div class="form-refund-group">
-            <label>Nama Pemesan</label>
-            <input type="text" value="{{ Auth::user()->nama }}" readonly>
-          </div>
-          <div class="form-refund-group">
-            <label>Kode Reservasi</label>
-            <input type="text" id="kode_reservasi_display" value="" readonly>
-          </div>
-        </div>
-
-        <div class="form-refund-row">
-          <div class="form-refund-group">
-            <label>Tanggal Check In</label>
-            <input type="date" id="check_in_display" value="" readonly>
-          </div>
-          <div class="form-refund-group">
-            <label>Tanggal Check Out</label>
-            <input type="date" id="check_out_display" value="" readonly>
-          </div>
-        </div>
-
-        <div class="form-refund-group">
-          <label>Alasan Refund <span style="color: red;">*</span></label>
-          <textarea name="alasan_refund" placeholder="Contoh: Berubah Pikiran" required></textarea>
-        </div>
-
-        <div class="form-refund-row">
-          <div class="form-refund-group">
-            <label>Nominal Refund</label>
-            <input type="text" id="nominal_refund_display" readonly>
-          </div>
-          <div class="form-refund-group">
-            <label>Bukti Pendukung (Opsional)</label>
-            <div class="file-upload-refund-wrapper">
-              <label for="fileUploadRefund" class="file-upload-refund-label" id="fileLabel">
-                <span class="file-name-text">Pilih file</span>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                  style="width: 20px; height: 20px; color: #40723F;">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                </svg>
-              </label>
-              <input type="file" name="bukti_pendukung" id="fileUploadRefund" style="display: none;"
-                accept="image/*,.pdf">
-            </div>
-          </div>
-        </div>
-
-        <h3 class="form-refund-section-title">Rekening Pengembalian</h3>
-
-        <div class="bank-refund-row">
-          <div class="form-refund-group">
-            <label>Nama Bank <span style="color: red;">*</span></label>
-            <input type="text" name="nama_bank" placeholder="BCA" required>
-          </div>
-          <div class="form-refund-group">
-            <label>Nomor Rekening <span style="color: red;">*</span></label>
-            <input type="text" name="nomor_rekening" placeholder="920290290" required>
-          </div>
-          <div class="form-refund-group">
-            <label>Nama Pemilik <span style="color: red;">*</span></label>
-            <input type="text" name="nama_pemilik" placeholder="Prima Yudhistira" required>
-          </div>
-        </div>
-
-        <button type="submit" class="btn-submit-refund">Kirim Pengajuan Refund</button>
-      </form>
-    </div>
-  </div>
-</div> --}}
-
 <script>
   const searchInput = document.getElementById('searchInput');
   const tableBody = document.getElementById('tableBody');
@@ -269,26 +186,3 @@
     document.getElementById('check_in_display').value = checkIn;
     document.getElementById('check_out_display').value = checkOut;
     document.getElementById('nominal_refund_display').value = 'Rp ' + parseInt(totalHarga).toLocaleString('id-ID');
-    
-    document.getElementById('modalRefund').classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeModalRefund() {
-    document.getElementById('modalRefund').classList.remove('show');
-    document.body.style.overflow = 'auto';
-  }
-
-  document.getElementById('modalRefund').addEventListener('click', function(e) {
-    if (e.target === this) {
-      closeModalRefund();
-    }
-  });
-
-  document.getElementById('fileUploadRefund').addEventListener('change', function(e) {
-    const fileName = e.target.files[0]?.name || 'Pilih file';
-    document.querySelector('.file-name-text').textContent = fileName;
-  });
-</script>
-
-@endsection

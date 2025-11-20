@@ -127,7 +127,7 @@ class AdminController extends Controller
         return redirect()->route('admin.kamar')
             ->with('success', 'Kamar berhasil dihapus!');
     }
-    
+
     public function detailKamar(Kamar $kamar)
     {
         return view('pages.admin.kamar-detail', compact('kamar'));
@@ -307,6 +307,28 @@ class AdminController extends Controller
 
         return view('pages.admin.pembayaran-detail', compact('pembayaran'));
     }
+
+    public function getStatusLabelAttribute()
+{
+    $labels = [
+        'Menunggu' => 'Menunggu',
+        'Lunas' => 'Lunas',
+        'Batal' => 'Batal',
+    ];
+    
+    return $labels[$this->status] ?? $this->status;
+}
+
+public function getStatusClassAttribute()
+{
+    $classes = [
+        'Menunggu' => 'badge-warning',
+        'Lunas' => 'badge-success',
+        'Batal' => 'badge-danger',
+    ];
+    
+    return $classes[$this->status] ?? 'badge-secondary';
+}
 
     public function DetailRefund()
     {

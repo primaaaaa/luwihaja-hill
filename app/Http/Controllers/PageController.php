@@ -406,20 +406,20 @@ class PageController extends Controller
     }
 
     public function riwayatpembayaran()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
-        $pembayarans = Pembayaran::with('reservasi.kamar')
-            ->whereHas('reservasi', function ($query) {
-                $query->where('id_user', Auth::id());
-            })
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-
-        return view('pages.riwayatpembayaran', compact('pembayarans'));
+{
+    if (!Auth::check()) {
+        return redirect()->route('login');
     }
+
+    $pembayarans = Pembayaran::with(['reservasi.kamar', 'reservasi.user'])
+        ->whereHas('reservasi', function ($query) {
+            $query->where('id_user', Auth::id());
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+
+    return view('pages.riwayatpembayaran', compact('pembayarans'));
+}
 
     public function riwayatreservasi()
     {
