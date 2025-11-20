@@ -7,6 +7,7 @@ use App\Models\Galeri;
 use App\Models\Reservasi;
 use App\Models\Pembayaran;
 use App\Models\Ulasan;
+use App\Models\Refund;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -186,6 +187,18 @@ class AdminController extends Controller
         ]);
     }
 
+   public function deleteUlasan($id)
+{
+    $ulasan = Ulasan::findOrFail($id);
+    $ulasan->delete();
+
+    return redirect()->route('admin.manajemenulasan')
+        ->with('success', 'Ulasan berhasil dihapus!');
+}
+
+
+
+
     public function CMS()
     {
         $galleries = Galeri::orderBy('tgl_upload', 'desc')->get();
@@ -258,11 +271,30 @@ class AdminController extends Controller
         return redirect()->route('cms')->with('success', 'File berhasil dihapus!');
     }
 
+
     public function Refund()
     {
+        $refunds = Refund::with(['reservasi.user'])
+            ->orderBy('tgl_pengajuan', 'desc')
+            ->get();
+
         return view('pages.admin.manajemenrefund', [
-            'tableHeader' => ['Kode Refund', 'Kode Reservasi', 'Nama Tamu', 'Tanggal Pengajuan', 'Status']
+            'tableHeader' => ['Kode Refund', 'Kode Reservasi', 'Nama Tamu', 'Tanggal Pengajuan', 'Status'],
+            'refunds' => $refunds
         ]);
+    }
+
+    public function updateStatusRefund(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:Menunggu,Disetujui,Ditolak'
+        ]);
+
+        $refund = Refund::findOrFail($id);
+        $refund->status = $request->status;
+        $refund->save();
+
+        return response()->json(['success' => true, 'message' => 'Status berhasil diperbarui']);
     }
     public function pembayaran()
     {
@@ -307,10 +339,15 @@ class AdminController extends Controller
 
         return view('pages.admin.pembayaran-detail', compact('pembayaran'));
     }
-    
-    public function DetailRefund()
+
+    public function DetailRefund($id)
     {
-        return view('pages.admin.refund-detail');
+        $refund = Refund::with(['reservasi.user'])
+            ->findOrFail($id);
+
+        return view('pages.admin.refund-detail', [
+            'refund' => $refund
+        ]);
     }
 
     public function DetailReservasi($id)

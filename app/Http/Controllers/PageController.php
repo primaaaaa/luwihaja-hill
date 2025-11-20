@@ -10,6 +10,7 @@ use App\Models\Reservasi;
 use App\Models\Ulasan;
 use App\Models\Galeri;
 use App\Models\User;
+use App\Models\Refund;
 use App\Models\Pembayaran;
 use Illuminate\Http\Request;
 
@@ -17,8 +18,22 @@ class PageController extends Controller
 {
     public function Beranda()
     {
-        return view('pages.beranda');
+        $ulasan = \App\Models\Ulasan::orderBy('tgl_ulasan', 'DESC')
+            ->take(4)
+            ->get();
+
+        $rooms = \App\Models\Kamar::where('status', 'Tersedia')
+            ->whereNotNull('foto_kamar')
+            ->orderBy('id_tipe_villa', 'asc')
+            ->get();
+
+        $featuredRooms = $rooms->groupBy('kategori')
+            ->map->first()
+            ->take(3);
+
+        return view('pages.beranda', compact('ulasan', 'featuredRooms'));
     }
+
 
     public function Tentang()
     {
@@ -406,20 +421,20 @@ class PageController extends Controller
     }
 
     public function riwayatpembayaran()
-{
-    if (!Auth::check()) {
-        return redirect()->route('login');
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $pembayarans = Pembayaran::with(['reservasi.kamar', 'reservasi.user'])
+            ->whereHas('reservasi', function ($query) {
+                $query->where('id_user', Auth::id());
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('pages.riwayatpembayaran', compact('pembayarans'));
     }
-
-    $pembayarans = Pembayaran::with(['reservasi.kamar', 'reservasi.user'])
-        ->whereHas('reservasi', function ($query) {
-            $query->where('id_user', Auth::id());
-        })
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
-
-    return view('pages.riwayatpembayaran', compact('pembayarans'));
-}
 
     public function riwayatreservasi()
     {
@@ -433,5 +448,46 @@ class PageController extends Controller
             ->paginate(10);
 
         return view('pages.riwayatreservasi', compact('reservasis'));
+    }
+
+    public function storeRefund(Request $request)
+    {
+        $request->validate([
+            'id_pembayaran'     => 'required|exists:pembayaran,id_pembayaran',
+            'id_reservasi'      => 'required|exists:reservasi,id_reservasi',
+            'alasan_refund'     => 'required|string|max:500',
+            'bukti_pendukung'   => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+            'nama_bank_tujuan'  => 'required|string|max:100',
+            'norek_tujuan'      => 'required|string|max:50',
+            'pemilik_tujuan'    => 'required|string|max:100',
+        ]);
+
+        $pembayaran = Pembayaran::with('reservasi')->findOrFail($request->id_pembayaran);
+
+        if (!$pembayaran->reservasi) {
+            return back()->with('error', 'Reservasi tidak ditemukan, refund tidak dapat diproses.');
+        }
+
+        $originalName = $request->file('bukti_pendukung')->getClientOriginalName();
+        $filePath = $request->file('bukti_pendukung')->storeAs('refund', $originalName, 'public');
+
+        $lastRefund = Refund::orderBy('id_refund', 'desc')->first();
+        $nextNumber = $lastRefund ? intval(substr($lastRefund->kode_refund, 1)) + 1 : 1;
+        $kodeRefund = 'R' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+
+        Refund::create([
+            'kode_refund'        => $kodeRefund,
+            'id_reservasi'       => $request->id_reservasi,
+            'tgl_pengajuan'      => now(),
+            'alasan_refund'      => $request->alasan_refund,
+            'nominal_refund'     => $pembayaran->reservasi->total_harga ?? 0,
+            'bukti_pendukung'    => $filePath,
+            'nama_bank_tujuan'   => $request->nama_bank_tujuan,
+            'norek_tujuan'       => $request->norek_tujuan,
+            'pemilik_tujuan'     => $request->pemilik_tujuan,
+            'status'             => 'Menunggu',
+        ]);
+
+        return redirect()->back()->with('success', 'Pengajuan refund berhasil dikirim!');
     }
 }
