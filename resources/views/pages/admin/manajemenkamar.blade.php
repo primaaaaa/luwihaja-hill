@@ -202,9 +202,12 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Modal Edit -->
+        
 
         <!-- Modal Delete -->
-         <x-delete-modal :id="$room->id_tipe_villa" :nama="$room->nama_tipe" route="admin.kamar.delete"></x-delete-modal>
+         <x-delete-modal :id="$room->id_tipe_villa" :nama="$room->nama_tipe" route="admin.kamar.delete" page="kamar"></x-delete-modal>
         @endforeach
 
     </x-data-table>
@@ -226,72 +229,39 @@
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label">Kode Tipe</label>
-                            <input type="text" class="form-control kamar-input" name="kode_tipe"
-                                value="{{ $nextKodeTipe }}" readonly style="background-color: #e9ecef;">
+                            <x-input-field type="text" label="Kode Tipe" name="kode_tipe" :value="$nextKodeTipe" readonly="true"></x-input-field>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Unit Kamar</label>
-                            <input type="text" class="form-control kamar-input" name="nama_unit"
-                                placeholder="Masukkan nama unit kamar" required>
+                            <x-input-field type="text" label="Nama Unit" name="nama_unit" placeholder="Masukkan nama unit kamar" required="true"></x-input-field>
+                        </div>
+                    </div>
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-6">
+                            <x-input-field type="number" label="Kapasitas" name="kapasitas" placeholder="Masukkan kapasitas" min="1" required="true"></x-input-field>
+
+                        </div>
+                        <div class="col-md-6">
+                            <x-select-field label="Kategori" name="kategori" required="true"
+                            :option="['Deluxe Bed', 'Queen Bed', 'Twin Bed', 'Super Deluxe', 'Family Room']" placeholder="Pilih Kategori Kamar"
+                            ></x-select-field>
                         </div>
                     </div>
 
                     <div class="row g-3 mt-1">
                         <div class="col-md-6">
-                            <label class="form-label">Kapasitas</label>
-                            <input type="number" class="form-control kamar-input" name="kapasitas"
-                                placeholder="Masukkan kapasitas" min="1" required>
+                            <x-input-field type="number" label="Harga Weekday" name="harga_weekday" placeholder="Masukkan harga weekday" min="0" required="true"></x-input-field>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Kategori</label>
-                            <div class="select-wrapper">
-                                <select class="form-select kamar-input custom-select" name="kategori" required>
-                                    <option selected disabled>Pilih kategori kamar</option>
-                                    <option value="Deluxe Bed">Deluxe Bed</option>
-                                    <option value="Queen Bed">Queen Bed</option>
-                                    <option value="Twin Bed">Twin Bed</option>
-                                    <option value="Super Deluxe">Super Deluxe</option>
-                                    <option value="Family Room">Family Room</option>
-                                </select>
-                            </div>
+                            <x-input-field type="number" label="Harga Weekend" name="harga_weekend" placeholder="Masukkan harga weekend" min="0" required="true"></x-input-field>
                         </div>
                     </div>
 
                     <div class="row g-3 mt-1">
                         <div class="col-md-6">
-                            <label class="form-label">Harga Weekday</label>
-                            <input type="number" class="form-control kamar-input" name="harga_weekday"
-                                placeholder="Masukkan harga weekday" min="0" required>
+                            <x-select-field label="Status" name="status" required="true" :option="['Tersedia', 'Nonaktif']"></x-select-field>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Harga Weekend</label>
-                            <input type="number" class="form-control kamar-input" name="harga_weekend"
-                                placeholder="Masukkan harga weekend" min="0" required>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mt-1">
-                        <div class="col-md-6">
-                            <label class="form-label">Status</label>
-                            <div class="select-wrapper">
-                                <select class="form-select kamar-input custom-select" name="status" required>
-                                    <option value="Tersedia" selected>Tersedia</option>
-                                    <option value="Nonaktif">Nonaktif</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Foto Kamar</label>
-                            <label class="upload-wrapper">
-                                <input type="file" name="foto_kamar" accept="image/*" hidden class="file-input-add">
-                                <span class="file-name-display">Upload foto</span>
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    style="width: 22px; height: 22px; color: #198754;">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                </svg>
-                            </label>
+                            <x-file-upload label="Foto Kamar" name="foto_kamar"></x-file-upload>
                         </div>
                     </div>
 

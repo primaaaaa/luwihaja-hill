@@ -1,4 +1,5 @@
 @props([
+        'page' => '',
         'id' => '',
         'nama' => '',
         'route' => ''
@@ -11,7 +12,7 @@
                     <button type="button" class="btn-close delete-close" data-bs-dismiss="modal"></button>
                     <div class="modal-body text-center delete-modal-body">
                         <h6 class="fw-bold mb-3 delete-title">
-                            Apakah Anda yakin ingin<br>menghapus kamar {{ $nama }}?
+                            Apakah Anda yakin ingin<br>menghapus {{$page}} {{ $nama }}?
                         </h6>
                         <div class="d-flex gap-2 justify-content-center mt-4">
                             <button class="btn btn-tidak" data-bs-dismiss="modal">Tidak</button>

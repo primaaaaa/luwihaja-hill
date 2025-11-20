@@ -128,9 +128,9 @@ class AdminController extends Controller
             ->with('success', 'Kamar berhasil dihapus!');
     }
 
-    public function detailKamar(Kamar $kamar)
+    public function detailKamar(Kamar $kamar )
     {
-        return view('pages.admin.kamar-detail', compact('kamar'));
+        return view('pages.admin.kamar-detail', ['kamar' => $kamar]);
     }
 
 
