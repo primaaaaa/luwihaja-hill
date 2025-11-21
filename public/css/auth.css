@@ -200,25 +200,63 @@ input:focus { outline: none; }
     margin-top: 4px;
     margin-left: 4px;
 }
-
-/* Alert styles */
 .alert {
-    padding: 12px 16px;
-    margin-bottom: 20px;
+    padding: 14px 18px;
     border-radius: 8px;
+    margin-top: 20px;
+    margin-bottom: 16px;
     font-size: 14px;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    animation: slideDown 0.3s ease-out;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    transition: opacity 0.3s ease-out;
 }
 
 .alert-error {
     background-color: #fee2e2;
-    border: 1px solid #fecaca;
-    color: #dc2626;
+    border: 1px solid #fca5a5;
+    color: #991b1b;
 }
 
 .alert-success {
-    background-color: #d1fae5;
-    border: 1px solid #a7f3d0;
-    color: #40723F;
+    background-color: #dcfce7;
+    border: 1px solid #86efac;
+    color: #166534;
+}
+
+/* Animation untuk alert */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Opsional: Tambahkan icon untuk alert */
+.alert::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.alert-error::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23cc3333' d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z'/%3E%3C/svg%3E");
+}
+
+.alert-success::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%2333cc33' d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z'/%3E%3C/svg%3E");
 }
 
 /* Button loading state */
@@ -240,6 +278,7 @@ input:focus { outline: none; }
     .side-link:hover {
         background-color: rgba(255,255,255,0.1);
     }
+
 
 @media (max-width: 968px) {
     .container { flex-direction: column; }

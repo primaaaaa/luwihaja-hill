@@ -1,3 +1,29 @@
+// Fungsi untuk menampilkan alert
+function showAlert(message, type = 'success') {
+    // Hapus alert yang sudah ada
+    const existingAlert = document.querySelector('.alert');
+    if (existingAlert) {
+        existingAlert.remove();
+    }
+
+    // Buat alert baru
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${type}`;
+    alert.textContent = message;
+
+    // Masukkan setelah form
+    const form = document.getElementById('loginForm') || document.getElementById('registerForm');
+    if (form) {
+        form.parentNode.insertBefore(alert, form.nextSibling);
+        
+        // Auto hide setelah 5 detik
+        setTimeout(() => {
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 300);
+        }, 5000);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     // ============= LOGIN FORM =============
     const loginForm = document.getElementById('loginForm');
@@ -35,8 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             try {
                 const csrfToken =
-                    document.querySelector('meta[name="csrf-token"]')
-                        ?.content ||
+                    document.querySelector('meta[name="csrf-token"]')?.content ||
                     document.querySelector('input[name="_token"]')?.value;
 
                 const response = await fetch('/login', {
@@ -52,16 +77,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 const data = await response.json();
 
                 if (response.ok && data.success) {
-                    // Simple alert
-                    alert('Login berhasil!');
-                    window.location.href = data.redirect;
+                    // Tampilkan alert sukses
+                    showAlert('Login berhasil!', 'success');
+                    
+                    // Redirect setelah 1.5 detik
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1500);
                 } else {
                     if (data.errors) {
                         Object.keys(data.errors).forEach((key) => {
                             showError(key, data.errors[key][0]);
                         });
                     } else if (data.message) {
-                        alert(data.message);
+                        // Tampilkan alert error
+                        showAlert(data.message, 'error');
                     }
 
                     loginBtn.disabled = false;
@@ -69,14 +99,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Terjadi kesalahan. Silakan coba lagi.');
+                showAlert('Terjadi kesalahan. Silakan coba lagi.', 'error');
                 loginBtn.disabled = false;
                 loginBtn.textContent = 'Login';
             }
         });
     }
 
-    // ============= REGISTER FORM =============
     const registerForm = document.getElementById('registerForm');
 
     if (registerForm) {
@@ -88,9 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const noTelepon = document.getElementById('noTelepon').value.trim();
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
-            const password_confirmation = document.getElementById(
-                'password_confirmation',
-            ).value;
+            const password_confirmation = document.getElementById('password_confirmation').value;
             const registerBtn = document.getElementById('registerBtn');
 
             // Validasi client-side
@@ -123,16 +150,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (!password_confirmation) {
-                showError(
-                    'password_confirmation',
-                    'Konfirmasi password harus diisi',
-                );
+                showError('password_confirmation', 'Konfirmasi password harus diisi');
                 hasError = true;
             } else if (password !== password_confirmation) {
-                showError(
-                    'password_confirmation',
-                    'Konfirmasi password tidak cocok',
-                );
+                showError('password_confirmation', 'Konfirmasi password tidak cocok');
                 hasError = true;
             }
 
@@ -144,8 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             try {
                 const csrfToken =
-                    document.querySelector('meta[name="csrf-token"]')
-                        ?.content ||
+                    document.querySelector('meta[name="csrf-token"]')?.content ||
                     document.querySelector('input[name="_token"]')?.value;
 
                 const response = await fetch('/register', {
@@ -167,16 +187,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 const data = await response.json();
 
                 if (response.ok && data.success) {
-                    // Simple alert
-                    alert('Registrasi berhasil!');
-                    window.location.href = data.redirect;
+                    showAlert('Registrasi berhasil!', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1500);
                 } else {
                     if (data.errors) {
                         Object.keys(data.errors).forEach((key) => {
                             showError(key, data.errors[key][0]);
                         });
                     } else if (data.message) {
-                        alert(data.message);
+                        // Tampilkan alert error
+                        showAlert(data.message, 'error');
                     }
 
                     registerBtn.disabled = false;
@@ -184,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Terjadi kesalahan. Silakan coba lagi.');
+                showAlert('Terjadi kesalahan. Silakan coba lagi.', 'error');
                 registerBtn.disabled = false;
                 registerBtn.textContent = 'Register';
             }
@@ -192,17 +215,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Real-time validation untuk konfirmasi password
         const passwordInput = document.getElementById('password');
-        const confirmPasswordInput = document.getElementById(
-            'password_confirmation',
-        );
+        const confirmPasswordInput = document.getElementById('password_confirmation');
 
         if (confirmPasswordInput) {
             confirmPasswordInput.addEventListener('input', function () {
                 if (this.value && passwordInput.value !== this.value) {
-                    showError(
-                        'password_confirmation',
-                        'Konfirmasi password tidak cocok',
-                    );
+                    showError('password_confirmation', 'Konfirmasi password tidak cocok');
                 } else {
                     clearError('password_confirmation');
                 }
