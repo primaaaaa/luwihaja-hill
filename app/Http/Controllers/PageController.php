@@ -56,11 +56,14 @@ class PageController extends Controller
                 $q->where('nama_unit', 'LIKE', "%{$search}%")
                     ->orWhere('kategori', 'LIKE', "%{$search}%")
                     ->orWhere('kode_tipe', 'LIKE', "%{$search}%")
-                    ->orWhere('deskripsi', 'LIKE', "%{$search}%");
+                    ->orWhere('deskripsi', 'LIKE', "%{$search}%")
+                    ->orWhere('harga_weekday', 'LIKE', "%{$search}%")
+                    ->orWhere('harga_weekend', 'LIKE', "%{$search}%");
             });
         }
 
-        $rooms = $query->orderBy('id_tipe_villa', 'asc')->paginate(10);
+
+        $rooms = $query->orderBy('id_tipe_villa', 'asc')->paginate(4);
 
         $featuredRooms = Kamar::where('status', 'Tersedia')
             ->whereNotNull('foto_kamar')
@@ -74,8 +77,6 @@ class PageController extends Controller
                 ->limit(5)
                 ->get();
         }
-
-        $rooms = $query->orderBy('id_tipe_villa', 'asc')->paginate(5);
 
         foreach ($rooms as $room) {
             $room->average_rating = Ulasan::whereHas('reservasi', function ($q) use ($room) {

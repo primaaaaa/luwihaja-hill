@@ -35,7 +35,7 @@
         <form action="{{ route('akomodasi') }}" method="GET">
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" name="search" placeholder="Cari akomodasi (contoh: twin bed)"
+                <input type="text" name="search"     placeholder="Cari akomodasi (contoh: twin bed, deluxe, 5000000)"
                     value="{{ request('search') }}">
                 <button type="submit">Cari</button>
             </div>
@@ -93,106 +93,17 @@
             @endif
         </div>
         @empty
-        <!-- Deluxe Room -->
-        <div class="room-card">
-            <div class="room-info">
-                <h3>Deluxe Room</h3>
-                <div class="room-price">
-                    Rp1.800.000
-                    <span class="stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </span>
-                </div>
-                <p class="room-description">Kamar tipe Deluxe memiliki desain yang unik dan terbagi menjadi dua jenis,
-                    yaitu Deluxe Bed dan Super Deluxe.</p>
-                <div class="room-buttons">
-                    <a class="btn-booking" href="{{ url('/booking') }}">Booking Sekarang</a>
-                    <a class="btn-detail" href="{{ url('/detailakomodasi') }}">Lihat Detail</a>
-                </div>
-            </div>
-            <img src="asset/super deluxe.jpg" alt="Deluxe Room" class="room-image">
-        </div>
-
-        <!-- Family Room -->
-        <div class="room-card">
-            <div class="room-info">
-                <h3>Family Room</h3>
-                <div class="room-price">
-                    Rp800.000
-                    <span class="stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </span>
-                </div>
-                <p class="room-description">Kamar luas untuk keluarga 3-4 orang, dengan pilihan harga dan pemandangan
-                    berbeda.</p>
-                <div class="room-buttons">
-                    <a class="btn-booking" href="{{ url('/booking') }}">Booking Sekarang</a>
-                    <a class="btn-detail" href="{{ url('/detailakomodasi') }}">Lihat Detail</a>
-                </div>
-            </div>
-            <img src="asset/familit roiom fr1.jpg" alt="Family Room" class="room-image">
-        </div>
-
-        <!-- Queen Bed -->
-        <div class="room-card">
-            <div class="room-info">
-                <h3>Queen Bed</h3>
-                <div class="room-price">
-                    Rp700.000
-                    <span class="stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </span>
-                </div>
-                <p class="room-description">Kamar untuk 2 orang dewasa dengan sarapan, welcome drink, pemandangan
-                    sungai, Wi-Fi, dan fasilitas lengkap.</p>
-                <div class="room-buttons">
-                    <a class="btn-booking" href="{{ url('/booking') }}">Booking Sekarang</a>
-                    <a class="btn-detail" href="{{ url('/detailakomodasi') }}">Lihat Detail</a>
-                </div>
-            </div>
-            <img src="asset/queenbed1.jpg" alt="Queen Bed" class="room-image">
-        </div>
-
-        <!-- Twin Bed -->
-        <div class="room-card">
-            <div class="room-info">
-                <h3>Twin Bed</h3>
-                <div class="room-price">
-                    Rp600.000
-                    <span class="stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </span>
-                </div>
-                <p class="room-description">Kamar untuk 2 orang dewasa dengan sarapan, welcome drink, pemandangan
-                    sungai, Wi-Fi, dan fasilitas lengkap.</p>
-                <div class="room-buttons">
-                    <a class="btn-booking" href="{{ url('/booking') }}">Booking Sekarang</a>
-                    <a class="btn-detail" href="{{ url('/detailakomodasi') }}">Lihat Detail</a>
-                </div>
-            </div>
-            <img src="asset/twin bed.jpg" alt="Twin Bed" class="room-image">
+        <div class="no-result">
+            <h3>Mohon maaf, tidak ada akomodasi yang ditemukan.</h3>
+            <p>Coba kata kunci lain atau lihat semua akomodasi yang tersedia.</p>
         </div>
         @endforelse
+
 
         <!-- Pagination -->
         @if($rooms->hasPages())
         <div class="pagination">
+
             @if($rooms->onFirstPage())
             <button disabled>
                 <i class="fa-solid fa-chevron-left"></i>
@@ -224,26 +135,14 @@
                 <i class="fa-solid fa-chevron-right"></i>
             </button>
             @endif
-        </div>
-        @else
-        <div class="pagination">
-            <button disabled>
-                <i class="fa-solid fa-chevron-left"></i>
-            </button>
-            <span class="active">1</span>
-            <span>2</span>
-            <span>3</span>
-            <span>4</span>
-            <button>
-                <i class="fa-solid fa-chevron-right"></i>
-            </button>
+
         </div>
         @endif
-    </div>
+
 </section>
 
 <script>
-let slideIndex = 0;
+    let slideIndex = 0;
 function showSlides() {
     const slides = document.querySelectorAll('.slideshow-img');
     if (slides.length === 0) return;

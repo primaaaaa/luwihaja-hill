@@ -58,16 +58,23 @@
                         <td>{{ $r->kamar->kode_tipe }}</td>
 
                         <td>
-                            @if (strtolower($r->status) == 'dikonfirmasi' || strtolower($r->status) == 'konfirmasi')
+                            @php
+                            $statusClean = trim($r->status);
+                            @endphp
+
+                            @if($statusClean === 'Dikonfirmasi' || $statusClean === 'Konfirmasi')
                             <span class="badge badge-success">Dikonfirmasi</span>
-                            @elseif (strtolower($r->status) == 'dibatalkan' || strtolower($r->status) == 'batal')
+                            @elseif($statusClean === 'Batal' || $statusClean === 'Dibatalkan')
                             <span class="badge badge-danger">Dibatalkan</span>
-                            @elseif (strtolower($r->status) == 'selesai' || strtolower($r->status) == 'completed')
+                            @elseif($statusClean === 'Selesai' || $statusClean === 'Completed')
                             <span class="badge badge-info">Selesai</span>
-                            @else
+                            @elseif($statusClean === 'Menunggu')
                             <span class="badge badge-warning">Menunggu</span>
+                            @else
+                            <span class="badge badge-secondary">{{ $statusClean }}</span>
                             @endif
                         </td>
+
                     </tr>
                     @endforeach
                 </tbody>

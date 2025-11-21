@@ -142,9 +142,7 @@ a {
 .hero {
     position: relative;
     min-height: 45vh;
-    background: var(--bg)
-        url('https://www.rumah123.com/seo-cms/assets/Luwihaja_Hill_ea834e4998/Luwihaja_Hill_ea834e4998.jpg')
-        center/cover no-repeat;
+    background: var(--bg) url('https://www.rumah123.com/seo-cms/assets/Luwihaja_Hill_ea834e4998/Luwihaja_Hill_ea834e4998.jpg') center/cover no-repeat;
     color: #fff;
     display: flex;
     align-items: center;
@@ -338,7 +336,7 @@ a {
     direction: rtl;
 }
 
-.content-block.reverse > * {
+.content-block.reverse>* {
     direction: ltr;
 }
 
@@ -373,7 +371,7 @@ a {
     color: #6d6c6c;
 }
 
-.content-text p + p {
+.content-text p+p {
     margin-top: 12px;
 }
 
@@ -1089,56 +1087,59 @@ a {
     object-fit: cover;
 }
 
-/* Search Section */
 .search-section {
-    padding: 40px 0 60px;
-    text-align: center;
+    padding: 40px 0 60px !important;
+    text-align: center !important;
 }
 
 .search-box {
-    max-width: 500px;
-    margin: 0 auto;
-    position: relative;
-    background: #fff;
-    border-radius: 50px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    padding: 8px 8px 8px 24px;
+    margin: 0 auto !important;
+    background: #fff !important;
+    border-radius: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 8px 8px 8px 24px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+    width: 50%;
+    gap: 12px;
 }
 
 .search-box i {
-    color: var(--muted);
-    margin-right: 12px;
+    color: var(--muted) !important;
+    margin-right: 16px !important;
 }
 
 .search-box input {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-size: 0.95rem;
-    font-family: 'Poppins', sans-serif;
-    color: var(--text);
+    flex: 1 !important;
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+    font-size: 0.95rem !important;
+    font-family: 'Poppins', sans-serif !important;
+    color: var(--text) !important;
+    padding-left: 16px !important;
+    box-shadow: none !important;
 }
 
 .search-box input::placeholder {
-    color: var(--muted);
+    color: var(--muted) !important;
 }
 
 .search-box button {
-    background: #f4a43a;
-    color: #ffff;
-    border: none;
-    padding: 10px 30px;
-    border-radius: 50px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: 'Poppins', sans-serif;
+    background: #f4a43a !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 10px 30px !important;
+    border-radius: 50px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.2s !important;
+    font-family: 'Poppins', sans-serif !important;
+    box-shadow: none !important;
 }
 
 .search-box button:hover {
-    background: #f4a43a;
+    background: #40723f !important;
 }
 
 /* Rooms Section */
@@ -2267,6 +2268,18 @@ input[type='date']::-webkit-calendar-picker-indicator {
     box-shadow: 0 6px 16px rgba(209, 158, 19, 0.3);
 }
 
+.no-result {
+    padding: 40px;
+    text-align: center;
+    background: #ffff;
+    border-radius: 12px;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #252b17;
+    font-weight: 500;
+}
+
+
 /* Table Section */
 .table-section {
     padding: 80px 0;
@@ -2432,6 +2445,12 @@ tbody tr:last-child td {
     border: 1px solid #dc3545;
     background: rgba(220, 53, 69, 0.38);
     color: #842029;
+}
+
+.badge-info {
+    border: 1px solid #0d6efd;
+    background: rgba(13, 110, 253, 0.38);
+    color: #084298;
 }
 
 /* Modal Refund */
