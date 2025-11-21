@@ -85,7 +85,6 @@
                                         ({{ $availableRoomsSelected }} Kamar)
                                         @endif
 
-                                        {{-- Tampilkan info tanggal yang dicek --}}
                                         @if($checkInDate != now()->format('Y-m-d'))
                                         <br><small style="color: #999;">untuk {{
                                             \Carbon\Carbon::parse($checkInDate)->format('d M Y') }} - {{
