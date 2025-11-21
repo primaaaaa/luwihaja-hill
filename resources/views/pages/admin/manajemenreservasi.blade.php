@@ -16,7 +16,7 @@
         @forelse ($reservations as $reservation)
         <tr>
             <td>{{ $reservation->kode_reservasi }}</td>
-            <td>{{ $reservation->user->nama ?? 'N/A' }}</td>
+            <td>{{ $reservation->kamar->kode_tipe ?? 'N/A' }}</td>
             <td>{{ \Carbon\Carbon::parse($reservation->tgl_checkin)->format('d M Y') }}</td>
             <td>{{ \Carbon\Carbon::parse($reservation->tgl_checkout)->format('d M Y') }}</td>
             <td>

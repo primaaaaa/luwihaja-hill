@@ -28,19 +28,27 @@
                         <div class="rd-title">
                             <h3>{{ $room->kategori }}</h3>
                             <div class="rdt-right">
-                                ->take(3);
+                                {{-- Button Booking --}}
+                                @if($isAvailable)
+                                <a class="btn-booking"
+                                    href="{{ url('/booking?room=' . $room->id_tipe_villa . '&check_in=' . $checkInDate . '&check_out=' . $checkOutDate) }}">
+                                    Booking Sekarang
+                                </a>
+                                @else
+                                <a class="btn-booking" style="opacity: 0.5; cursor: not-allowed; pointer-events: none;">
+                                    Sudah Dibooking
+                                </a>
+                                @endif
+
                                 <a href="#" class="bagikan-text">Bagikan</a>
                                 <div class="social-share">
-                                    <!-- Facebook Share -->
                                     <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}"
                                         target="_blank" class="social-icon facebook">
                                         <i class="fa-brands fa-facebook-f"></i>
                                     </a>
-                                    <!-- Instagram -->
                                     <a href="https://www.instagram.com/" target="_blank" class="social-icon instagram">
                                         <i class="fa-brands fa-instagram"></i>
                                     </a>
-                                    <!-- WhatsApp Share -->
                                     <a href="https://wa.me/?text=Cek%20kamar%20{{ urlencode($room->nama_unit) }}%20di%20Luwihaja%20Hill%20-%20{{ urlencode(url()->current()) }}"
                                         target="_blank" class="social-icon whatsapp">
                                         <i class="fa-brands fa-whatsapp"></i>
@@ -71,18 +79,17 @@
                                 </tr>
                                 <tr>
                                     <td class="r-o">Ketersediaan:</td>
-                                    <td
-                                        class="status-{{ str_replace(' ', '-', strtolower(session('status_display', $statusToday))) }}">
-                                        @if(session('status_display'))
-                                        {{ session('status_display') }}
-                                        @if(session('available_rooms') !== null && session('available_rooms') > 0)
-                                        ({{ session('available_rooms') }} Kamar)
+                                    <td class="status-{{ str_replace(' ', '-', strtolower($statusSelected)) }}">
+                                        {{ $statusSelected }}
+                                        @if($availableRoomsSelected > 0)
+                                        ({{ $availableRoomsSelected }} Kamar)
                                         @endif
-                                        @else
-                                        {{ $statusToday }}
-                                        @if($availableRoomsToday > 0)
-                                        ({{ $availableRoomsToday }} Kamar)
-                                        @endif
+
+                                        {{-- Tampilkan info tanggal yang dicek --}}
+                                        @if($checkInDate != now()->format('Y-m-d'))
+                                        <br><small style="color: #999;">untuk {{
+                                            \Carbon\Carbon::parse($checkInDate)->format('d M Y') }} - {{
+                                            \Carbon\Carbon::parse($checkOutDate)->format('d M Y') }}</small>
                                         @endif
                                     </td>
                                 </tr>

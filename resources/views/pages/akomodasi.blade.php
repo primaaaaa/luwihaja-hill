@@ -35,7 +35,7 @@
         <form action="{{ route('akomodasi') }}" method="GET">
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" name="search"     placeholder="Cari akomodasi (contoh: twin bed, deluxe, 5000000)"
+                <input type="text" name="search" placeholder="Cari akomodasi (contoh: twin bed, deluxe, 5000000)"
                     value="{{ request('search') }}">
                 <button type="submit">Cari</button>
             </div>
@@ -76,14 +76,20 @@
                     @endphp
                 </p>
                 <div class="room-buttons">
-                    @if($room->status == 'Tersedia')
-                    <a class="btn-booking" href="{{ url('/booking?room=' . $room->id_tipe_villa) }}">Booking
-                        Sekarang</a>
+                    @if($room->is_available)
+                    <a class="btn-booking"
+                        href="{{ url('/booking?room=' . $room->id_tipe_villa . '&check_in=' . $checkInDate . '&check_out=' . $checkOutDate) }}">
+                        Booking Sekarang
+                    </a>
                     @else
-                    <a class="btn-booking" style="opacity: 0.5; cursor: not-allowed; pointer-events: none;">Tidak
-                        Tersedia</a>
+                    <a class="btn-booking" style="opacity: 0.5; cursor: not-allowed; pointer-events: none;">
+                        Sudah Dibooking
+                    </a>
                     @endif
-                    <a class="btn-detail" href="{{ url('/detailakomodasi/' . $room->id_tipe_villa) }}">Lihat Detail</a>
+
+                    <a class="btn-detail" href="{{ url('/detailakomodasi/' . $room->id_tipe_villa) }}">
+                        Lihat Detail
+                    </a>
                 </div>
             </div>
             @if($room->foto_kamar)

@@ -172,10 +172,11 @@ class AdminController extends Controller
             ->get();
 
         return view('pages.admin.manajemenreservasi', [
-            'tableHeader' => ['Kode Reservasi', 'Nama Tamu', 'Tanggal Check-In', 'Tanggal Check-Out', 'Status'],
+            'tableHeader' => ['Kode Reservasi', 'Kode Kamar', 'Tanggal Check-In', 'Tanggal Check-Out', 'Status'],
             'reservations' => $reservations
         ]);
     }
+
 
     public function updateStatusReservasi(Request $request, $id)
     {
