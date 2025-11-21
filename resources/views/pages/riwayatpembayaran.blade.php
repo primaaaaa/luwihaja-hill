@@ -9,7 +9,10 @@
   <div class="overlay"></div>
   <div class="hero-inner">
     <h1>Riwayat <span class="accent">Pembayaran</span></h1>
-    <p>Kelola dan pantau seluruh transaksi Anda di sini. Pastikan semua reservasi tercatat dengan jelas dan aman.</p>
+    <p>Kelola dan pantau seluruh transaksi Anda di sini. Pastikan semua reservasi tercatat dengan jelas dan aman. Lihat
+      kembali <a href="{{ url('/riwayatreservasi') }}" class="link-white-underline">reservasi</a> villa Anda sebelumnya.
+    </p>
+    </p>
   </div>
 </section>
 
@@ -84,35 +87,29 @@
               <span class="badge badge-secondary">{{ $statusClean }}</span>
               @endif
             </td>
-
             <td>
               @php
-              $reservasi = $pembayaran->reservasi;
+              $hasRefund = $pembayaran->refund ? true : false;
               $checkoutDate = $reservasi->tgl_checkout ?? null;
-              $today = \Carbon\Carbon::today();
               @endphp
 
               @if($statusClean === 'Menunggu' || ($statusClean === 'Lunas' && $checkoutDate &&
               $today->lt(\Carbon\Carbon::parse($checkoutDate))))
-              <button class="btn-refund" data-id="{{ $pembayaran->id_pembayaran }}"
+              <button class="btn-refund {{ $hasRefund ? 'disabled' : '' }}" data-id="{{ $pembayaran->id_pembayaran }}"
                 data-idreservasi="{{ $pembayaran->reservasi->id_reservasi }}"
                 data-kode="{{ $pembayaran->reservasi->kode_reservasi }}"
                 data-checkin="{{ $pembayaran->reservasi->tgl_checkin }}"
                 data-checkout="{{ $pembayaran->reservasi->tgl_checkout }}"
-                data-total="{{ $pembayaran->reservasi->total_harga }}">
-                
+                data-total="{{ $pembayaran->reservasi->total_harga }}" {{ $hasRefund ? 'disabled' : '' }}>
                 Ajukan Refund
               </button>
-
-
-
               @else
               <span class="text-muted" style="font-size: 14px;">
                 {{ $statusClean === 'Lunas' ? 'Pembayaran Selesai' : 'Dibatalkan' }}
               </span>
               @endif
-
             </td>
+
           </tr>
           @empty
           <tr>

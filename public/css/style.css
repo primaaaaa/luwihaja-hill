@@ -1926,6 +1926,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
 .room-image-bayar img {
     width: 100px;
     height: 100px;
+    object-fit: cover;
 }
 
 .room-details {
@@ -2781,6 +2782,22 @@ tbody tr:last-child td {
     text-align: center;
 }
 
+.link-white-underline {
+    color: #fff;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.link-white-underline:hover {
+    opacity: 0.85;
+}
+.btn-refund.disabled,
+.btn-refund:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 /* Responsive */
 
 @media (max-width: 991px) {
@@ -3391,6 +3408,32 @@ tbody tr:last-child td {
     }
 
     .table-section tbody tr:not(:has(button)) td:nth-child(6)::before {
+        content: 'Status';
+    }
+
+     .refund-section tbody tr td:nth-child(1) { order: 1; }
+    .refund-section tbody tr td:nth-child(2) { order: 2; }
+    .refund-section tbody tr td:nth-child(3) { order: 3; }
+    .refund-section tbody tr td:nth-child(4) { order: 4; }
+    .refund-section tbody tr td:nth-child(5) { order: 5; }
+    .refund-section tbody tr td:nth-child(6) { order: 6; }
+
+    .refund-section tbody tr td:nth-child(1)::before {
+        content: 'Nama Tamu';
+    }
+    .refund-section tbody tr td:nth-child(2)::before {
+        content: 'Kode Refund';
+    }
+    .refund-section tbody tr td:nth-child(3)::before {
+        content: 'Kode Reservasi';
+    }
+    .refund-section tbody tr td:nth-child(4)::before {
+        content: 'Kode Pembayaran';
+    }
+    .refund-section tbody tr td:nth-child(5)::before {
+        content: 'Tanggal Pengajuan';
+    }
+    .refund-section tbody tr td:nth-child(6)::before {
         content: 'Status';
     }
 

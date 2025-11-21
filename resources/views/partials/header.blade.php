@@ -48,6 +48,11 @@
             <i class="fa-solid fa-credit-card"></i> Pembayaran Saya
           </a>
 
+          <a href="{{ url('/riwayatrefund') }}">
+            <i class="fa-solid fa-wallet"></i> Refund Saya
+          </a>
+
+
           <hr>
 
           <form action="{{ route('logout') }}" method="POST">

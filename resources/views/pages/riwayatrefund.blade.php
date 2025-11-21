@@ -1,22 +1,22 @@
 @extends('layouts.app')
 
-@section('title', 'Riwayat Reservasi | Luwihaja Hill')
+@section('title', 'Riwayat Refund | Luwihaja Hill')
 
 @section('content')
 
 <section class="hero">
     <div class="overlay"></div>
     <div class="hero-inner">
-        <h1>Riwayat <span class="accent">Reservasi</span></h1>
-        <p>Kelola dan pantau seluruh reservasi villa Anda di sini.</p>
+        <h1>Riwayat <span class="accent">Refund</span></h1>
+        <p>Lihat kembali <a href="{{ url('/riwayatpembayaran') }}" class="link-white-underline">pembayaran</a> villa Anda sebelumnya.</p>
     </div>
 </section>
 
-<section class="table-section">
+<div class="table-section refund-section">
     <div class="container">
 
         <div class="section-header">
-            <h2>Daftar Reservasi Saya</h2>
+            <h2>Daftar Refund Saya</h2>
 
             <div class="search-wrapper">
                 <div class="search-box-riwayat">
@@ -36,54 +36,56 @@
                 <thead>
                     <tr>
                         <th>Nama Tamu</th>
+                        <th>Kode Refund</th>
                         <th>Kode Reservasi</th>
-                        <th>Check-in</th>
-                        <th>Check-out</th>
-                        <th>Kode Kamar</th>
+                        <th>Kode Pembayaran</th>
+                        <th>Tanggal Pengajuan</th>
                         <th>Status</th>
                     </tr>
                 </thead>
 
-                <tbody id="reservasiTable">
-                    @foreach ($reservasis as $r)
+                <tbody id="refundTable">
+                    @foreach ($refunds as $r)
                     <tr>
                         <td>{{ Auth::user()->nama }}</td>
 
-                        <td>{{ $r->kode_reservasi }}</td>
+                        <td>{{ $r->kode_refund }}</td>
 
-                        <td>{{ \Carbon\Carbon::parse($r->tgl_checkin)->format('d M Y') }}</td>
+                        <td>{{ $r->reservasi->kode_reservasi ?? '-' }}</td>
 
-                        <td>{{ \Carbon\Carbon::parse($r->tgl_checkout)->format('d M Y') }}</td>
+                        <td>{{ $r->pembayaran->kode_pembayaran ?? '-' }}</td>
 
-                        <td>{{ $r->kamar->kode_tipe }}</td>
 
+                        <td>{{ \Carbon\Carbon::parse($r->tgl_pengajuan)->format('d M Y') }}</td>
                         <td>
                             @php
                             $statusClean = trim($r->status);
                             @endphp
 
-                            @if($statusClean === 'Dikonfirmasi' || $statusClean === 'Konfirmasi')
-                            <span class="badge badge-success">Dikonfirmasi</span>
-                            @elseif($statusClean === 'Batal' || $statusClean === 'Dibatalkan')
-                            <span class="badge badge-danger">Dibatalkan</span>
-                            @elseif($statusClean === 'Selesai' || $statusClean === 'Completed')
-                            <span class="badge badge-info">Selesai</span>
+                            @if($statusClean === 'Disetujui')
+                            <span class="badge badge-success">Disetujui</span>
+                            @elseif($statusClean === 'Ditolak')
+                            <span class="badge badge-danger">Ditolak</span>
                             @elseif($statusClean === 'Menunggu')
                             <span class="badge badge-warning">Menunggu</span>
                             @else
                             <span class="badge badge-secondary">{{ $statusClean }}</span>
                             @endif
-                        </td>
 
+                        </td>
                     </tr>
                     @endforeach
+                    @if ($refunds->isEmpty())
+                    <tr>
+                        <td colspan="6" style="text-align: center;">Belum ada refund diajukan.</td>
+                    </tr>
+                    @endif
                 </tbody>
-
             </table>
         </div>
 
         <div class="pagination-wrapper">
-            {{ $reservasis->links() }}
+            {{ $refunds->links() }}
         </div>
 
     </div>
@@ -94,7 +96,7 @@
 @push('scripts')
 <script>
     const searchInput = document.getElementById('searchInput');
-    const tableBody = document.getElementById('reservasiTable');
+    const tableBody = document.getElementById('refundTable');
     const rows = tableBody.querySelectorAll('tr');
 
     searchInput.addEventListener('input', function(e) {

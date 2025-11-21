@@ -33,6 +33,7 @@ class Kamar extends Model
                     ->whereIn('status', ['Menunggu', 'Dikonfirmasi']);
     }
 
+
     public function getFormattedHargaWeekdayAttribute()
     {
         return 'Rp ' . number_format($this->harga_weekday, 0, ',', '.');

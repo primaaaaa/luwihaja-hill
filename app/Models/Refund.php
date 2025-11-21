@@ -41,6 +41,13 @@ class Refund extends Model
         return $this->belongsTo(Reservasi::class, 'id_reservasi', 'id_reservasi');
     }
 
+    public function pembayaran()
+    {
+        return $this->belongsTo(Pembayaran::class, 'id_reservasi', 'id_reservasi');
+    }
+
+
+
     /**
      * Accessor untuk badge status
      */
@@ -68,8 +75,8 @@ class Refund extends Model
      */
     public function getBuktiUrlAttribute()
     {
-        return $this->bukti_pendukung 
-            ? asset('storage/' . $this->bukti_pendukung) 
+        return $this->bukti_pendukung
+            ? asset('storage/' . $this->bukti_pendukung)
             : null;
     }
 
@@ -97,25 +104,19 @@ class Refund extends Model
         return $query->where('status', 'Disetujui');
     }
 
-    /**
-     * Scope untuk refund yang ditolak
-     */
     public function scopeDitolak($query)
     {
         return $query->where('status', 'Ditolak');
     }
 
-    /**
-     * Mutator untuk memastikan status valid
-     */
     public function setStatusAttribute($value)
     {
         $allowedStatuses = ['Menunggu', 'Disetujui', 'Ditolak'];
-        
+
         if (!in_array($value, $allowedStatuses)) {
             throw new \InvalidArgumentException("Status '{$value}' tidak valid. Gunakan: " . implode(', ', $allowedStatuses));
         }
-        
+
         $this->attributes['status'] = $value;
     }
 }

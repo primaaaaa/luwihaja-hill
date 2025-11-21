@@ -16,7 +16,7 @@
     <section class="success-section">
       <div class="container">
         <div class="success-icon">
-           <img src="asset/sukses.png">
+            <img src="{{ asset('asset/sukses.png') }}" alt="Sukses">
         </div>
         
         <div class="success-content">

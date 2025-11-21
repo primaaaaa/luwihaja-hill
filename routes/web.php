@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pembayaransukses/{id}', [PageController::class, 'pembayaranSukses'])->name('pages.pembayaransukses');
     Route::get('/riwayatpembayaran', [PageController::class, 'riwayatpembayaran'])->name('riwayatpembayaran');
     Route::get('/riwayatreservasi', [PageController::class, 'riwayatreservasi'])->name('riwayatreservasi');
+    Route::get('/riwayatrefund', [PageController::class, 'riwayatrefund'])->name('riwayatrefund');
     Route::post('/refund/store', [PageController::class, 'storeRefund'])->name('refund.store');
     Route::post('/ulasan/store', [PageController::class, 'storeUlasan'])->name('ulasan.store');
 });

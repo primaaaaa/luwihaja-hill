@@ -82,6 +82,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read mixed $status_badge
+ * @property-read \App\Models\Refund|null $refund
  * @property-read \App\Models\Reservasi $reservasi
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Pembayaran newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Pembayaran newQuery()
@@ -120,6 +121,7 @@ namespace App\Models{
  * @property-read mixed $bukti_url
  * @property-read mixed $nominal_format
  * @property-read mixed $status_badge
+ * @property-read \App\Models\Pembayaran $pembayaran
  * @property-read \App\Models\Reservasi $reservasi
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund disetujui()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund ditolak()

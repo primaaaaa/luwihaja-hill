@@ -18,7 +18,7 @@ class AdminController extends Controller
 {
     public function Dashboard()
     {
-        return view('pages.admin.dashboard' ,[
+        return view('pages.admin.dashboard', [
             'jml_kamar' => Kamar::count(),
             'jml_reservasi' => Reservasi::count(),
             'jml_ulasan' => Ulasan::count()
@@ -29,16 +29,16 @@ class AdminController extends Controller
     {
         $rooms = Kamar::orderBy('created_at', 'desc')->get();
 
+        $this->updateAllRoomStatus();
+
         $lastKamar = Kamar::orderBy('id_tipe_villa', 'desc')->first();
         $nextNumber = $lastKamar ? intval(substr($lastKamar->kode_tipe, 1)) + 1 : 1;
         $nextKodeTipe = 'K' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
 
         return view('pages.admin.manajemenkamar', [
-
             'rooms' => $rooms,
             'nextKodeTipe' => $nextKodeTipe,
             'tableHeader' => ['Kode Kamar', 'Unit', 'Kapasitas', 'Kategori', 'Status']
-
         ]);
     }
 
@@ -101,6 +101,8 @@ class AdminController extends Controller
 
         $kamar->update($validated);
 
+        $this->updateRoomStatus($id);
+
         return redirect()->route('admin.kamar')
             ->with('success', 'Kamar berhasil diupdate!');
     }
@@ -112,6 +114,29 @@ class AdminController extends Controller
         $validated = $request->validate([
             'status' => 'required|in:Tersedia,Nonaktif'
         ]);
+
+        $today = date('Y-m-d');
+
+        $hasCurrentGuest = Reservasi::where('id_tipe_villa', $kamar->id_tipe_villa)
+            ->whereIn('status', ['Dikonfirmasi'])
+            ->where('tgl_checkin', '<=', $today)
+            ->where('tgl_checkout', '>', $today)
+            ->exists();
+
+        $hasFutureReservation = Reservasi::where('id_tipe_villa', $kamar->id_tipe_villa)
+            ->whereIn('status', ['Menunggu', 'Dikonfirmasi'])
+            ->where('tgl_checkin', '>', $today)
+            ->exists();
+
+        if ($validated['status'] == 'Tersedia' && $hasCurrentGuest) {
+            return redirect()->route('admin.kamar')
+                ->with('error', 'Tidak dapat mengubah status! Kamar sedang terisi oleh tamu.');
+        }
+
+        if ($validated['status'] == 'Tersedia' && $hasFutureReservation) {
+            return redirect()->route('admin.kamar')
+                ->with('warning', 'Perhatian! Kamar memiliki reservasi mendatang yang masih aktif.');
+        }
 
         $kamar->update($validated);
 
@@ -133,14 +158,15 @@ class AdminController extends Controller
             ->with('success', 'Kamar berhasil dihapus!');
     }
 
-    public function detailKamar(Kamar $kamar )
+    public function detailKamar(Kamar $kamar)
     {
         return view('pages.admin.kamar-detail', ['kamar' => $kamar]);
     }
 
-
     public function Reservasi()
     {
+        $this->updateAllRoomStatus();
+
         $reservations = Reservasi::with(['user', 'kamar'])
             ->orderBy('created_at', 'desc')
             ->get();
@@ -153,13 +179,16 @@ class AdminController extends Controller
 
     public function updateStatusReservasi(Request $request, $id)
     {
+        $reservasi = Reservasi::findOrFail($id);
+
         $request->validate([
             'status' => 'required|in:Menunggu,Dikonfirmasi,Selesai,Dibatalkan'
         ]);
 
-        $reservasi = Reservasi::findOrFail($id);
         $reservasi->status = $request->status;
         $reservasi->save();
+
+        $this->updateRoomStatus($reservasi->id_tipe_villa);
 
         return redirect()->back()->with('success', 'Status reservasi berhasil diupdate!');
     }
@@ -167,10 +196,65 @@ class AdminController extends Controller
     public function deleteReservasi($id)
     {
         $reservasi = Reservasi::findOrFail($id);
+        $roomId = $reservasi->id_tipe_villa;
+
         $reservasi->delete();
+
+        $this->updateRoomStatus($roomId);
 
         return redirect()->back()->with('success', 'Reservasi berhasil dihapus!');
     }
+
+    public function DetailReservasi($id)
+    {
+        $reservasi = Reservasi::with(['user', 'kamar'])
+            ->findOrFail($id);
+        return view('pages.admin.reservasi-detail', compact('reservasi'));
+    }
+
+    private function updateRoomStatus($roomId)
+    {
+        $kamar = Kamar::findOrFail($roomId);
+
+        if ($kamar->status == 'Nonaktif') {
+            return;
+        }
+
+        $today = date('Y-m-d');
+
+        $isOccupied = Reservasi::where('id_tipe_villa', $kamar->id_tipe_villa)
+            ->where('status', 'Dikonfirmasi')
+            ->where('tgl_checkin', '<=', $today)
+            ->where('tgl_checkout', '>', $today)
+            ->exists();
+
+        if ($isOccupied) {
+            $kamar->update(['status' => 'Terisi']);
+            return;
+        }
+
+        $hasReservation = Reservasi::where('id_tipe_villa', $kamar->id_tipe_villa)
+            ->whereIn('status', ['Menunggu', 'Dikonfirmasi'])
+            ->where('tgl_checkin', '>', $today)
+            ->exists();
+
+        if ($hasReservation) {
+            $kamar->update(['status' => 'Dipesan']);
+            return;
+        }
+
+        $kamar->update(['status' => 'Tersedia']);
+    }
+
+    private function updateAllRoomStatus()
+    {
+        $rooms = Kamar::where('status', '!=', 'Nonaktif')->get();
+
+        foreach ($rooms as $room) {
+            $this->updateRoomStatus($room->id_tipe_villa);
+        }
+    }
+
 
     public function Ulasan()
     {
@@ -191,16 +275,14 @@ class AdminController extends Controller
         ]);
     }
 
-   public function deleteUlasan($id)
-{
-    $ulasan = Ulasan::findOrFail($id);
-    $ulasan->delete();
+    public function deleteUlasan($id)
+    {
+        $ulasan = Ulasan::findOrFail($id);
+        $ulasan->delete();
 
-    return redirect()->route('admin.manajemenulasan')
-        ->with('success', 'Ulasan berhasil dihapus!');
-}
-
-
+        return redirect()->route('admin.manajemenulasan')
+            ->with('success', 'Ulasan berhasil dihapus!');
+    }
 
 
     public function CMS()
@@ -300,6 +382,16 @@ class AdminController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Status berhasil diperbarui']);
     }
+
+    public function DetailRefund($id)
+    {
+        $refund = Refund::with(['reservasi.user'])
+            ->findOrFail($id);
+
+        return view('pages.admin.refund-detail', [
+            'refund' => $refund
+        ]);
+    }
     public function pembayaran()
     {
         $pembayarans = Pembayaran::with('reservasi.user', 'reservasi.kamar')
@@ -320,6 +412,7 @@ class AdminController extends Controller
             'status' => 'required|in:Menunggu,Lunas,Batal'
         ]);
 
+        $reservasi = Reservasi::findOrFail($id);
         $pembayaran = Pembayaran::findOrFail($id);
 
         if ($pembayaran->status !== 'Menunggu') {
@@ -334,6 +427,9 @@ class AdminController extends Controller
 
         $pembayaran->save();
 
+        $this->updateRoomStatus($reservasi->id_tipe_villa);
+
+
         return redirect()->back()->with('success', 'Status pembayaran berhasil diupdate!');
     }
     public function DetailPembayaran($id)
@@ -342,22 +438,5 @@ class AdminController extends Controller
             ->findOrFail($id);
 
         return view('pages.admin.pembayaran-detail', compact('pembayaran'));
-    }
-
-    public function DetailRefund($id)
-    {
-        $refund = Refund::with(['reservasi.user'])
-            ->findOrFail($id);
-
-        return view('pages.admin.refund-detail', [
-            'refund' => $refund
-        ]);
-    }
-
-    public function DetailReservasi($id)
-    {
-        $reservasi = Reservasi::with(['user', 'kamar'])
-            ->findOrFail($id);
-        return view('pages.admin.reservasi-detail', compact('reservasi'));
     }
 }

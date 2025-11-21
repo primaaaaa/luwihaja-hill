@@ -60,15 +60,18 @@
               <option value="" disabled {{ !$selectedRoom ? 'selected' : '' }}>Pilih Tipe Villa</option>
               @foreach($rooms as $room)
               <option value="{{ $room->id_tipe_villa }}" data-weekday="{{ $room->harga_weekday }}"
-                data-weekend="{{ $room->harga_weekend }}" data-nama="{{ $room->kategori }}" {{ $selectedRoom &&
-                $selectedRoom->id_tipe_villa == $room->id_tipe_villa ? 'selected' : '' }}>
+                data-weekend="{{ $room->harga_weekend }}" data-nama="{{ $room->kategori }}"
+                data-foto="{{ asset('storage/kamar/' . $room->foto_kamar) }}" data-kapasitas="{{ $room->kapasitas }}"
+                data-unit="{{ $room->nama_unit }}" {{ $selectedRoom && $selectedRoom->id_tipe_villa ==
+                $room->id_tipe_villa ? 'selected' : '' }}>
+
                 {{ $room->kategori }} - {{ $room->nama_unit }}
               </option>
               @endforeach
             </select>
           </div>
 
-          <!-- Hidden inputs untuk harga -->
+
           <input type="hidden" id="hargaPerMalam" name="harga_per_malam" value="0">
           <input type="hidden" id="totalHarga" name="total_harga" value="0">
 
@@ -88,16 +91,15 @@
 
         <div class="room-preview-bayar" id="roomPreview">
           <div class="room-image-bayar">
-            <img src="asset/super deluxe.jpg">
+           <img src="{{ asset('asset/home.jpg') }}" id="roomImagePreview" alt="Villa Image">
           </div>
           <div class="room-details">
-            <h3>
-              Tipe Kamar
-              <span class="price" id="displayPrice">-</span>
+            <h3> Tipe Kamar
+              <span class="price" id="displayType">-</span>
             </h3>
-            <p id="displayType">-</p>
-            <p>Kapasitas: 2-4 orang</p>
-            <p>Unit: 1</p>
+            <p>Kapasitas: <span id="displayKapasitas">-</span></p>
+            <p>Unit: <span id="displayUnit">-</span></p>
+
           </div>
         </div>
 
@@ -204,48 +206,57 @@
   const tipeSelect = document.getElementById('tipe');
   const paymentBtn = document.getElementById('paymentBtn');
 
-  // Set minimum dates
   const today = new Date().toISOString().split('T')[0];
   checkinInput.min = today;
 
-  // Fungsi untuk cek apakah weekend
+  function formatRupiah(number) {
+    return 'Rp ' + number.toLocaleString('id-ID');
+  }
+
   function isWeekend(dateString) {
     const date = new Date(dateString);
     const day = date.getDay();
     return day === 0 || day === 6;
   }
 
-  // Fungsi untuk cek berapa hari weekend
   function countWeekendDays(checkin, checkout) {
     let count = 0;
     let currentDate = new Date(checkin);
     const endDate = new Date(checkout);
-    
     while (currentDate < endDate) {
-      if (isWeekend(currentDate.toISOString().split('T')[0])) {
-        count++;
-      }
+      if (isWeekend(currentDate.toISOString().split('T')[0])) count++;
       currentDate.setDate(currentDate.getDate() + 1);
     }
     return count;
   }
 
-  // Update room type display
-  tipeSelect.addEventListener('change', function() {
+  function updateRoomDisplay() {
+    const selectedOption = tipeSelect.options[tipeSelect.selectedIndex];
+    if (!selectedOption || selectedOption.value === "") return;
+
+    document.getElementById('displayType').textContent =
+      selectedOption.dataset.nama || "-";
+
+  let fotoUrl = selectedOption.dataset.foto || "{{ asset('images/no-image.png') }}";
+document.getElementById('roomImagePreview').src = encodeURI(fotoUrl);
+
+    document.getElementById('displayKapasitas').textContent =
+      selectedOption.dataset.kapasitas || "-";
+
+    document.getElementById('displayUnit').textContent =
+      selectedOption.dataset.unit || "-";
+  }
+  tipeSelect.addEventListener('change', function () {
+      updateRoomDisplay();
     const selectedOption = this.options[this.selectedIndex];
-    const weekdayPrice = parseInt(selectedOption.dataset.weekday);
-    const roomType = selectedOption.dataset.nama;
-    
-    document.getElementById('displayType').textContent = roomType;
-    document.getElementById('displayPrice').textContent = formatRupiah(weekdayPrice);
+    document.getElementById('displayType').textContent = selectedOption.dataset.nama || "-";
   });
 
-  // Update checkout minimum date when checkin changes
-  checkinInput.addEventListener('change', function() {
+  checkinInput.addEventListener('change', function () {
     const nextDay = new Date(this.value);
     nextDay.setDate(nextDay.getDate() + 1);
     checkoutInput.min = nextDay.toISOString().split('T')[0];
-    
+
     if (checkoutInput.value && checkoutInput.value <= this.value) {
       checkoutInput.value = '';
     }
@@ -255,13 +266,9 @@
     const checkin = checkinInput.value;
     const checkout = checkoutInput.value;
     const selectedOption = tipeSelect.options[tipeSelect.selectedIndex];
-    
-    if (!checkin || !checkout || !selectedOption.value) {
-      document.getElementById('pricePerNight').textContent = '-';
-      document.getElementById('nights').textContent = '-';
-      document.getElementById('subtotal').textContent = '-';
-      document.getElementById('total').textContent = '-';
-      paymentBtn.disabled = true;
+
+    if (!checkin || !checkout || !selectedOption || selectedOption.value === "") {
+      resetTotalCard();
       return;
     }
 
@@ -273,11 +280,7 @@
     const totalNights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
 
     if (totalNights <= 0) {
-      document.getElementById('pricePerNight').textContent = '-';
-      document.getElementById('nights').textContent = '-';
-      document.getElementById('subtotal').textContent = '-';
-      document.getElementById('total').textContent = '-';
-      paymentBtn.disabled = true;
+      resetTotalCard();
       return;
     }
 
@@ -294,40 +297,42 @@
     document.getElementById('nights').textContent = totalNights + ' malam';
     document.getElementById('subtotal').textContent = formatRupiah(total);
     document.getElementById('total').textContent = formatRupiah(total);
-    
+
     paymentBtn.disabled = false;
   }
 
-  function formatRupiah(number) {
-    return 'Rp ' + number.toLocaleString('id-ID');
+  function resetTotalCard() {
+    document.getElementById('pricePerNight').textContent = '-';
+    document.getElementById('nights').textContent = '-';
+    document.getElementById('subtotal').textContent = '-';
+    document.getElementById('total').textContent = '-';
+    paymentBtn.disabled = true;
   }
 
   function handleLanjutkan() {
-    const checkin = checkinInput.value;
-    const checkout = checkoutInput.value;
-    const tipe = tipeSelect.value;
-
-    if (!checkin || !checkout || !tipe) {
-      alert('Mohon lengkapi semua data!');
+    if (!checkinInput.value || !checkoutInput.value || !tipeSelect.value) {
+      alert('Mohon lengkapi semua data reservasi!');
       return;
     }
 
-    document.getElementById('roomPreview').classList.add('show');
-    calculateTotal();
+    updateRoomDisplay();
     
-    document.getElementById('totalCard').scrollIntoView({ 
-      behavior: 'smooth', 
-      block: 'nearest' 
+    document.getElementById('roomPreview').classList.add('show');
+    
+    calculateTotal();
+
+    document.getElementById('totalCard').scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
     });
   }
 
   function handlePayment() {
-    const total = document.getElementById('total').textContent;
-    if (total === '-') {
-      alert('Silakan klik tombol "Lanjutkan" terlebih dahulu untuk menghitung total');
+    if (document.getElementById('total').textContent === '-') {
+      alert('Silakan klik tombol "Lanjutkan" terlebih dahulu!');
       return;
     }
-    
+
     document.getElementById('paymentModal').classList.add('show');
   }
 
@@ -338,107 +343,67 @@
   function handleFileUpload() {
     const fileInput = document.getElementById('buktiFile');
     const fileLabel = document.getElementById('fileLabel');
-    
     if (fileInput.files.length > 0) {
-      const fileName = fileInput.files[0].name;
       const fileSize = fileInput.files[0].size;
-      const fileNameSpan = fileLabel.querySelector('.file-name-text');
-      
       if (fileSize > 2048000) {
-        alert('Ukuran file terlalu besar! Maksimal 2MB');
+        alert('Ukuran maksimal 2MB!');
         fileInput.value = '';
         return;
       }
-      
-      if (fileNameSpan) {
-        fileNameSpan.textContent = fileName;
+      const fileNameText = fileLabel.querySelector('.file-name-text');
+      if (fileNameText) {
+        fileNameText.textContent = fileInput.files[0].name;
       }
-      fileLabel.style.color = 'var(--green-900)';
-      fileLabel.style.fontWeight = '500';
     }
   }
 
-function submitPayment() {
+  function submitPayment() {
     const namaPemilik = document.getElementById('namaPemilik').value.trim();
     const namaBank = document.getElementById('namaBank').value.trim();
     const nomorRekening = document.getElementById('nomorRekening').value.trim();
-    const buktiFile = document.getElementById('buktiFile').files[0];
     const metode = document.getElementById('metodePembayaran').value;
+    const buktiFile = document.getElementById('buktiFile').files[0];
 
-    // Validasi
-    if (!namaPemilik || !namaBank || !nomorRekening || !buktiFile || !metode) {
+    if (!namaPemilik || !namaBank || !nomorRekening || !metode || !buktiFile) {
       alert('Mohon lengkapi semua data pembayaran!');
       return;
     }
 
-    if (namaPemilik.length < 3) {
-      alert('Nama pemilik rekening minimal 3 karakter!');
-      return;
-    }
-
     if (!/^\d+$/.test(nomorRekening)) {
-      alert('Nomor rekening hanya boleh berisi angka!');
+      alert('Nomor rekening harus angka!');
       return;
     }
 
-    // Transfer data ke hidden input
     document.getElementById('hiddenNamaPemilik').value = namaPemilik;
     document.getElementById('hiddenNamaBank').value = namaBank;
     document.getElementById('hiddenNomorRekening').value = nomorRekening;
     document.getElementById('hiddenMetodePembayaran').value = metode;
 
-    // ✅ PERBAIKAN: Gunakan FormData untuk handle file upload
     const mainForm = document.getElementById('bookingForm');
-    const fileInput = document.getElementById('buktiFile');
-    
-    // Buat input file baru di form utama
     const newFileInput = document.createElement('input');
     newFileInput.type = 'file';
     newFileInput.name = 'bukti_pembayaran';
     newFileInput.style.display = 'none';
-    
-    // Transfer file dari modal ke input baru
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(fileInput.files[0]);
-    newFileInput.files = dataTransfer.files;
-    
-    // Tambahkan ke form
+    const dt = new DataTransfer();
+    dt.items.add(buktiFile);
+    newFileInput.files = dt.files;
     mainForm.appendChild(newFileInput);
 
-    // Close modal dan submit
     closeModal();
-    
-    // Optional: Tampilkan loading
-    const submitButtons = document.querySelectorAll('button[type="button"]');
-    submitButtons.forEach(btn => {
-      btn.disabled = true;
-      btn.textContent = 'Mengirim...';
-    });
-    
-    // Submit form
     mainForm.submit();
   }
 
-  window.onclick = function(event) {
+  window.onclick = function (event) {
     const modal = document.getElementById('paymentModal');
-    if (event.target === modal) {
-      closeModal();
-    }
-  }
+    if (event.target === modal) closeModal();
+  };
 
-  window.addEventListener('DOMContentLoaded', function() {
-    if (tipeSelect.value) {
-      const selectedOption = tipeSelect.options[tipeSelect.selectedIndex];
-      document.getElementById('displayType').textContent = selectedOption.dataset.nama;
-    }
-  });
-
-  document.getElementById('paymentModal').addEventListener('keypress', function(e) {
+  document.getElementById('paymentModal').addEventListener('keypress', function (e) {
     if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') {
       e.preventDefault();
-      return false;
     }
   });
 </script>
+
 
 @endsection

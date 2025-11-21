@@ -22,7 +22,7 @@ class PageController extends Controller
             ->take(4)
             ->get();
 
-        $rooms = \App\Models\Kamar::where('status', 'Tersedia')
+        $rooms = \App\Models\Kamar::whereNotNull('foto_kamar')
             ->whereNotNull('foto_kamar')
             ->orderBy('id_tipe_villa', 'asc')
             ->get();
@@ -30,6 +30,7 @@ class PageController extends Controller
         $featuredRooms = $rooms->groupBy('kategori')
             ->map->first()
             ->take(3);
+
 
         return view('pages.beranda', compact('ulasan', 'featuredRooms'));
     }
@@ -151,20 +152,16 @@ class PageController extends Controller
             'availableRoomsToday'
         ));
     }
+
     public function checkAvailability(Request $request)
     {
         $request->validate([
             'id_tipe_villa' => 'required|exists:tipe_villa,id_tipe_villa',
             'check_in' => 'required|date|after_or_equal:today',
             'check_out' => 'required|date|after:check_in',
-        ], [
-            'check_in.after_or_equal' => 'Tanggal check-in tidak boleh sebelum hari ini.',
-            'check_out.after' => 'Tanggal check-out harus setelah check-in.',
         ]);
 
-        $totalKamar = Kamar::where('id_tipe_villa', $request->id_tipe_villa)
-            ->where('status', 'Tersedia')
-            ->count();
+        $totalKamar = Kamar::where('id_tipe_villa', $request->id_tipe_villa)->count();
 
         $bookedKamar = Reservasi::where('id_tipe_villa', $request->id_tipe_villa)
             ->whereIn('status', ['Menunggu', 'Dikonfirmasi'])
@@ -185,21 +182,19 @@ class PageController extends Controller
         $availableKamar = $totalKamar - $bookedKamar;
 
         if ($availableKamar <= 0) {
-            return redirect()->back()
-                ->with('availability_status', 'unavailable')
-                ->with('availability_message', 'Maaf, kamar tidak tersedia untuk tanggal yang dipilih.')
-                ->with('available_rooms', 0)
+            return back()
                 ->with('status_display', 'Tidak Tersedia')
-                ->withInput();
+                ->with('availability_status', 'unavailable')
+                ->with('availability_message', 'Maaf, kamar tidak tersedia untuk tanggal yang dipilih.');
         }
 
-        return redirect()->back()
-            ->with('availability_status', 'available')
-            ->with('availability_message', "Kamar tersedia! Terdapat {$availableKamar} kamar untuk tanggal tersebut.")
-            ->with('available_rooms', $availableKamar)
+        return back()
             ->with('status_display', 'Tersedia')
-            ->withInput();
+            ->with('availability_status', 'available')
+            ->with('availability_message', "Tersedia $availableKamar kamar!")
+            ->with('available_rooms', $availableKamar);
     }
+
     public function storeUlasan(Request $request)
     {
         if (!Auth::check()) {
@@ -293,7 +288,6 @@ class PageController extends Controller
             'check_in' => 'required|date|after_or_equal:today',
             'check_out' => 'required|date|after:check_in',
             'total_harga' => 'required|numeric|min:0',
-
             'nama_pemilik' => 'required|string|max:100',
             'nama_bank' => 'required|string|max:50',
             'nomor_rekening' => 'required|string|max:30',
@@ -308,7 +302,6 @@ class PageController extends Controller
             'check_out.after' => 'Tanggal check-out harus setelah check-in.',
             'total_harga.required' => 'Total harga harus diisi.',
             'total_harga.min' => 'Total harga tidak valid.',
-
             'nama_pemilik.required' => 'Nama pemilik rekening harus diisi.',
             'nama_pemilik.max' => 'Nama pemilik maksimal 100 karakter.',
             'nama_bank.required' => 'Nama bank harus diisi.',
@@ -373,7 +366,6 @@ class PageController extends Controller
                 $buktiBayar = 'uploads/bukti_pembayaran/' . $fileName;
             }
 
-            // Generate kode pembayaran berurutan
             $lastPembayaran = Pembayaran::orderBy('id_pembayaran', 'desc')->first();
             $nextPayNumber = $lastPembayaran ? ($lastPembayaran->id_pembayaran + 1) : 1;
             $kodePembayaran = 'PAY-' . str_pad($nextPayNumber, 6, '0', STR_PAD_LEFT);
@@ -389,6 +381,8 @@ class PageController extends Controller
                 'metode_pembayaran' => $request->metode_pembayaran,
                 'status' => 'Menunggu',
             ]);
+
+            $this->updateRoomStatus($request->id_tipe_villa);
 
             DB::commit();
 
@@ -407,6 +401,39 @@ class PageController extends Controller
         }
     }
 
+    private function updateRoomStatus($roomId)
+    {
+        $kamar = Kamar::findOrFail($roomId);
+
+        if ($kamar->status == 'Nonaktif') {
+            return;
+        }
+
+        $today = date('Y-m-d');
+
+        $isOccupied = Reservasi::where('id_tipe_villa', $kamar->id_tipe_villa)
+            ->where('status', 'Dikonfirmasi')
+            ->where('tgl_checkin', '<=', $today)
+            ->where('tgl_checkout', '>', $today)
+            ->exists();
+
+        if ($isOccupied) {
+            $kamar->update(['status' => 'Terisi']);
+            return;
+        }
+
+        $hasReservation = Reservasi::where('id_tipe_villa', $kamar->id_tipe_villa)
+            ->whereIn('status', ['Menunggu', 'Dikonfirmasi'])
+            ->where('tgl_checkin', '>', $today)
+            ->exists();
+
+        if ($hasReservation) {
+            $kamar->update(['status' => 'Dipesan']);
+            return;
+        }
+
+        $kamar->update(['status' => 'Tersedia']);
+    }
     public function pembayaranSukses($id)
     {
         if (!Auth::check()) {
@@ -489,6 +516,23 @@ class PageController extends Controller
             'status'             => 'Menunggu',
         ]);
 
-        return redirect()->back()->with('success', 'Pengajuan refund berhasil dikirim!');
+        return redirect()->route('riwayatrefund')->with('success', 'Pengajuan refund berhasil dikirim!');
+    }
+
+
+    public function riwayatrefund()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $refunds = Refund::with(['reservasi', 'pembayaran'])
+            ->whereHas('reservasi', function ($query) {
+                $query->where('id_user', Auth::id());
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('pages.riwayatrefund', compact('refunds'));
     }
 }

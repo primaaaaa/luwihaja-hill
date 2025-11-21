@@ -28,7 +28,7 @@
                         <div class="rd-title">
                             <h3>{{ $room->kategori }}</h3>
                             <div class="rdt-right">
-                                <a class="booking-btn" href="{{ url('/booking?room=' . $room->id_tipe_villa) }}">Booking Sekarang</a>
+                                ->take(3);
                                 <a href="#" class="bagikan-text">Bagikan</a>
                                 <div class="social-share">
                                     <!-- Facebook Share -->
@@ -71,7 +71,8 @@
                                 </tr>
                                 <tr>
                                     <td class="r-o">Ketersediaan:</td>
-                                    <td class="status-{{ str_replace(' ', '-', strtolower(session('status_display', $statusToday))) }}">
+                                    <td
+                                        class="status-{{ str_replace(' ', '-', strtolower(session('status_display', $statusToday))) }}">
                                         @if(session('status_display'))
                                         {{ session('status_display') }}
                                         @if(session('available_rooms') !== null && session('available_rooms') > 0)
@@ -87,7 +88,8 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <p class="f-para">{{ $room->deskripsi ?? 'Kamar nyaman dengan fasilitas lengkap untuk pengalaman menginap yang tak terlupakan.' }}</p>
+                        <p class="f-para">{{ $room->deskripsi ?? 'Kamar nyaman dengan fasilitas lengkap untuk pengalaman
+                            menginap yang tak terlupakan.' }}</p>
                     </div>
                 </div>
 
@@ -109,15 +111,15 @@
                         <div class="ri-text">
                             <div class="review-header">
                                 <div class="review-rating">
-                                    @for($i = 1; $i <= 5; $i++)
-                                        @if($i <= $review->rating)
+                                    @for($i = 1; $i <= 5; $i++) @if($i <=$review->rating)
                                         <i class="fa-solid fa-star"></i>
                                         @else
                                         <i class="fa-regular fa-star"></i>
                                         @endif
-                                    @endfor
+                                        @endfor
                                 </div>
-                                <span class="review-date">Diunggah pada {{ \Carbon\Carbon::parse($review->tgl_ulasan)->format('d F Y') }}</span>
+                                <span class="review-date">Diunggah pada {{
+                                    \Carbon\Carbon::parse($review->tgl_ulasan)->format('d F Y') }}</span>
                             </div>
                             <h5>{{ $review->user->nama ?? 'Tamu' }}</h5>
                             <p>{{ $review->isi_ulasan }}</p>
@@ -161,7 +163,8 @@
                     <!-- Peringatan jika belum pernah reservasi selesai -->
                     @if(auth()->check() && !$canReview)
                     <div class="alert alert-warning" role="alert">
-                        <i class="fa-solid fa-info-circle"></i> Anda harus menyelesaikan reservasi terlebih dahulu untuk memberikan ulasan.
+                        <i class="fa-solid fa-info-circle"></i> Anda harus menyelesaikan reservasi terlebih dahulu untuk
+                        memberikan ulasan.
                     </div>
                     @endif
 
@@ -172,13 +175,13 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <input type="text" name="nama" placeholder="Nama*"
-                                    value="{{ auth()->check() ? auth()->user()->nama : old('nama') }}" 
-                                    {{ auth()->check() ? 'readonly' : '' }} required>
+                                    value="{{ auth()->check() ? auth()->user()->nama : old('nama') }}" {{
+                                    auth()->check() ? 'readonly' : '' }} required>
                             </div>
                             <div class="col-lg-6">
                                 <input type="email" name="email" placeholder="Email*"
-                                    value="{{ auth()->check() ? auth()->user()->email : old('email') }}" 
-                                    {{ auth()->check() ? 'readonly' : '' }} required>
+                                    value="{{ auth()->check() ? auth()->user()->email : old('email') }}" {{
+                                    auth()->check() ? 'readonly' : '' }} required>
                             </div>
                             <div class="col-lg-12">
                                 <div>
@@ -192,7 +195,8 @@
                                     </div>
                                     <input type="hidden" name="rating" id="rating-input" value="5" required>
                                 </div>
-                                <textarea name="komentar" placeholder="Tulis komentar Anda (minimal 10 karakter)" required>{{ old('komentar') }}</textarea>
+                                <textarea name="komentar" placeholder="Tulis komentar Anda (minimal 10 karakter)"
+                                    required>{{ old('komentar') }}</textarea>
 
                                 <!-- Disable button jika user login tapi belum pernah reservasi -->
                                 <button type="submit" {{ (auth()->check() && !$canReview) ? 'disabled' : '' }}>
@@ -213,12 +217,14 @@
 
                         <div class="check-date">
                             <label for="date-in">Check In</label>
-                            <input type="date" class="date-input" id="date-in" name="check_in" min="{{ date('Y-m-d') }}" required>
+                            <input type="date" class="date-input" id="date-in" name="check_in" min="{{ date('Y-m-d') }}"
+                                required>
                             <i class="fa-regular fa-calendar"></i>
                         </div>
                         <div class="check-date">
                             <label for="date-out">Check Out</label>
-                            <input type="date" class="date-input" id="date-out" name="check_out" min="{{ date('Y-m-d', strtotime('+1 day')) }}" required>
+                            <input type="date" class="date-input" id="date-out" name="check_out"
+                                min="{{ date('Y-m-d', strtotime('+1 day')) }}" required>
                             <i class="fa-regular fa-calendar"></i>
                         </div>
                         <div class="check-date">
@@ -244,7 +250,7 @@
 </section>
 
 <script>
-function updatePrices() {
+    function updatePrices() {
     const today = new Date();
     const isWeekend = today.getDay() === 0 || today.getDay() === 6;
     

@@ -48,7 +48,7 @@
                 };
                 @endphp
 
-                {{-- Hanya Tersedia dan Nonaktif yang bisa diubah --}}
+                {{-- Hanya Tersedia dan Nonaktif yang bisa diubah manual --}}
                 @if(in_array($room->status, ['Tersedia', 'Nonaktif']))
                 <form action="{{ route('admin.kamar.status', $room->id_tipe_villa) }}" method="POST" class="d-inline">
                     @csrf
@@ -74,8 +74,8 @@
                     </div>
                 </form>
                 @else
-                {{-- Status Terisi dan Dipesan hanya badge biasa --}}
-                <span class="badge badge-status {{ $statusClass }}">
+                <span class="badge badge-status {{ $statusClass }}" 
+                      title="Status otomatis berdasarkan reservasi">
                     {{ $room->status }}
                 </span>
                 @endif
