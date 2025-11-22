@@ -43,7 +43,6 @@
             </td>
         </tr>
 
-        {{-- Modal Delete KHUSUS untuk review ini --}}
         <div class="modal fade" id="deleteModal{{ $review->id_ulasan }}" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered delete-modal-dialog">
                 <div class="modal-content delete-modal">
