@@ -23,10 +23,24 @@ class AdminController extends Controller
 {
     public function Dashboard()
     {
+        $dataChart = [];
+        $labels = [];
+
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->subDays($i);
+            $count = Reservasi::whereDate('created_at', $date->format('Y-m-d'))->count();
+            $dataChart[] = $count;
+
+            // Format label: "Sen, 18 Nov"
+            $labels[] = $date->locale('id')->isoFormat('ddd, D MMM');
+        }
+
         return view('pages.admin.dashboard', [
             'jml_kamar' => Kamar::count(),
             'jml_reservasi' => Reservasi::count(),
-            'jml_ulasan' => Ulasan::count()
+            'jml_ulasan' => Ulasan::count(),
+            'dataChart' => $dataChart,
+            'labels' => $labels
         ]);
     }
 

@@ -28,7 +28,7 @@
         <li><a href="{{ url('/akomodasi') }}">Akomodasi</a></li>
         <li><a href="{{ url('/fasilitas') }}">Fasilitas</a></li>
         <li><a href="{{ url('/galeri') }}">Galeri</a></li>
-        <li><a href="{{ url('/faq') }}">FAQs</a></li>
+        <li><a href="{{ url('/beranda#faq') }}">FAQs</a></li>
       </ul>
     </div>
 

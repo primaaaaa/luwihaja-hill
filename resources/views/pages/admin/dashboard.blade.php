@@ -9,7 +9,7 @@
     </div>
 
     <div class="chart-container">
-        <h3 class="chart-title">Total Reservasi</h3>
+        <h3 class="chart-title">Total Reservasi (7 Hari Terakhir)</h3>
         <div class="chart-wrapper">
             <canvas id="reservasiChart"></canvas>
         </div>
@@ -20,13 +20,16 @@
 document.addEventListener('DOMContentLoaded', function() {
     const ctx = document.getElementById('reservasiChart');
     
+    const dataChart = @json($dataChart);
+    const labels = @json($labels);
+    
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+            labels: labels,
             datasets: [{
-                label: 'Online Sales',
-                data: [14, 17, 7, 15, 12, 16, 20],
+                label: 'Jumlah Reservasi',
+                data: dataChart,
                 backgroundColor: '#40723F',
                 borderRadius: 4,
                 barThickness: 40
@@ -52,19 +55,28 @@ document.addEventListener('DOMContentLoaded', function() {
                     backgroundColor: 'rgba(0, 0, 0, 0.8)',
                     padding: 12,
                     cornerRadius: 8,
-                    displayColors: false
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            return 'Reservasi: ' + context.parsed.y;
+                        }
+                    }
                 }
             },
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 25,
                     ticks: {
-                        stepSize: 5,
+                        stepSize: 1,
                         font: {
                             size: 11
                         },
-                        color: '#666'
+                        color: '#666',
+                        callback: function(value) {
+                            if (Number.isInteger(value)) {
+                                return value;
+                            }
+                        }
                     },
                     grid: {
                         color: '#f0f0f0',
@@ -78,9 +90,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     ticks: {
                         font: {
-                            size: 11
+                            size: 10
                         },
-                        color: '#666'
+                        color: '#666',
+                        maxRotation: 45,
+                        minRotation: 45
                     }
                 }
             }
