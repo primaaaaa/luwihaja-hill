@@ -236,8 +236,8 @@
     document.getElementById('displayType').textContent =
       selectedOption.dataset.nama || "-";
 
-  let fotoUrl = selectedOption.dataset.foto || "{{ asset('images/no-image.png') }}";
-document.getElementById('roomImagePreview').src = encodeURI(fotoUrl);
+    let fotoUrl = selectedOption.dataset.foto || "{{ asset('images/no-image.png') }}";
+    document.getElementById('roomImagePreview').src = encodeURI(fotoUrl);
 
     document.getElementById('displayKapasitas').textContent =
       selectedOption.dataset.kapasitas || "-";
@@ -245,8 +245,9 @@ document.getElementById('roomImagePreview').src = encodeURI(fotoUrl);
     document.getElementById('displayUnit').textContent =
       selectedOption.dataset.unit || "-";
   }
+  
   tipeSelect.addEventListener('change', function () {
-      updateRoomDisplay();
+    updateRoomDisplay();
     const selectedOption = this.options[this.selectedIndex];
     document.getElementById('displayType').textContent = selectedOption.dataset.nama || "-";
   });
@@ -310,7 +311,7 @@ document.getElementById('roomImagePreview').src = encodeURI(fotoUrl);
 
   function handleLanjutkan() {
     if (!checkinInput.value || !checkoutInput.value || !tipeSelect.value) {
-      alert('Mohon lengkapi semua data reservasi!');
+      CustomAlert.warning('Mohon lengkapi semua data reservasi!', 'Perhatian!'); // ✅ UBAH
       return;
     }
 
@@ -328,7 +329,7 @@ document.getElementById('roomImagePreview').src = encodeURI(fotoUrl);
 
   function handlePayment() {
     if (document.getElementById('total').textContent === '-') {
-      alert('Silakan klik tombol "Lanjutkan" terlebih dahulu!');
+      CustomAlert.warning('Silakan klik tombol "Lanjutkan" terlebih dahulu!', 'Perhatian!'); // ✅ UBAH
       return;
     }
 
@@ -345,7 +346,7 @@ document.getElementById('roomImagePreview').src = encodeURI(fotoUrl);
     if (fileInput.files.length > 0) {
       const fileSize = fileInput.files[0].size;
       if (fileSize > 2048000) {
-        alert('Ukuran maksimal 2MB!');
+        CustomAlert.error('Ukuran file maksimal 2MB!', 'File Terlalu Besar'); // ✅ UBAH
         fileInput.value = '';
         return;
       }
@@ -364,12 +365,12 @@ document.getElementById('roomImagePreview').src = encodeURI(fotoUrl);
     const buktiFile = document.getElementById('buktiFile').files[0];
 
     if (!namaPemilik || !namaBank || !nomorRekening || !metode || !buktiFile) {
-      alert('Mohon lengkapi semua data pembayaran!');
+      CustomAlert.warning('Mohon lengkapi semua data pembayaran!', 'Data Belum Lengkap'); // ✅ UBAH
       return;
     }
 
     if (!/^\d+$/.test(nomorRekening)) {
-      alert('Nomor rekening harus angka!');
+      CustomAlert.error('Nomor rekening harus berupa angka!', 'Format Salah'); // ✅ UBAH
       return;
     }
 

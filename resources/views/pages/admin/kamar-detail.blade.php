@@ -14,7 +14,7 @@ $extension = $fotoExists ? pathinfo($kamar->foto_kamar, PATHINFO_EXTENSION) : nu
 
         <form>
             <div class="mb-3">
-                <label class="form-label">Nama Unit</label>
+                <label class="form-label">Nomor Unit</label>
                 <input type="text" class="form-control" value="{{ $kamar->nama_unit }}" readonly>
             </div>
 

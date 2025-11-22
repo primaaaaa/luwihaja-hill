@@ -174,72 +174,76 @@
     </div>
 
     <div class="modal-body">
+      <p style="margin-bottom: 24px; color: var(--muted);">
+        Silakan isi formulir di bawah ini untuk mengajukan refund pembayaran Anda.
+      </p>
+
       <form action="{{ route('refund.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="id_pembayaran" id="id_pembayaran">
         <input type="hidden" name="id_reservasi" id="id_reservasi">
+        
         <!-- Kode Reservasi & Nominal Refund -->
         <div class="form-row">
           <div class="form-group">
-            <label for="kode_reservasi_display">Kode Reservasi *</label>
+            <label for="kode_reservasi_display">Kode Reservasi <span style="color: red;">*</span></label>
             <input type="text" id="kode_reservasi_display" class="form-control" readonly>
           </div>
 
           <div class="form-group">
-            <label for="nominal_refund_display">Nominal Refund *</label>
+            <label for="nominal_refund_display">Nominal Refund <span style="color: red;">*</span></label>
             <input type="text" id="nominal_refund_display" class="form-control" readonly>
           </div>
         </div>
 
-        <!-- Check-in & Check-out -->
         <div class="form-row">
           <div class="form-group">
-            <label for="check_in_display">Tanggal Check-in *</label>
+            <label for="check_in_display">Tanggal Check-in <span style="color: red;">*</span></label>
             <input type="date" id="check_in_display" class="form-control" readonly>
           </div>
 
           <div class="form-group">
-            <label for="check_out_display">Tanggal Check-out *</label>
+            <label for="check_out_display">Tanggal Check-out <span style="color: red;">*</span></label>
             <input type="date" id="check_out_display" class="form-control" readonly>
           </div>
         </div>
 
-        <!-- Alasan Refund -->
         <div class="form-group form-full">
-          <label for="alasan_refund">Alasan Refund *</label>
-          <textarea name="alasan_refund" id="alasan_refund" class="form-control" rows="4" required></textarea>
+          <label for="alasan_refund">Alasan Refund <span style="color: red;">*</span></label>
+          <textarea name="alasan_refund" id="alasan_refund" class="form-control" rows="4" placeholder="Jelaskan alasan pengajuan refund Anda" required></textarea>
         </div>
 
-        <!-- File Upload -->
         <div class="form-group form-full">
-          <label>Bukti Pendukung *</label>
+          <label for="fileUploadRefund">Bukti Pendukung <span style="color: red;">*</span></label>
           <div class="file-upload-wrapper">
             <input type="file" id="fileUploadRefund" name="bukti_pendukung" accept="image/*,.pdf" required>
             <label class="file-upload-label-unified" for="fileUploadRefund">
-              <span id="file-name-refund">Pilih file</span>
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+              <span class="file-name-text" id="file-name-refund">Pilih file</span>
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px; color: #198754;">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
             </label>
           </div>
+          <small style="color: #6c757d; font-size: 12px; margin-top: 4px; display: block;">
+            Format: JPG, PNG, atau PDF. Maksimal 2MB
+          </small>
         </div>
 
-        <!-- Rekening -->
         <div class="form-group form-full">
-          <label>Nama Bank *</label>
-          <input type="text" id="nama_bank_tujuan" name="nama_bank_tujuan" class="form-control" required>
+          <label for="nama_bank_tujuan">Nama Bank <span style="color: red;">*</span></label>
+          <input type="text" id="nama_bank_tujuan" name="nama_bank_tujuan" class="form-control" placeholder="Contoh: BCA" required>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label>Nomor Rekening *</label>
-            <input type="text" id="norek_tujuan" name="norek_tujuan" class="form-control" required>
+            <label for="norek_tujuan">Nomor Rekening <span style="color: red;">*</span></label>
+            <input type="text" id="norek_tujuan" name="norek_tujuan" class="form-control" placeholder="Contoh: 8910910123" required>
           </div>
 
           <div class="form-group">
-            <label>Nama Pemilik Rekening *</label>
-            <input type="text" id="pemilik_tujuan" name="pemilik_tujuan" class="form-control" required>
+            <label for="pemilik_tujuan">Nama Pemilik Rekening <span style="color: red;">*</span></label>
+            <input type="text" id="pemilik_tujuan" name="pemilik_tujuan" class="form-control" placeholder="Contoh: Prima Wijaya" required>
           </div>
         </div>
 
@@ -249,12 +253,10 @@
   </div>
 </div>
 
-
-
 @endsection
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('modalRefundCustom');
     const openButtons = document.querySelectorAll('.btn-refund');
     const closeButton = modal?.querySelector('.close-modal');

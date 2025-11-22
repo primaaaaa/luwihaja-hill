@@ -28,8 +28,8 @@
 
 <div class="p-4">
     <x-data-table title="Daftar Kamar" :headers="$tableHeader"
-        :filterOptions="['Tersedia', 'Terisi', 'Dipesan', 'Nonaktif']" :addButton="true" :actionColumn="false" :data="$rooms"
-        data-bs-target="#addModal" data-bs-toggle="modal">
+        :filterOptions="['Tersedia', 'Terisi', 'Dipesan', 'Nonaktif']" :addButton="true" :actionColumn="false"
+        :data="$rooms" data-bs-target="#addModal" data-bs-toggle="modal">
 
         @foreach ($rooms as $room)
         <tr>
@@ -40,15 +40,14 @@
             <td>
                 @php
                 $statusClass = match($room->status) {
-                    'Nonaktif' => 'badge-nonaktif',
-                    'Tersedia' => 'badge-tersedia',
-                    'Terisi' => 'badge-terisi',
-                    'Dipesan' => 'badge-dipesan',
-                    default => 'badge-tersedia'
+                'Nonaktif' => 'badge-nonaktif',
+                'Tersedia' => 'badge-tersedia',
+                'Terisi' => 'badge-terisi',
+                'Dipesan' => 'badge-dipesan',
+                default => 'badge-tersedia'
                 };
                 @endphp
 
-                {{-- Hanya Tersedia dan Nonaktif yang bisa diubah manual --}}
                 @if(in_array($room->status, ['Tersedia', 'Nonaktif']))
                 <form action="{{ route('admin.kamar.status', $room->id_tipe_villa) }}" method="POST" class="d-inline">
                     @csrf
@@ -74,8 +73,7 @@
                     </div>
                 </form>
                 @else
-                <span class="badge badge-status {{ $statusClass }}" 
-                      title="Status otomatis berdasarkan reservasi">
+                <span class="badge badge-status {{ $statusClass }}" title="Status otomatis berdasarkan reservasi">
                     {{ $room->status }}
                 </span>
                 @endif
@@ -99,100 +97,116 @@
                 </div>
             </td>
         </tr>
-        
-        <!-- Modal Add -->
-         <x-add-modal route="admin.kamar.store" title="Tambah Kamar">
-            <div class="row g-3">
-                        <div class="col-md-6">
-                            <x-input-field type="text" label="Kode Tipe" name="kode_tipe" :value="$nextKodeTipe" readonly="true"></x-input-field>
-                        </div>
-                        <div class="col-md-6">
-                            <x-input-field type="text" label="Nama Unit" name="nama_unit" placeholder="Masukkan nama unit kamar" required="true"></x-input-field>
-                        </div>
-                    </div>
-                    <div class="row g-3 mt-1">
-                        <div class="col-md-6">
-                            <x-input-field type="number" label="Kapasitas" name="kapasitas" placeholder="Masukkan kapasitas" min="1" required="true"></x-input-field>
-
-                        </div>
-                        <div class="col-md-6">
-                            <x-select-field label="Kategori" name="kategori" required="true"
-                            :option="['Deluxe Bed', 'Queen Bed', 'Twin Bed', 'Super Deluxe', 'Family Room']" placeholder="Pilih Kategori Kamar"
-                            ></x-select-field>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mt-1">
-                        <div class="col-md-6">
-                            <x-input-field type="number" label="Harga Weekday" name="harga_weekday" placeholder="Masukkan harga weekday" min="0" required="true"></x-input-field>
-                        </div>
-                        <div class="col-md-6">
-                            <x-input-field type="number" label="Harga Weekend" name="harga_weekend" placeholder="Masukkan harga weekend" min="0" required="true"></x-input-field>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mt-1">
-                        <div class="col-md-6">
-                            <x-select-field label="Status" name="status" required="true" :option="['Tersedia', 'Nonaktif']"></x-select-field>
-                        </div>
-                        <div class="col-md-6">
-                            <x-file-upload label="Foto Kamar" name="foto_kamar"></x-file-upload>
-                        </div>
-                    </div>
-
-                    <div class="mt-3">
-                        <x-text-area label="Deskripsi Kamar" name="deskripsi" rows="3" placeholder="Masukkan deskripsi kamar"></x-text-area>
-                    </div>
-         </x-add-modal>
 
         <!-- Modal Edit -->
         <x-edit-modal :id="$room->id_tipe_villa" route="admin.kamar.update" title="Edit Kamar">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <x-input-field label="Unit Kamar" type="text" name="nama_unit" value="{{ $room->nama_unit  }}"></x-input-field>
-                                </div>
-                                <div class="col-md-6">
-                                    <x-input-field label="Kapasitas" type="number" name="kapasitas" value="{{ $room->kapasitas }}" required="true"></x-input-field>
-                                </div>
-                            </div>
-                            <div class="row g-3 mt-1">
-                                <div class="col-md-6">
-                                    <x-input-field label="Harga Weekday" type="number" name="harga_weekday" value="{{ $room->harga_weekday }}" required="true"></x-input-field>
-                                </div>
-                                <div class="col-md-6">
-                                    <x-input-field label="Harga Weekend" type="number" name="harga_weekend" value="{{ $room->harga_weekend }}" required="true"></x-input-field>
-                                </div>
-                            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <x-input-field label="Unit Kamar" type="text" name="nama_unit" value="{{ $room->nama_unit }}">
+                    </x-input-field>
+                </div>
+                <div class="col-md-6">
+                    <x-input-field label="Kapasitas" type="number" name="kapasitas" value="{{ $room->kapasitas }}"
+                        required="true"></x-input-field>
+                </div>
+            </div>
+            <div class="row g-3 mt-1">
+                <div class="col-md-6">
+                    <x-input-field label="Harga Weekday" type="number" name="harga_weekday"
+                        value="{{ $room->harga_weekday }}" required="true"></x-input-field>
+                </div>
+                <div class="col-md-6">
+                    <x-input-field label="Harga Weekend" type="number" name="harga_weekend"
+                        value="{{ $room->harga_weekend }}" required="true"></x-input-field>
+                </div>
+            </div>
 
-                            <div class="mt-3">
-                                <x-select-field label="Kategori" name="kategori" required="true" :option="['Deluxe Bed', 'Queen Bed', 'Twin Bed', 'Super Deluxe', 'Family Room']" value="{{ $room->kategori }}"></x-select-field>
-                            </div>
+            <div class="mt-3">
+                <x-select-field label="Kategori" name="kategori" required="true"
+                    :option="['Deluxe Bed', 'Queen Bed', 'Twin Bed', 'Super Deluxe', 'Family Room']"
+                    value="{{ $room->kategori }}"></x-select-field>
+            </div>
 
-                            <div class="mt-3">
-                                <x-select-field label="Status" name="status" required="true" :option="['Tersedia', 'Terisi', 'Dipesan', 'Nonaktif']" value="{{ $room->status }}"></x-select-field>
-                            </div>
+            <div class="mt-3">
+                <x-select-field label="Status" name="status" required="true"
+                    :option="['Tersedia', 'Terisi', 'Dipesan', 'Nonaktif']" value="{{ $room->status }}">
+                </x-select-field>
+            </div>
 
-                            <div class="mt-3">
-                                <x-text-area label="Deskripsi Kamar" name="deskripsi" rows="3" value="{{ $room->deskripsi }}"></x-text-area>
-                            </div>
+            <div class="mt-3">
+                <x-text-area label="Deskripsi Kamar" name="deskripsi" rows="3" value="{{ $room->deskripsi }}">
+                </x-text-area>
+            </div>
 
-                            <div class="row g-3 mt-1">
-                                <div class="col-md-6">
-                                    <x-file-upload label="Foto Kamar" name="foto_kamar" type="file" value="{{$room->foto_kamar ? basename($room->foto_kamar) : 'Tidak ada Foto' }}"></x-file-upload>
-                                </div>
-                                <div class="col-md-6">
-                                    <x-input-field label="Kode Tipe" name="kode_tipe" type="text" value="{{ $room->kode_tipe }}" required="true"></x-input-field>
-                                </div>
-                            </div>
-                        </div>
+            <div class="row g-3 mt-1">
+                <div class="col-md-6">
+                    <x-file-upload label="Foto Kamar" name="foto_kamar" type="file"
+                        value="{{$room->foto_kamar ? basename($room->foto_kamar) : 'Tidak ada Foto' }}"></x-file-upload>
+                </div>
+                <div class="col-md-6">
+                    <x-input-field label="Kode Tipe" name="kode_tipe" type="text" value="{{ $room->kode_tipe }}"
+                        required="true"></x-input-field>
+                </div>
+            </div>
         </x-edit-modal>
-        
+
         <!-- Modal Delete -->
-         <x-delete-modal :id="$room->id_tipe_villa" :nama="$room->nama_tipe" route="admin.kamar.delete" page="kamar"></x-delete-modal>
+        <x-delete-modal :id="$room->id_tipe_villa" :nama="$room->nama_tipe" route="admin.kamar.delete" page="kamar">
+        </x-delete-modal>
         @endforeach
 
     </x-data-table>
 </div>
+
+<x-add-modal route="admin.kamar.store" title="Tambah Kamar">
+    <div class="row g-3">
+        <div class="col-md-6">
+            <x-input-field type="text" label="Kode Tipe" name="kode_tipe" :value="$nextKodeTipe" readonly="true">
+            </x-input-field>
+        </div>
+        <div class="col-md-6">
+            <x-input-field type="text" label="Nomor Unit" name="nama_unit" placeholder="Masukkan nomor unit kamar"
+                required="true"></x-input-field>
+        </div>
+    </div>
+    <div class="row g-3 mt-1">
+        <div class="col-md-6">
+            <x-input-field type="number" label="Kapasitas" name="kapasitas" placeholder="Masukkan kapasitas" min="1"
+                required="true"></x-input-field>
+        </div>
+        <div class="col-md-6">
+            <x-select-field label="Kategori" name="kategori" required="true"
+                :option="['Deluxe Bed', 'Queen Bed', 'Twin Bed', 'Super Deluxe', 'Family Room']"
+                placeholder="Pilih Kategori Kamar"></x-select-field>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-1">
+        <div class="col-md-6">
+            <x-input-field type="number" label="Harga Weekday" name="harga_weekday" placeholder="Masukkan harga weekday"
+                min="0" required="true"></x-input-field>
+        </div>
+        <div class="col-md-6">
+            <x-input-field type="number" label="Harga Weekend" name="harga_weekend" placeholder="Masukkan harga weekend"
+                min="0" required="true"></x-input-field>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-1">
+        <div class="col-md-6">
+            <x-select-field label="Status" name="status" required="true" :option="['Tersedia', 'Nonaktif']">
+            </x-select-field>
+        </div>
+        <div class="col-md-6">
+            <x-file-upload label="Foto Kamar" name="foto_kamar"></x-file-upload>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <x-text-area label="Deskripsi Kamar" name="deskripsi" rows="3" placeholder="Masukkan deskripsi kamar">
+        </x-text-area>
+    </div>
+</x-add-modal>
 
 <script>
     setTimeout(function() {
