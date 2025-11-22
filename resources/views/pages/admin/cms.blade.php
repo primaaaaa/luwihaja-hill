@@ -20,6 +20,7 @@
 
     <x-data-table 
         title="CMS Galeri"
+        :data="$galleries"
         :headers="$tableHeader"
         :addButton="true"
         :exportButton="false"

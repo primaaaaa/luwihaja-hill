@@ -17,11 +17,11 @@
     </div>
     @endif
 
-    <x-data-table title="Daftar Pembayaran" :headers="$tableHeader" :addButton="false" :exportButton="true"
+    <x-data-table title="Daftar Pembayaran" :headers="$tableHeader" :addButton="false" :exportButton="true" :data="$pembayarans"
         :filterOptions="['Menunggu', 'Lunas', 'Batal']">
 
         @forelse ($pembayarans as $payment)
-        <tr>
+        <tr data-status="{{ $payment->status }}">
             <td>{{ $payment->reservasi->kode_reservasi ?? 'N/A' }}</td>
             <td>{{ $payment->reservasi->user->nama ?? 'N/A' }}</td>
             <td>{{ $payment->tgl_pembayaran ? $payment->tgl_pembayaran->format('d M Y') : '-' }}</td>

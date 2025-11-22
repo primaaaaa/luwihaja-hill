@@ -25,11 +25,17 @@ class AdminController extends Controller
         ]);
     }
 
-    public function Kamar()
+    public function Kamar(Request $request)
     {
-        $rooms = Kamar::orderBy('created_at', 'desc')->get();
-
         $this->updateAllRoomStatus();
+
+        $query = Kamar::orderBy('created_at', 'desc');
+
+        if ($request->has('status') && $request->status != 'Semua') {
+            $query->where('status', $request->status);
+        }
+
+        $rooms = $query->paginate(10)->appends($request->except('page'));
 
         $lastKamar = Kamar::orderBy('id_tipe_villa', 'desc')->first();
         $nextNumber = $lastKamar ? intval(substr($lastKamar->kode_tipe, 1)) + 1 : 1;
@@ -41,7 +47,6 @@ class AdminController extends Controller
             'tableHeader' => ['Kode Kamar', 'Unit', 'Kapasitas', 'Kategori', 'Status']
         ]);
     }
-
     public function storeKamar(Request $request)
     {
         if (empty($request->kode_tipe)) {
@@ -163,13 +168,18 @@ class AdminController extends Controller
         return view('pages.admin.kamar-detail', ['kamar' => $kamar]);
     }
 
-    public function Reservasi()
+    public function Reservasi(Request $request)
     {
         $this->updateAllRoomStatus();
 
-        $reservations = Reservasi::with(['user', 'kamar'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Reservasi::with(['user', 'kamar'])
+            ->orderBy('created_at', 'desc');
+
+        if ($request->has('status') && $request->status != 'Semua') {
+            $query->where('status', $request->status);
+        }
+
+        $reservations = $query->paginate(10)->appends($request->except('page'));
 
         return view('pages.admin.manajemenreservasi', [
             'tableHeader' => ['Kode Reservasi', 'Kode Kamar', 'Tanggal Check-In', 'Tanggal Check-Out', 'Status'],
@@ -259,7 +269,9 @@ class AdminController extends Controller
 
     public function Ulasan()
     {
-        $ulasan = \App\Models\Ulasan::with(['user', 'reservasi'])->orderBy('tgl_ulasan', 'DESC')->get();
+        $ulasan = \App\Models\Ulasan::with(['user', 'reservasi'])
+            ->orderBy('tgl_ulasan', 'DESC')
+            ->paginate(10);
 
         return view('pages.admin.manajemenulasan', [
             'tableHeader' => ['Nama Tamu', 'Kode Reservasi', 'Rating', 'Komentar', 'Tanggal Ulasan'],
@@ -288,7 +300,7 @@ class AdminController extends Controller
 
     public function CMS()
     {
-        $galleries = Galeri::orderBy('tgl_upload', 'desc')->get();
+        $galleries = Galeri::orderBy('tgl_upload', 'desc')->paginate(10);
 
         return view('pages.admin.cms', [
             'tableHeader' => ['Kode Galeri', 'File', 'Tanggal Upload'],
@@ -359,17 +371,23 @@ class AdminController extends Controller
     }
 
 
-    public function Refund()
+    public function Refund(Request $request)
     {
-        $refunds = Refund::with(['reservasi.user'])
-            ->orderBy('tgl_pengajuan', 'desc')
-            ->get();
+        $query = Refund::with(['reservasi.user'])
+            ->orderBy('tgl_pengajuan', 'desc');
+
+        if ($request->has('status') && $request->status != 'Semua') {
+            $query->where('status', $request->status);
+        }
+
+        $refunds = $query->paginate(10)->appends($request->except('page'));
 
         return view('pages.admin.manajemenrefund', [
             'tableHeader' => ['Kode Refund', 'Kode Reservasi', 'Nama Tamu', 'Tanggal Pengajuan', 'Status'],
             'refunds' => $refunds
         ]);
     }
+
 
     public function updateStatusRefund(Request $request, $id)
     {
@@ -393,12 +411,16 @@ class AdminController extends Controller
             'refund' => $refund
         ]);
     }
-    public function pembayaran()
+    public function pembayaran(Request $request)
     {
-        $pembayarans = Pembayaran::with('reservasi.user', 'reservasi.kamar')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Pembayaran::with('reservasi.user', 'reservasi.kamar')
+            ->orderBy('created_at', 'desc');
 
+        if ($request->has('status') && $request->status != 'Semua') {
+            $query->where('status', $request->status);
+        }
+
+        $pembayarans = $query->paginate(10)->appends($request->except('page'));
 
         return view('pages.admin.manajemenpembayaran', [
             'tableHeader' => ['Kode Reservasi', 'Nama Tamu', 'Tanggal Pembayaran', 'Jumlah', 'Status'],

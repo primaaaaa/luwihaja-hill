@@ -15,6 +15,7 @@
         :headers="$tableHeader"
         :addButton="false"
         :exportButton="false"
+        :data="$refunds"
         :filterOptions="['Menunggu', 'Disetujui', 'Ditolak', 'Dibayar']">
 
         @forelse ($refunds as $refund)

@@ -11,7 +11,7 @@
     @endif
 
     <x-data-table title="Daftar Reservasi" :headers="$tableHeader" :addButton="false"
-        :filterOptions="['Menunggu', 'Dikonfirmasi', 'Selesai', 'Dibatalkan']" :exportButton="true">
+        :filterOptions="['Menunggu', 'Dikonfirmasi', 'Selesai', 'Dibatalkan']" :data="$reservations" :exportButton="true">
 
         @forelse ($reservations as $reservation)
         <tr>

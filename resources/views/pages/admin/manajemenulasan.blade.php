@@ -3,7 +3,7 @@
 @section('admin-content')
 
 <div class="p-4">
-    <x-data-table title="Daftar Ulasan" :headers="$tableHeader" :addButton="false" :exportButton="false"
+    <x-data-table title="Daftar Ulasan" :headers="$tableHeader" :addButton="false" :exportButton="false" :data="$ulasan"
         :filterOptions="[]">
 
         @if($ulasan->isEmpty())

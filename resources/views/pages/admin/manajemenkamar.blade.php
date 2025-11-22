@@ -28,7 +28,7 @@
 
 <div class="p-4">
     <x-data-table title="Daftar Kamar" :headers="$tableHeader"
-        :filterOptions="['Tersedia', 'Terisi', 'Dipesan', 'Nonaktif']" :addButton="true" :actionColumn="false"
+        :filterOptions="['Tersedia', 'Terisi', 'Dipesan', 'Nonaktif']" :addButton="true" :actionColumn="false" :data="$rooms"
         data-bs-target="#addModal" data-bs-toggle="modal">
 
         @foreach ($rooms as $room)

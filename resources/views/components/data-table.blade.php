@@ -4,7 +4,8 @@
     'addButton' => true, 
     'exportButton' => false,
     'addRoute' => '#', 
-    'filterOptions' => []
+    'filterOptions' => [],
+    'data' => null
 ])
 
 <div class="table-container">
@@ -23,9 +24,9 @@
                     Tampilkan Semua
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Semua</a></li>
+                    <li><a class="dropdown-item filter-item" href="#" data-filter="Semua">Semua</a></li>
                     @foreach($filterOptions as $option)
-                        <li><a class="dropdown-item" href="#">{{ $option }}</a></li>
+                        <li><a class="dropdown-item filter-item" href="#" data-filter="{{ $option }}">{{ $option }}</a></li>
                     @endforeach
                 </ul>
             </div>
@@ -63,17 +64,44 @@
     </div>
 
     <div class="table-footer">
-        <p class="pagination-info">Menampilkan data 1 sampai 5 dari 5 data</p>
+        @if($data && method_exists($data, 'total'))
+        <p class="pagination-info">
+            Menampilkan {{ $data->firstItem() ?? 0 }} sampai {{ $data->lastItem() ?? 0 }} dari {{ $data->total() }} data
+        </p>
         <nav>
             <ul class="pagination custom-pagination">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a>
-                </li>
+                {{-- Previous Button --}}
+                @if ($data->onFirstPage())
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+                    </li>
+                @else
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $data->previousPageUrl() }}"><i class="bi bi-chevron-left"></i></a>
+                    </li>
+                @endif
+
+                {{-- Page Numbers --}}
+                @foreach ($data->getUrlRange(1, $data->lastPage()) as $page => $url)
+                    <li class="page-item {{ $page == $data->currentPage() ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                    </li>
+                @endforeach
+
+                {{-- Next Button --}}
+                @if ($data->hasMorePages())
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $data->nextPageUrl() }}"><i class="bi bi-chevron-right"></i></a>
+                    </li>
+                @else
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="bi bi-chevron-right"></i></span>
+                    </li>
+                @endif
             </ul>
         </nav>
+        @else
+        <p class="pagination-info">Menampilkan semua data</p>
+        @endif
     </div>
 </div>
