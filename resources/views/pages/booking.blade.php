@@ -75,7 +75,6 @@
           <input type="hidden" id="hargaPerMalam" name="harga_per_malam" value="0">
           <input type="hidden" id="totalHarga" name="total_harga" value="0">
 
-          <!-- Hidden inputs untuk data pembayaran (PENTING!) -->
           <input type="hidden" id="hiddenNamaPemilik" name="nama_pemilik" value="">
           <input type="hidden" id="hiddenNamaBank" name="nama_bank" value="">
           <input type="hidden" id="hiddenNomorRekening" name="nomor_rekening" value="">

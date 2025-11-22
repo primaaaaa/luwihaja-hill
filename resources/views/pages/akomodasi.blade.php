@@ -50,7 +50,9 @@
         <!-- Room Card -->
         <div class="room-card">
             <div class="room-info">
-                <h3>{{ $room->kategori}}</h3>
+                <h3>
+                    {{ $room->kategori }} Unit {{ str_replace(' ', '_', $room->nama_unit) }}
+                </h3>
                 <div class="room-price">
                     <span class="price-display" data-weekday="{{ $room->harga_weekday }}"
                         data-weekend="{{ $room->harga_weekend }}">
