@@ -45,6 +45,9 @@ Route::middleware('auth')->group(function () {
         Route::post('pembayaran/{id}/update-status', [AdminController::class, 'updateStatusPembayaran'])->name('pembayaran-update-status');
         Route::get('/pembayaran-detail/{id}', [AdminController::class, 'DetailPembayaran'])->name('pembayaran-detail');
         Route::get('/kamar-detail', [AdminController::class, 'DetailKamar'])->name('kamar-detail');
+
+        Route::get('/admin/reservasi/export', [AdminController::class, 'exportReservasi'])->name('admin.reservasi.export');
+        Route::get('/admin/pembayaran/export', [AdminController::class, 'exportPembayaran'])->name('admin.pembayaran.export');
     });
 
     Route::get('/booking', [PageController::class, 'Booking'])->name('booking')->middleware('auth');

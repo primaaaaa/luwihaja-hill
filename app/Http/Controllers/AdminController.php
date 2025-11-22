@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use App\Models\Kamar;
 use App\Models\Galeri;
 use App\Models\Reservasi;
@@ -29,7 +34,7 @@ class AdminController extends Controller
     {
         $this->updateAllRoomStatus();
 
-        $query = Kamar::orderBy('created_at', 'asc');
+        $query = Kamar::orderBy('created_at', 'desc');
 
         if ($request->has('status') && $request->status != 'Semua') {
             $query->where('status', $request->status);
@@ -37,7 +42,7 @@ class AdminController extends Controller
 
         $rooms = $query->paginate(10)->appends($request->except('page'));
 
-        $lastKamar = Kamar::orderBy('id_tipe_villa', 'asc')->first();
+        $lastKamar = Kamar::orderBy('id_tipe_villa', 'desc')->first();
         $nextNumber = $lastKamar ? intval(substr($lastKamar->kode_tipe, 1)) + 1 : 1;
         $nextKodeTipe = 'K' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
 
@@ -50,7 +55,7 @@ class AdminController extends Controller
     public function storeKamar(Request $request)
     {
         if (empty($request->kode_tipe)) {
-            $lastKamar = Kamar::orderBy('id_tipe_villa', 'asc')->first();
+            $lastKamar = Kamar::orderBy('id_tipe_villa', 'desc')->first();
             $nextNumber = $lastKamar ? intval(substr($lastKamar->kode_tipe, 1)) + 1 : 1;
             $request->merge(['kode_tipe' => 'K' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT)]);
         }
@@ -173,7 +178,7 @@ class AdminController extends Controller
         $this->updateAllRoomStatus();
 
         $query = Reservasi::with(['user', 'kamar'])
-            ->orderBy('created_at', 'asc');
+            ->orderBy('created_at', 'desc');
 
         if ($request->has('status') && $request->status != 'Semua') {
             $query->where('status', $request->status);
@@ -223,6 +228,89 @@ class AdminController extends Controller
         return view('pages.admin.reservasi-detail', compact('reservasi'));
     }
 
+    public function exportReservasi(Request $request)
+    {
+        $query = Reservasi::with(['user', 'kamar'])->orderBy('created_at', 'desc');
+
+        if ($request->has('status') && $request->status != 'Semua') {
+            $query->where('status', $request->status);
+        }
+
+        $reservations = $query->get();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setTitle('Laporan Reservasi');
+
+        $headers = ['Kode Reservasi', 'Nama Tamu', 'Kode Kamar', 'Check-In', 'Check-Out', 'Total Harga', 'Status', 'Tanggal Dibuat'];
+        $column = 'A';
+        foreach ($headers as $header) {
+            $sheet->setCellValue($column . '1', $header);
+            $column++;
+        }
+
+        $sheet->getStyle('A1:H1')->applyFromArray([
+            'font' => [
+                'bold' => true,
+                'color' => ['rgb' => 'FFFFFF'],
+                'size' => 12
+            ],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['rgb' => '198754']
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER
+            ]
+        ]);
+
+        $row = 2;
+        foreach ($reservations as $reservation) {
+            $sheet->setCellValue('A' . $row, $reservation->kode_reservasi);
+            $sheet->setCellValue('B' . $row, $reservation->user->nama ?? 'N/A');
+            $sheet->setCellValue('C' . $row, $reservation->kamar->kode_tipe ?? 'N/A');
+            $sheet->setCellValue('D' . $row, \Carbon\Carbon::parse($reservation->tgl_checkin)->format('d-m-Y'));
+            $sheet->setCellValue('E' . $row, \Carbon\Carbon::parse($reservation->tgl_checkout)->format('d-m-Y'));
+            $sheet->setCellValue('F' . $row, 'Rp ' . number_format($reservation->total_harga, 0, ',', '.'));
+            $sheet->setCellValue('G' . $row, $reservation->status);
+            $sheet->setCellValue('H' . $row, $reservation->created_at->format('d-m-Y H:i'));
+            $row++;
+        }
+
+        $lastRow = $row - 1;
+        $sheet->getStyle('A2:H' . $lastRow)->applyFromArray([
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['rgb' => 'DDDDDD']
+                ]
+            ],
+            'alignment' => [
+                'vertical' => Alignment::VERTICAL_CENTER
+            ]
+        ]);
+
+        foreach (range('A', 'H') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $sheet->getRowDimension(1)->setRowHeight(25);
+
+        $filename = 'Laporan_Reservasi_' . date('Y-m-d_His') . '.xlsx';
+
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
+    }
+
+
     private function updateRoomStatus($roomId)
     {
         $kamar = Kamar::findOrFail($roomId);
@@ -270,7 +358,7 @@ class AdminController extends Controller
     public function Ulasan()
     {
         $ulasan = \App\Models\Ulasan::with(['user', 'reservasi'])
-            ->orderBy('tgl_ulasan', 'asc')
+            ->orderBy('tgl_ulasan', 'desc')
             ->paginate(10);
 
         return view('pages.admin.manajemenulasan', [
@@ -300,7 +388,7 @@ class AdminController extends Controller
 
     public function CMS()
     {
-        $galleries = Galeri::orderBy('tgl_upload', 'asc')->paginate(10);
+        $galleries = Galeri::orderBy('tgl_upload', 'desc')->paginate(10);
 
         return view('pages.admin.cms', [
             'tableHeader' => ['Kode Galeri', 'File', 'Tanggal Upload'],
@@ -344,7 +432,7 @@ class AdminController extends Controller
 
     private function generateKodeGaleri()
     {
-        $lastGaleri = Galeri::orderBy('id_galeri', 'asc')->first();
+        $lastGaleri = Galeri::orderBy('id_galeri', 'desc')->first();
 
         if (!$lastGaleri) {
             return 'G001';
@@ -374,7 +462,7 @@ class AdminController extends Controller
     public function Refund(Request $request)
     {
         $query = Refund::with(['reservasi.user'])
-            ->orderBy('tgl_pengajuan', 'asc');
+            ->orderBy('tgl_pengajuan', 'desc');
 
         if ($request->has('status') && $request->status != 'Semua') {
             $query->where('status', $request->status);
@@ -414,7 +502,7 @@ class AdminController extends Controller
     public function pembayaran(Request $request)
     {
         $query = Pembayaran::with('reservasi.user', 'reservasi.kamar')
-            ->orderBy('created_at', 'asc');
+            ->orderBy('created_at', 'desc');
 
         if ($request->has('status') && $request->status != 'Semua') {
             $query->where('status', $request->status);
@@ -461,5 +549,85 @@ class AdminController extends Controller
             ->findOrFail($id);
 
         return view('pages.admin.pembayaran-detail', compact('pembayaran'));
+    }
+
+    public function exportPembayaran(Request $request)
+    {
+        $query = Pembayaran::with('reservasi.user', 'reservasi.kamar')
+            ->orderBy('created_at', 'desc'); 
+            
+        if ($request->has('status') && $request->status != 'Semua') {
+            $query->where('status', $request->status);
+        }
+
+        $pembayarans = $query->get();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Laporan Pembayaran');
+
+        $headers = ['Kode Reservasi', 'Nama Tamu', 'Tanggal Pembayaran', 'Total Harga', 'Status', 'Tanggal Dibuat'];
+        $column = 'A';
+        foreach ($headers as $header) {
+            $sheet->setCellValue($column . '1', $header);
+            $column++;
+        }
+
+        $sheet->getStyle('A1:F1')->applyFromArray([
+            'font' => [
+                'bold' => true,
+                'color' => ['rgb' => 'FFFFFF'],
+                'size' => 12
+            ],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['rgb' => '198754']
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER
+            ]
+        ]);
+
+        $row = 2;
+        foreach ($pembayarans as $payment) {
+            $sheet->setCellValue('A' . $row, $payment->reservasi->kode_reservasi ?? 'N/A');
+            $sheet->setCellValue('B' . $row, $payment->reservasi->user->nama ?? 'N/A');
+            $sheet->setCellValue('C' . $row, $payment->tgl_pembayaran ? $payment->tgl_pembayaran->format('d-m-Y') : '-');
+            $sheet->setCellValue('D' . $row, 'Rp ' . number_format($payment->reservasi->total_harga ?? 0, 0, ',', '.'));
+            $sheet->setCellValue('E' . $row, $payment->status);
+            $sheet->setCellValue('F' . $row, $payment->created_at->format('d-m-Y H:i'));
+            $row++;
+        }
+
+        $lastRow = $row - 1;
+        $sheet->getStyle('A2:F' . $lastRow)->applyFromArray([
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['rgb' => 'DDDDDD']
+                ]
+            ],
+            'alignment' => [
+                'vertical' => Alignment::VERTICAL_CENTER
+            ]
+        ]);
+
+        foreach (range('A', 'F') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $sheet->getRowDimension(1)->setRowHeight(25);
+
+        $filename = 'Laporan_Pembayaran_' . date('Y-m-d_His') . '.xlsx';
+
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
     }
 }

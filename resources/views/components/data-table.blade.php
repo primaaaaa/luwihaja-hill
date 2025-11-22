@@ -3,6 +3,7 @@
     'headers' => [], 
     'addButton' => true, 
     'exportButton' => false,
+    'exportRoute' => null,  // TAMBAH INI
     'addRoute' => '#', 
     'filterOptions' => [],
     'data' => null
@@ -32,10 +33,10 @@
             </div>
             @endif
 
-            @if($exportButton)
-            <button class="btn btn-export">
+            @if($exportButton && $exportRoute)
+            <a href="{{ $exportRoute }}" class="btn btn-export">
                 <i class="bi bi-file-earmark-arrow-down"></i> Ekspor Laporan
-            </button>
+            </a>
             @endif
 
             @if($addButton)
@@ -45,7 +46,6 @@
             @endif
         </div>
     </div>
-
     <!-- Table -->
     <div class="table-responsive">
         <table class="table custom-table">

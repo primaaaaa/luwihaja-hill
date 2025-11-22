@@ -11,8 +11,7 @@
     @endif
 
     <x-data-table title="Daftar Reservasi" :headers="$tableHeader" :addButton="false"
-        :filterOptions="['Menunggu', 'Dikonfirmasi', 'Selesai', 'Dibatalkan']" :data="$reservations" :exportButton="true">
-
+        :filterOptions="['Menunggu', 'Dikonfirmasi', 'Selesai', 'Dibatalkan']" :data="$reservations" :exportButton="true"  :exportRoute="route('admin.reservasi.export', ['status' => request('status')])">
         @forelse ($reservations as $reservation)
         <tr>
             <td>{{ $reservation->kode_reservasi }}</td>

@@ -18,7 +18,7 @@
     @endif
 
     <x-data-table title="Daftar Pembayaran" :headers="$tableHeader" :addButton="false" :exportButton="true" :data="$pembayarans"
-        :filterOptions="['Menunggu', 'Lunas', 'Batal']">
+        :filterOptions="['Menunggu', 'Lunas', 'Batal']" :exportRoute="route('admin.pembayaran.export', ['status' => request('status')])">
 
         @forelse ($pembayarans as $payment)
         <tr data-status="{{ $payment->status }}">
