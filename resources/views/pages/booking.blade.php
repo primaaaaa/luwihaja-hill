@@ -61,7 +61,7 @@
               @foreach($rooms as $room)
               <option value="{{ $room->id_tipe_villa }}" data-weekday="{{ $room->harga_weekday }}"
                 data-weekend="{{ $room->harga_weekend }}" data-nama="{{ $room->kategori }}"
-                data-foto="{{ asset('storage/kamar/' . $room->foto_kamar) }}" data-kapasitas="{{ $room->kapasitas }}"
+               data-foto="{{ asset('storage/' . $room->foto_kamar) }}" data-kapasitas="{{ $room->kapasitas }}"
                 data-unit="{{ $room->nama_unit }}" {{ $selectedRoom && $selectedRoom->id_tipe_villa ==
                 $room->id_tipe_villa ? 'selected' : '' }}>
 
@@ -93,8 +93,7 @@
            <img src="{{ asset('asset/home.jpg') }}" id="roomImagePreview" alt="Villa Image">
           </div>
           <div class="room-details">
-            <h3> Tipe Kamar
-              <span class="price" id="displayType">-</span>
+            <h3 id="displayType"> Tipe Kamar
             </h3>
             <p>Kapasitas: <span id="displayKapasitas">-</span></p>
             <p>Unit: <span id="displayUnit">-</span></p>

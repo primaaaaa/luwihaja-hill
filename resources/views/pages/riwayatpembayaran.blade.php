@@ -89,12 +89,19 @@
             </td>
             <td>
               @php
+              $today = \Carbon\Carbon::now();
               $hasRefund = $pembayaran->refund ? true : false;
-              $checkoutDate = $reservasi->tgl_checkout ?? null;
+              $checkoutDate = $pembayaran->reservasi->tgl_checkout ?? null;
+              $isRefundable = false;
+
+              if ($statusClean === 'Menunggu') {
+              $isRefundable = true;
+              } elseif ($statusClean === 'Lunas' && $checkoutDate) {
+              $isRefundable = $today->lt(\Carbon\Carbon::parse($checkoutDate));
+              }
               @endphp
 
-              @if($statusClean === 'Menunggu' || ($statusClean === 'Lunas' && $checkoutDate &&
-              $today->lt(\Carbon\Carbon::parse($checkoutDate))))
+              @if($isRefundable)
               <button class="btn-refund {{ $hasRefund ? 'disabled' : '' }}" data-id="{{ $pembayaran->id_pembayaran }}"
                 data-idreservasi="{{ $pembayaran->reservasi->id_reservasi }}"
                 data-kode="{{ $pembayaran->reservasi->kode_reservasi }}"
@@ -105,7 +112,7 @@
               </button>
               @else
               <span class="text-muted" style="font-size: 14px;">
-                {{ $statusClean === 'Lunas' ? 'Pembayaran Selesai' : 'Dibatalkan' }}
+                {{ $statusClean === 'Batal' ? 'Dibatalkan' : 'Tidak Dapat Direfund' }}
               </span>
               @endif
             </td>
@@ -182,7 +189,7 @@
         @csrf
         <input type="hidden" name="id_pembayaran" id="id_pembayaran">
         <input type="hidden" name="id_reservasi" id="id_reservasi">
-        
+
         <!-- Kode Reservasi & Nominal Refund -->
         <div class="form-row">
           <div class="form-group">
@@ -210,7 +217,8 @@
 
         <div class="form-group form-full">
           <label for="alasan_refund">Alasan Refund <span style="color: red;">*</span></label>
-          <textarea name="alasan_refund" id="alasan_refund" class="form-control" rows="4" placeholder="Jelaskan alasan pengajuan refund Anda" required></textarea>
+          <textarea name="alasan_refund" id="alasan_refund" class="form-control" rows="4"
+            placeholder="Jelaskan alasan pengajuan refund Anda" required></textarea>
         </div>
 
         <div class="form-group form-full">
@@ -219,7 +227,8 @@
             <input type="file" id="fileUploadRefund" name="bukti_pendukung" accept="image/*,.pdf" required>
             <label class="file-upload-label-unified" for="fileUploadRefund">
               <span class="file-name-text" id="file-name-refund">Pilih file</span>
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px; color: #198754;">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                style="width: 20px; height: 20px; color: #198754;">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
@@ -232,18 +241,21 @@
 
         <div class="form-group form-full">
           <label for="nama_bank_tujuan">Nama Bank <span style="color: red;">*</span></label>
-          <input type="text" id="nama_bank_tujuan" name="nama_bank_tujuan" class="form-control" placeholder="Contoh: BCA" required>
+          <input type="text" id="nama_bank_tujuan" name="nama_bank_tujuan" class="form-control"
+            placeholder="Contoh: BCA" required>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label for="norek_tujuan">Nomor Rekening <span style="color: red;">*</span></label>
-            <input type="text" id="norek_tujuan" name="norek_tujuan" class="form-control" placeholder="Contoh: 8910910123" required>
+            <input type="text" id="norek_tujuan" name="norek_tujuan" class="form-control"
+              placeholder="Contoh: 8910910123" required>
           </div>
 
           <div class="form-group">
             <label for="pemilik_tujuan">Nama Pemilik Rekening <span style="color: red;">*</span></label>
-            <input type="text" id="pemilik_tujuan" name="pemilik_tujuan" class="form-control" placeholder="Contoh: Prima Wijaya" required>
+            <input type="text" id="pemilik_tujuan" name="pemilik_tujuan" class="form-control"
+              placeholder="Contoh: Prima Wijaya" required>
           </div>
         </div>
 
