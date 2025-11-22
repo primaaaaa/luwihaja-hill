@@ -404,7 +404,7 @@ class AdminController extends Controller
         $ulasan = Ulasan::findOrFail($id);
         $ulasan->delete();
 
-        return redirect()->route('admin.manajemenulasan')
+        return redirect()->route('manajemenulasan')
             ->with('success', 'Ulasan berhasil dihapus!');
     }
 

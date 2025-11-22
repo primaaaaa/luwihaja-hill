@@ -144,7 +144,8 @@ class PageController extends Controller
             $query->where('id_tipe_villa', $room->id_tipe_villa);
         })
             ->with(['user', 'reservasi'])
-            ->orderBy('tgl_ulasan', 'desc')
+            ->latest('tgl_ulasan')
+            ->take(4)
             ->get();
 
         $averageRating = $ulasan->avg('rating') ?? 0;
