@@ -30,7 +30,7 @@
         <tr>
             <td>{{ $gallery->kode_galeri }}</td>
             <td>{{ $gallery->file }}</td>
-            <td>{{ \Carbon\Carbon::parse($gallery->tgl_upload)->format('d/m/Y') }}</td>
+            <td>{{ \Carbon\Carbon::parse($gallery->tgl_upload)->format('d-m-Y') }}</td>
             <td>
                 <div class="action-buttons">
                     <button class="btn-action btn-detail" data-bs-toggle="modal" data-bs-target="#detailModal{{ $gallery->id_galeri }}">

@@ -24,7 +24,7 @@
         <tr data-status="{{ $payment->status }}">
             <td>{{ $payment->reservasi->kode_reservasi ?? 'N/A' }}</td>
             <td>{{ $payment->reservasi->user->nama ?? 'N/A' }}</td>
-            <td>{{ $payment->tgl_pembayaran ? $payment->tgl_pembayaran->format('d M Y') : '-' }}</td>
+            <td>{{ $payment->tgl_pembayaran ? $payment->tgl_pembayaran->format('d-m-Y') : '-' }}</td>
             <td>
                 Rp {{ number_format($payment->reservasi->total_harga ?? 0, 0, ',', '.') }}
             </td>

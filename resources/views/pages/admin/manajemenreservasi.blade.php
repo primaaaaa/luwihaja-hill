@@ -17,8 +17,8 @@
         <tr>
             <td>{{ $reservation->kode_reservasi }}</td>
             <td>{{ $reservation->kamar->kode_tipe ?? 'N/A' }}</td>
-            <td>{{ \Carbon\Carbon::parse($reservation->tgl_checkin)->format('d M Y') }}</td>
-            <td>{{ \Carbon\Carbon::parse($reservation->tgl_checkout)->format('d M Y') }}</td>
+            <td>{{ \Carbon\Carbon::parse($reservation->tgl_checkin)->format('d-m-Y') }}</td>
+            <td>{{ \Carbon\Carbon::parse($reservation->tgl_checkout)->format('d-m-Y') }}</td>
             <td>
                 @php
                 $statusClass = match($reservation->status) {

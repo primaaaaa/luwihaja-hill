@@ -26,7 +26,7 @@
             <td>{{ $review->reservasi->kode_reservasi ?? '-' }}</td>
             <td>{{ number_format($review->rating, 1) }}</td>
             <td>{{ $shortComment }}</td>
-            <td>{{ $review->tgl_ulasan?->format('Y-m-d') }}</td>
+            <td>{{ $review->tgl_ulasan?->format('d-m-Y') }}</td>
 
             <td>
                 <div class="action-buttons">

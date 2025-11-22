@@ -29,7 +29,7 @@ class AdminController extends Controller
     {
         $this->updateAllRoomStatus();
 
-        $query = Kamar::orderBy('created_at', 'desc');
+        $query = Kamar::orderBy('created_at', 'asc');
 
         if ($request->has('status') && $request->status != 'Semua') {
             $query->where('status', $request->status);
@@ -37,7 +37,7 @@ class AdminController extends Controller
 
         $rooms = $query->paginate(10)->appends($request->except('page'));
 
-        $lastKamar = Kamar::orderBy('id_tipe_villa', 'desc')->first();
+        $lastKamar = Kamar::orderBy('id_tipe_villa', 'asc')->first();
         $nextNumber = $lastKamar ? intval(substr($lastKamar->kode_tipe, 1)) + 1 : 1;
         $nextKodeTipe = 'K' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
 
@@ -50,7 +50,7 @@ class AdminController extends Controller
     public function storeKamar(Request $request)
     {
         if (empty($request->kode_tipe)) {
-            $lastKamar = Kamar::orderBy('id_tipe_villa', 'desc')->first();
+            $lastKamar = Kamar::orderBy('id_tipe_villa', 'asc')->first();
             $nextNumber = $lastKamar ? intval(substr($lastKamar->kode_tipe, 1)) + 1 : 1;
             $request->merge(['kode_tipe' => 'K' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT)]);
         }
@@ -173,7 +173,7 @@ class AdminController extends Controller
         $this->updateAllRoomStatus();
 
         $query = Reservasi::with(['user', 'kamar'])
-            ->orderBy('created_at', 'desc');
+            ->orderBy('created_at', 'asc');
 
         if ($request->has('status') && $request->status != 'Semua') {
             $query->where('status', $request->status);
@@ -270,7 +270,7 @@ class AdminController extends Controller
     public function Ulasan()
     {
         $ulasan = \App\Models\Ulasan::with(['user', 'reservasi'])
-            ->orderBy('tgl_ulasan', 'DESC')
+            ->orderBy('tgl_ulasan', 'asc')
             ->paginate(10);
 
         return view('pages.admin.manajemenulasan', [
@@ -300,7 +300,7 @@ class AdminController extends Controller
 
     public function CMS()
     {
-        $galleries = Galeri::orderBy('tgl_upload', 'desc')->paginate(10);
+        $galleries = Galeri::orderBy('tgl_upload', 'asc')->paginate(10);
 
         return view('pages.admin.cms', [
             'tableHeader' => ['Kode Galeri', 'File', 'Tanggal Upload'],
@@ -344,7 +344,7 @@ class AdminController extends Controller
 
     private function generateKodeGaleri()
     {
-        $lastGaleri = Galeri::orderBy('id_galeri', 'desc')->first();
+        $lastGaleri = Galeri::orderBy('id_galeri', 'asc')->first();
 
         if (!$lastGaleri) {
             return 'G001';
@@ -374,7 +374,7 @@ class AdminController extends Controller
     public function Refund(Request $request)
     {
         $query = Refund::with(['reservasi.user'])
-            ->orderBy('tgl_pengajuan', 'desc');
+            ->orderBy('tgl_pengajuan', 'asc');
 
         if ($request->has('status') && $request->status != 'Semua') {
             $query->where('status', $request->status);
@@ -414,7 +414,7 @@ class AdminController extends Controller
     public function pembayaran(Request $request)
     {
         $query = Pembayaran::with('reservasi.user', 'reservasi.kamar')
-            ->orderBy('created_at', 'desc');
+            ->orderBy('created_at', 'asc');
 
         if ($request->has('status') && $request->status != 'Semua') {
             $query->where('status', $request->status);
