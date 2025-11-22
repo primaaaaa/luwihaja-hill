@@ -33,9 +33,6 @@ class Refund extends Model
         'updated_at' => 'datetime',
     ];
 
-    /**
-     * Relasi ke Reservasi
-     */
     public function reservasi()
     {
         return $this->belongsTo(Reservasi::class, 'id_reservasi', 'id_reservasi');
@@ -46,33 +43,23 @@ class Refund extends Model
         return $this->belongsTo(Pembayaran::class, 'id_reservasi', 'id_reservasi');
     }
 
-
-
-    /**
-     * Accessor untuk badge status
-     */
     public function getStatusBadgeAttribute()
     {
         $badges = [
             'Menunggu' => 'warning',
             'Disetujui' => 'success',
             'Ditolak' => 'danger',
+            'Dibayar' => 'info',  // TAMBAHAN
         ];
 
         return $badges[$this->status] ?? 'secondary';
     }
 
-    /**
-     * Accessor untuk format nominal
-     */
     public function getNominalFormatAttribute()
     {
         return 'Rp ' . number_format($this->nominal_refund, 0, ',', '.');
     }
 
-    /**
-     * Accessor untuk URL bukti pendukung
-     */
     public function getBuktiUrlAttribute()
     {
         return $this->bukti_pendukung
@@ -80,25 +67,16 @@ class Refund extends Model
             : null;
     }
 
-    /**
-     * Scope untuk filter berdasarkan status
-     */
     public function scopeStatus($query, $status)
     {
         return $query->where('status', $status);
     }
 
-    /**
-     * Scope untuk refund yang menunggu
-     */
     public function scopeMenunggu($query)
     {
         return $query->where('status', 'Menunggu');
     }
 
-    /**
-     * Scope untuk refund yang disetujui
-     */
     public function scopeDisetujui($query)
     {
         return $query->where('status', 'Disetujui');
@@ -109,9 +87,15 @@ class Refund extends Model
         return $query->where('status', 'Ditolak');
     }
 
+    // TAMBAHAN scope baru
+    public function scopeDibayar($query)
+    {
+        return $query->where('status', 'Dibayar');
+    }
+
     public function setStatusAttribute($value)
     {
-        $allowedStatuses = ['Menunggu', 'Disetujui', 'Ditolak'];
+        $allowedStatuses = ['Menunggu', 'Disetujui', 'Ditolak', 'Dibayar']; // TAMBAHAN
 
         if (!in_array($value, $allowedStatuses)) {
             throw new \InvalidArgumentException("Status '{$value}' tidak valid. Gunakan: " . implode(', ', $allowedStatuses));

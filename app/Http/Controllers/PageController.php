@@ -546,8 +546,16 @@ class PageController extends Controller
             return back()->with('error', 'Reservasi tidak ditemukan, refund tidak dapat diproses.');
         }
 
-        $originalName = $request->file('bukti_pendukung')->getClientOriginalName();
-        $filePath = $request->file('bukti_pendukung')->storeAs('refund', $originalName, 'public');
+        $file = $request->file('bukti_pendukung');
+        $originalName = $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+        $nameWithoutExt = pathinfo($originalName, PATHINFO_FILENAME);
+
+        $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $nameWithoutExt);
+
+        $finalName = $cleanName . '_' . time() . '.' . $extension;
+
+        $filePath = $file->storeAs('refund', $finalName, 'public');
 
         $lastRefund = Refund::orderBy('id_refund', 'desc')->first();
         $nextNumber = $lastRefund ? intval(substr($lastRefund->kode_refund, 1)) + 1 : 1;

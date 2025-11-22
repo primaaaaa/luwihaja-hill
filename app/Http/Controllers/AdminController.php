@@ -374,14 +374,14 @@ class AdminController extends Controller
     public function updateStatusRefund(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:Menunggu,Disetujui,Ditolak'
+            'status' => 'required|in:Menunggu,Disetujui,Ditolak,Dibayar'
         ]);
 
         $refund = Refund::findOrFail($id);
         $refund->status = $request->status;
         $refund->save();
 
-        return response()->json(['success' => true, 'message' => 'Status berhasil diperbarui']);
+        return redirect()->back()->with('success', 'Status refund berhasil diperbarui!');
     }
 
     public function DetailRefund($id)

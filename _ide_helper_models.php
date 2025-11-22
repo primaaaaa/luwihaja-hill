@@ -123,6 +123,7 @@ namespace App\Models{
  * @property-read mixed $status_badge
  * @property-read \App\Models\Pembayaran $pembayaran
  * @property-read \App\Models\Reservasi $reservasi
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund dibayar()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund disetujui()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund ditolak()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Refund menunggu()

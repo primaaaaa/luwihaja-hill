@@ -36,7 +36,8 @@ return new class extends Migration
             $table->enum('status', [
                 'Menunggu',
                 'Disetujui',
-                'Ditolak'
+                'Ditolak',
+                'Dibayar'
             ])->default('Menunggu');
 
             $table->timestamp('created_at')->useCurrent();

@@ -3,12 +3,19 @@
 @section('admin-content')
 
 <div class="p-4">
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
     <x-data-table 
         title="Daftar Pengajuan Refund"
         :headers="$tableHeader"
         :addButton="false"
         :exportButton="false"
-        :filterOptions="['Menunggu', 'Disetujui', 'Ditolak']">
+        :filterOptions="['Menunggu', 'Disetujui', 'Ditolak', 'Dibayar']">
 
         @forelse ($refunds as $refund)
         <tr>
@@ -21,6 +28,7 @@
                     $statusClass = match($refund->status) {
                         'Menunggu' => 'badge-dipesan',
                         'Disetujui' => 'badge-tersedia',
+                        'Dibayar' => 'badge-info',
                         'Ditolak' => 'badge-nonaktif',
                         default => 'badge-dipesan'
                     };
@@ -36,28 +44,32 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="statusDropdown{{ $refund->id_refund }}">
                         <li>
-                            <a class="dropdown-item update-status" 
-                               href="#" 
-                               data-id="{{ $refund->id_refund }}" 
-                               data-status="Menunggu">
-                                Menunggu
-                            </a>
+                            <form action="{{ route('refund.update-status', $refund->id_refund) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="status" value="Menunggu">
+                                <button type="submit" class="dropdown-item">Menunggu</button>
+                            </form>
                         </li>
                         <li>
-                            <a class="dropdown-item update-status" 
-                               href="#" 
-                               data-id="{{ $refund->id_refund }}" 
-                               data-status="Disetujui">
-                                Disetujui
-                            </a>
+                            <form action="{{ route('refund.update-status', $refund->id_refund) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="status" value="Disetujui">
+                                <button type="submit" class="dropdown-item">Disetujui</button>
+                            </form>
                         </li>
                         <li>
-                            <a class="dropdown-item update-status" 
-                               href="#" 
-                               data-id="{{ $refund->id_refund }}" 
-                               data-status="Ditolak">
-                                Ditolak
-                            </a>
+                            <form action="{{ route('refund.update-status', $refund->id_refund) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="status" value="Ditolak">
+                                <button type="submit" class="dropdown-item">Ditolak</button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="{{ route('refund.update-status', $refund->id_refund) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="status" value="Dibayar">
+                                <button type="submit" class="dropdown-item">Dibayar</button>
+                            </form>
                         </li>
                     </ul>
                 </div>
@@ -82,43 +94,3 @@
 </div>
 
 @endsection
-
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Update status refund
-    document.querySelectorAll('.update-status').forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const refundId = this.dataset.id;
-            const newStatus = this.dataset.status;
-            
-            if (confirm(`Apakah Anda yakin ingin mengubah status menjadi "${newStatus}"?`)) {
-                // Kirim request update status
-                fetch(`/admin/refund/${refundId}/update-status`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({ status: newStatus })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload();
-                    } else {
-                        alert('Gagal mengubah status');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Terjadi kesalahan');
-                });
-            }
-        });
-    });
-});
-</script>
-@endpush

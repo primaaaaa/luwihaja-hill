@@ -68,6 +68,8 @@
                             <span class="badge badge-danger">Ditolak</span>
                             @elseif($statusClean === 'Menunggu')
                             <span class="badge badge-warning">Menunggu</span>
+                            @elseif($statusClean === 'Dibayar')
+                            <span class="badge badge-info">Dibayar</span>
                             @else
                             <span class="badge badge-secondary">{{ $statusClean }}</span>
                             @endif
