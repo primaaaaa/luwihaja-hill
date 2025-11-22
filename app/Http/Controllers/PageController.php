@@ -65,7 +65,6 @@ class PageController extends Controller
             });
         }
 
-        // Filter hanya kamar yang aktif (tidak nonaktif)
         $query->where('status', '!=', 'Nonaktif');
 
         $rooms = $query->orderBy('id_tipe_villa', 'asc')->paginate(4);
@@ -84,30 +83,14 @@ class PageController extends Controller
         }
 
         foreach ($rooms as $room) {
-            // Average rating
             $room->average_rating = Ulasan::whereHas('reservasi', function ($q) use ($room) {
                 $q->where('id_tipe_villa', $room->id_tipe_villa);
             })->avg('rating') ?? 0;
 
-            // Cek bentrok reservasi
             $hasConflict = Reservasi::where('id_tipe_villa', $room->id_tipe_villa)
                 ->whereIn('status', ['Menunggu', 'Dikonfirmasi'])
-                ->where(function ($q) use ($checkInDate, $checkOutDate) {
-                    $q->where(function ($query) use ($checkInDate, $checkOutDate) {
-                        // Case 1: Reservasi dimulai sebelum checkout kita
-                        $query->where('tgl_checkin', '<', $checkOutDate)
-                            ->where('tgl_checkout', '>', $checkInDate);
-                    })
-                        ->orWhere(function ($query) use ($checkInDate, $checkOutDate) {
-                            // Case 2: Reservasi dimulai dalam range kita
-                            $query->whereBetween('tgl_checkin', [$checkInDate, $checkOutDate]);
-                        })
-                        ->orWhere(function ($query) use ($checkInDate, $checkOutDate) {
-                            // Case 3: Reservasi mengcover seluruh range kita
-                            $query->where('tgl_checkin', '<=', $checkInDate)
-                                ->where('tgl_checkout', '>=', $checkOutDate);
-                        });
-                })
+                ->where('tgl_checkin', '<=', $checkOutDate)
+                ->where('tgl_checkout', '>=', $checkInDate)
                 ->exists();
 
             $room->is_available = !$hasConflict;
@@ -120,8 +103,8 @@ class PageController extends Controller
     {
         $room = Kamar::findOrFail($id);
 
-        $checkInDate = $request->input('check_in') ?? now()->format('Y-m-d');
-        $checkOutDate = $request->input('check_out') ?? now()->addDay()->format('Y-m-d');
+        $checkInDate = session('checked_dates.check_in') ?? $request->input('check_in') ?? now()->format('Y-m-d');
+        $checkOutDate = session('checked_dates.check_out') ?? $request->input('check_out') ?? now()->addDay()->format('Y-m-d');
 
         $today = date('Y-m-d');
 
@@ -131,10 +114,8 @@ class PageController extends Controller
 
         $bookedKamarToday = Reservasi::where('id_tipe_villa', $room->id_tipe_villa)
             ->whereIn('status', ['Menunggu', 'Dikonfirmasi'])
-            ->where(function ($query) use ($today) {
-                $query->where('tgl_checkin', '<=', $today)
-                    ->where('tgl_checkout', '>', $today);
-            })
+            ->where('tgl_checkin', '<=', $today)
+            ->where('tgl_checkout', '>=', $today)
             ->count();
 
         $availableToday = $totalKamar - $bookedKamarToday;
@@ -143,21 +124,21 @@ class PageController extends Controller
 
         $bookedKamarSelected = Reservasi::where('id_tipe_villa', $room->id_tipe_villa)
             ->whereIn('status', ['Menunggu', 'Dikonfirmasi'])
-            ->where('tgl_checkin', '<', $checkOutDate)
-            ->where('tgl_checkout', '>', $checkInDate)
+            ->where('tgl_checkin', '<=', $checkOutDate)
+            ->where('tgl_checkout', '>=', $checkInDate)
             ->count();
 
         $availableSelected = $totalKamar - $bookedKamarSelected;
 
-        $hasConflict = Reservasi::where('id_tipe_villa', $room->id_tipe_villa)
-            ->whereIn('status', ['Menunggu', 'Dikonfirmasi'])
-            ->where('tgl_checkin', '<', $checkOutDate)
-            ->where('tgl_checkout', '>', $checkInDate)
-            ->exists();
-
-        $isAvailable = !$hasConflict && $room->status != 'Nonaktif';
-        $statusSelected = $isAvailable ? 'Tersedia' : 'Tidak Tersedia';
-        $availableRoomsSelected = $availableSelected;
+        if (session()->has('availability_status')) {
+            $statusSelected = session('status_display');
+            $availableRoomsSelected = session('available_rooms');
+            $isAvailable = session('availability_status') === 'available';
+        } else {
+            $statusSelected = $availableSelected > 0 ? 'Tersedia' : 'Tidak Tersedia';
+            $availableRoomsSelected = $availableSelected;
+            $isAvailable = $availableSelected > 0 && $room->status != 'Nonaktif';
+        }
 
         $ulasan = Ulasan::whereHas('reservasi', function ($query) use ($room) {
             $query->where('id_tipe_villa', $room->id_tipe_villa);
@@ -211,38 +192,42 @@ class PageController extends Controller
             'check_out' => 'required|date|after:check_in',
         ]);
 
-        $totalKamar = Kamar::where('id_tipe_villa', $request->id_tipe_villa)->count();
+        $totalKamar = Kamar::where('id_tipe_villa', $request->id_tipe_villa)
+            ->where('status', '!=', 'Nonaktif')
+            ->count();
 
+      
         $bookedKamar = Reservasi::where('id_tipe_villa', $request->id_tipe_villa)
             ->whereIn('status', ['Menunggu', 'Dikonfirmasi'])
-            ->where(function ($query) use ($request) {
-                $query->where(function ($q) use ($request) {
-                    $q->whereBetween('tgl_checkin', [$request->check_in, $request->check_out]);
-                })
-                    ->orWhere(function ($q) use ($request) {
-                        $q->whereBetween('tgl_checkout', [$request->check_in, $request->check_out]);
-                    })
-                    ->orWhere(function ($q) use ($request) {
-                        $q->where('tgl_checkin', '<=', $request->check_in)
-                            ->where('tgl_checkout', '>=', $request->check_out);
-                    });
-            })
+            ->where('tgl_checkin', '<=', $request->check_out)  
+            ->where('tgl_checkout', '>=', $request->check_in) 
             ->count();
 
         $availableKamar = $totalKamar - $bookedKamar;
 
         if ($availableKamar <= 0) {
             return back()
-                ->with('status_display', 'Tidak Tersedia')
+                ->withInput()
                 ->with('availability_status', 'unavailable')
-                ->with('availability_message', 'Maaf, kamar tidak tersedia untuk tanggal yang dipilih.');
+                ->with('availability_message', 'Maaf, kamar tidak tersedia untuk tanggal yang dipilih.')
+                ->with('available_rooms', 0)
+                ->with('status_display', 'Tidak Tersedia')
+                ->with('checked_dates', [
+                    'check_in' => $request->check_in,
+                    'check_out' => $request->check_out
+                ]);
         }
 
         return back()
-            ->with('status_display', 'Tersedia')
+            ->withInput()
             ->with('availability_status', 'available')
             ->with('availability_message', "Tersedia $availableKamar kamar!")
-            ->with('available_rooms', $availableKamar);
+            ->with('available_rooms', $availableKamar)
+            ->with('status_display', 'Tersedia')
+            ->with('checked_dates', [
+                'check_in' => $request->check_in,
+                'check_out' => $request->check_out
+            ]);
     }
 
     public function storeUlasan(Request $request)
@@ -326,9 +311,14 @@ class PageController extends Controller
             $selectedRoom = Kamar::find($request->room);
         }
 
-        $rooms = Kamar::where('status', 'Tersedia')->get();
+        $rooms = Kamar::where('status', '!=', 'Nonaktif')
+            ->orderBy('kategori', 'asc')
+            ->get();
 
-        return view('pages.booking', compact('user', 'selectedRoom', 'rooms'));
+        $checkIn = $request->input('check_in', now()->format('Y-m-d'));
+        $checkOut = $request->input('check_out', now()->addDay()->format('Y-m-d'));
+
+        return view('pages.booking', compact('user', 'selectedRoom', 'rooms', 'checkIn', 'checkOut'));
     }
 
     public function storeBooking(Request $request)
@@ -387,8 +377,6 @@ class PageController extends Controller
 
         try {
             DB::beginTransaction();
-
-            // Generate kode reservasi berurutan
             $lastReservasi = Reservasi::orderBy('id_reservasi', 'desc')->first();
             $nextNumber = $lastReservasi ? ($lastReservasi->id_reservasi + 1) : 1;
             $kodeReservasi = 'RES-' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
@@ -546,16 +534,8 @@ class PageController extends Controller
             return back()->with('error', 'Reservasi tidak ditemukan, refund tidak dapat diproses.');
         }
 
-        $file = $request->file('bukti_pendukung');
-        $originalName = $file->getClientOriginalName();
-        $extension = $file->getClientOriginalExtension();
-        $nameWithoutExt = pathinfo($originalName, PATHINFO_FILENAME);
-
-        $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $nameWithoutExt);
-
-        $finalName = $cleanName . '_' . time() . '.' . $extension;
-
-        $filePath = $file->storeAs('refund', $finalName, 'public');
+        $originalName = $request->file('bukti_pendukung')->getClientOriginalName();
+        $filePath = $request->file('bukti_pendukung')->storeAs('refund', $originalName, 'public');
 
         $lastRefund = Refund::orderBy('id_refund', 'desc')->first();
         $nextNumber = $lastRefund ? intval(substr($lastRefund->kode_refund, 1)) + 1 : 1;

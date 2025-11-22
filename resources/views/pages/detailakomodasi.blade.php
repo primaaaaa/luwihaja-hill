@@ -30,8 +30,7 @@
                             <div class="rdt-right">
                                 {{-- Button Booking --}}
                                 @if($isAvailable)
-                                <a class="btn-booking"
-                                    href="{{ url('/booking?room=' . $room->id_tipe_villa . '&check_in=' . $checkInDate . '&check_out=' . $checkOutDate) }}">
+                                <a class="btn-booking" href="{{ url('/booking?room=' . $room->id_tipe_villa) }}">
                                     Booking Sekarang
                                 </a>
                                 @else
@@ -85,11 +84,17 @@
                                         ({{ $availableRoomsSelected }} Kamar)
                                         @endif
 
-                                        @if($checkInDate != now()->format('Y-m-d'))
+                                        {{-- @if(session('checked_dates'))
+                                        <br><small style="color: #999;">untuk {{
+                                            \Carbon\Carbon::parse(session('checked_dates.check_in'))->format('d M Y') }}
+                                            - {{
+                                            \Carbon\Carbon::parse(session('checked_dates.check_out'))->format('d M Y')
+                                            }}</small>
+                                        @elseif($checkInDate != now()->format('Y-m-d'))
                                         <br><small style="color: #999;">untuk {{
                                             \Carbon\Carbon::parse($checkInDate)->format('d M Y') }} - {{
                                             \Carbon\Carbon::parse($checkOutDate)->format('d M Y') }}</small>
-                                        @endif
+                                        @endif --}}
                                     </td>
                                 </tr>
                             </tbody>
@@ -223,13 +228,15 @@
 
                         <div class="check-date">
                             <label for="date-in">Check In</label>
-                            <input type="date" class="date-input" id="date-in" name="check_in" min="{{ date('Y-m-d') }}"
-                                required>
+                            <input type="date" class="date-input" id="date-in" name="check_in"
+                                value="{{ old('check_in', session('checked_dates.check_in', $checkInDate)) }}"
+                                min="{{ date('Y-m-d') }}" required>
                             <i class="fa-regular fa-calendar"></i>
                         </div>
                         <div class="check-date">
                             <label for="date-out">Check Out</label>
                             <input type="date" class="date-input" id="date-out" name="check_out"
+                                value="{{ old('check_out', session('checked_dates.check_out', $checkOutDate)) }}"
                                 min="{{ date('Y-m-d', strtotime('+1 day')) }}" required>
                             <i class="fa-regular fa-calendar"></i>
                         </div>
@@ -242,10 +249,10 @@
                         <button type="submit">Cek Ketersediaan</button>
                     </form>
 
-                    @if(session('availability_status'))
+                    @if(session('availability_message'))
                     <div class="availability-result" style="margin-top: 15px; padding: 15px; border-radius: 5px; 
-                             background: {{ session('availability_status') == 'available' ? '#d4edda' : '#f8d7da' }}; 
-                             color: {{ session('availability_status') == 'available' ? '#155724' : '#721c24' }};">
+             background: {{ session('availability_status') == 'available' ? '#d4edda' : '#f8d7da' }}; 
+             color: {{ session('availability_status') == 'available' ? '#155724' : '#721c24' }};">
                         <strong>{{ session('availability_message') }}</strong>
                     </div>
                     @endif

@@ -324,12 +324,21 @@ class AdminController extends Controller
         $isOccupied = Reservasi::where('id_tipe_villa', $kamar->id_tipe_villa)
             ->where('status', 'Dikonfirmasi')
             ->where('tgl_checkin', '<=', $today)
-            ->where('tgl_checkout', '>', $today)
+            ->where('tgl_checkout', '>=', $today) // Ubah dari '>' menjadi '>=' agar terisi sampai hari checkout
             ->exists();
 
         if ($isOccupied) {
             $kamar->update(['status' => 'Terisi']);
             return;
+        }
+
+        $completedReservations = Reservasi::where('id_tipe_villa', $kamar->id_tipe_villa)
+            ->where('status', 'Dikonfirmasi')
+            ->where('tgl_checkout', '<', $today) // Sudah lewat tanggal checkout
+            ->get();
+
+        foreach ($completedReservations as $reservation) {
+            $reservation->update(['status' => 'Selesai']);
         }
 
         $hasReservation = Reservasi::where('id_tipe_villa', $kamar->id_tipe_villa)
@@ -554,8 +563,8 @@ class AdminController extends Controller
     public function exportPembayaran(Request $request)
     {
         $query = Pembayaran::with('reservasi.user', 'reservasi.kamar')
-            ->orderBy('created_at', 'desc'); 
-            
+            ->orderBy('created_at', 'desc');
+
         if ($request->has('status') && $request->status != 'Semua') {
             $query->where('status', $request->status);
         }
