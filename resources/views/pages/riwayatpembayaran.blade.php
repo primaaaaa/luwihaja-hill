@@ -252,14 +252,12 @@
 
 
 @endsection
-
-@push('scripts')
 @push('scripts')
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('modalRefundCustom');
     const openButtons = document.querySelectorAll('.btn-refund');
-    const closeButton = modal.querySelector('.close-modal');
+    const closeButton = modal?.querySelector('.close-modal');
 
     openButtons.forEach(btn => {
         btn.addEventListener('click', function() {
@@ -285,23 +283,30 @@
         });
     });
 
-    closeButton.addEventListener('click', () => {
-        modal.classList.remove('show');
-        resetForm();
-    });
-
-    modal.addEventListener('click', e => {
-        if(e.target === modal) {
+    if (closeButton) {
+        closeButton.addEventListener('click', () => {
             modal.classList.remove('show');
             resetForm();
-        }
-    });
+        });
+    }
+
+    if (modal) {
+        modal.addEventListener('click', e => {
+            if(e.target === modal) {
+                modal.classList.remove('show');
+                resetForm();
+            }
+        });
+    }
 
     const fileInput = document.getElementById('fileUploadRefund');
     const fileNameDisplay = document.getElementById('file-name-refund');
-    fileInput?.addEventListener('change', () => {
-        fileNameDisplay.textContent = fileInput.files[0]?.name || 'Pilih file';
-    });
+    
+    if (fileInput && fileNameDisplay) {
+        fileInput.addEventListener('change', () => {
+            fileNameDisplay.textContent = fileInput.files[0]?.name || 'Pilih file';
+        });
+    }
 
     function formatDate(dateString) {
         if (!dateString) return '';
@@ -321,12 +326,33 @@
     }
 
     function resetForm() {
-        document.getElementById('alasan_refund').value = '';
-        fileInput.value = '';
-        fileNameDisplay.textContent = 'Pilih file';
-        document.getElementById('nama_bank_tujuan').value = '';
-        document.getElementById('norek_tujuan').value = '';
-        document.getElementById('pemilik_tujuan').value = '';
+        const alasanRefund = document.getElementById('alasan_refund');
+        const namaBankTujuan = document.getElementById('nama_bank_tujuan');
+        const norekTujuan = document.getElementById('norek_tujuan');
+        const pemilikTujuan = document.getElementById('pemilik_tujuan');
+        
+        if (alasanRefund) alasanRefund.value = '';
+        if (fileInput) fileInput.value = '';
+        if (fileNameDisplay) fileNameDisplay.textContent = 'Pilih file';
+        if (namaBankTujuan) namaBankTujuan.value = '';
+        if (norekTujuan) norekTujuan.value = '';
+        if (pemilikTujuan) pemilikTujuan.value = '';
+    }
+
+    const searchInput = document.getElementById('searchInput');
+    const tableBody = document.getElementById('tableBody');
+    
+    if (searchInput && tableBody) {
+        const rows = tableBody.querySelectorAll('tr');
+
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
     }
 });
 </script>
