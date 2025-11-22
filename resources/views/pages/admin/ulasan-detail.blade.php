@@ -18,7 +18,7 @@
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tanggal Ulasan</label>
                     <input type="text" class="form-control" 
-                           value="{{ $ulasan->tgl_ulasan->format('d M Y') }}" readonly>
+                           value="{{ $ulasan->tgl_ulasan->format('d-m-Y') }}" readonly>
                 </div>
             </div>
 
@@ -27,13 +27,13 @@
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tanggal Check-In</label>
                     <input type="text" class="form-control" 
-                           value="{{ $ulasan->reservasi->tgl_checkin->format('d M Y') }}" readonly>
+                           value="{{ $ulasan->reservasi->tgl_checkin->format('d-m-Y') }}" readonly>
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tanggal Check-Out</label>
                     <input type="text" class="form-control" 
-                           value="{{ $ulasan->reservasi->tgl_checkout->format('d M Y') }}" readonly>
+                           value="{{ $ulasan->reservasi->tgl_checkout->format('d-m-Y') }}" readonly>
                 </div>
             </div>
 

@@ -32,7 +32,7 @@
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tanggal Pengajuan</label>
                     <input type="text" class="form-control" 
-                        value="{{ $refund->tgl_pengajuan ? \Carbon\Carbon::parse($refund->tgl_pengajuan)->format('d M Y') : '-' }}" 
+                        value="{{ $refund->tgl_pengajuan ? \Carbon\Carbon::parse($refund->tgl_pengajuan)->format('d-m-Y') : '-' }}" 
                         readonly>
                 </div>
             </div>
@@ -42,13 +42,13 @@
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tanggal Check-In</label>
                     <input type="text" class="form-control" 
-                        value="{{ $refund->reservasi->tgl_checkin ? \Carbon\Carbon::parse($refund->reservasi->tgl_checkin)->format('d M Y') : '-' }}" 
+                        value="{{ $refund->reservasi->tgl_checkin ? \Carbon\Carbon::parse($refund->reservasi->tgl_checkin)->format('d-m-Y') : '-' }}" 
                         readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tanggal Check-Out</label>
                     <input type="text" class="form-control" 
-                        value="{{ $refund->reservasi->tgl_checkout ? \Carbon\Carbon::parse($refund->reservasi->tgl_checkout)->format('d M Y') : '-' }}" 
+                        value="{{ $refund->reservasi->tgl_checkout ? \Carbon\Carbon::parse($refund->reservasi->tgl_checkout)->format('d-m-Y') : '-' }}" 
                         readonly>
                 </div>
             </div>

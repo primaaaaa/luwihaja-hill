@@ -22,12 +22,12 @@
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tanggal Check-In</label>
                     <input type="text" class="form-control"
-                        value="{{ $reservasi->tgl_checkin ? $reservasi->tgl_checkin->format('d M Y') : '-' }}" readonly>
+                        value="{{ $reservasi->tgl_checkin ? $reservasi->tgl_checkin->format('d-m-Y') : '-' }}" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tanggal Check-Out</label>
                     <input type="text" class="form-control"
-                        value="{{ $reservasi->tgl_checkout ? $reservasi->tgl_checkout->format('d M Y') : '-' }}"
+                        value="{{ $reservasi->tgl_checkout ? $reservasi->tgl_checkout->format('d-m-Y') : '-' }}"
                         readonly>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                 <div class="col-md-6 mb-4">
                     <label class="form-label">Tanggal Reservasi</label>
                     <input type="text" class="form-control"
-                        value="{{ $reservasi->tgl_reservasi ? $reservasi->tgl_reservasi->format('d M Y') : '-' }}"
+                        value="{{ $reservasi->tgl_reservasi ? $reservasi->tgl_reservasi->format('d-m-Y') : '-' }}"
                         readonly>
                 </div>
             </div>

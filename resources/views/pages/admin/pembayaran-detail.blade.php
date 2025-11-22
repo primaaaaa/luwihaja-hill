@@ -26,18 +26,18 @@
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tanggal Pembayaran</label>
-                    <input type="text" class="form-control" value="{{ $pembayaran->tgl_pembayaran ? $pembayaran->tgl_pembayaran->format('d M Y') : '-' }}" readonly>
+                    <input type="text" class="form-control" value="{{ $pembayaran->tgl_pembayaran ? $pembayaran->tgl_pembayaran->format('d-m-Y') : '-' }}" readonly>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tanggal Check-In</label>
-                    <input type="text" class="form-control" value="{{ $pembayaran->reservasi->tgl_checkin ? $pembayaran->reservasi->tgl_checkin->format('d M Y') : '-' }}" readonly>
+                    <input type="text" class="form-control" value="{{ $pembayaran->reservasi->tgl_checkin ? $pembayaran->reservasi->tgl_checkin->format('d-m-Y') : '-' }}" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tanggal Check-Out</label>
-                    <input type="text" class="form-control" value="{{ $pembayaran->reservasi->tgl_checkout ? $pembayaran->reservasi->tgl_checkout->format('d M Y') : '-' }}" readonly>
+                    <input type="text" class="form-control" value="{{ $pembayaran->reservasi->tgl_checkout ? $pembayaran->reservasi->tgl_checkout->format('d-m-Y') : '-' }}" readonly>
                 </div>
             </div>
 
