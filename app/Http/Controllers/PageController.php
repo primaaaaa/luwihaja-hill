@@ -49,10 +49,15 @@ class PageController extends Controller
     public function Akomodasi(Request $request)
     {
         $search = $request->input('search');
+        $kategori = $request->input('kategori');
         $checkInDate = $request->input('check_in') ?? now()->format('Y-m-d');
         $checkOutDate = $request->input('check_out') ?? now()->addDay()->format('Y-m-d');
 
         $query = Kamar::query();
+
+        if ($kategori) {
+            $query->where('kategori', $kategori);
+        }
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -96,7 +101,12 @@ class PageController extends Controller
             $room->is_available = !$hasConflict;
         }
 
-        return view('pages.akomodasi', compact('rooms', 'featuredRooms', 'checkInDate', 'checkOutDate'));
+        $kategoriList = Kamar::where('status', '!=', 'Nonaktif')
+            ->select('kategori')
+            ->distinct()
+            ->pluck('kategori');
+
+        return view('pages.akomodasi', compact('rooms', 'featuredRooms', 'checkInDate', 'checkOutDate', 'kategoriList'));
     }
 
     public function detailAkomodasi(Request $request, $id)
@@ -197,11 +207,11 @@ class PageController extends Controller
             ->where('status', '!=', 'Nonaktif')
             ->count();
 
-      
+
         $bookedKamar = Reservasi::where('id_tipe_villa', $request->id_tipe_villa)
             ->whereIn('status', ['Menunggu', 'Dikonfirmasi'])
-            ->where('tgl_checkin', '<=', $request->check_out)  
-            ->where('tgl_checkout', '>=', $request->check_in) 
+            ->where('tgl_checkin', '<=', $request->check_out)
+            ->where('tgl_checkout', '>=', $request->check_in)
             ->count();
 
         $availableKamar = $totalKamar - $bookedKamar;

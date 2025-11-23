@@ -14,11 +14,9 @@ return new class extends Migration
         Schema::create('reservasi', function (Blueprint $table) {
             $table->id('id_reservasi');
             $table->string('kode_reservasi', 10)->unique();
-            // Foreign key ke users
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
 
-            // Foreign key ke tipe villa
             $table->unsignedBigInteger('id_tipe_villa');
             $table->foreign('id_tipe_villa')->references('id_tipe_villa')->on('tipe_villa')->onDelete('cascade');
 

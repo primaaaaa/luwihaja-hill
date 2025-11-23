@@ -29,10 +29,26 @@
     </div>
 </section>
 
-<!-- Search Section -->
 <section class="search-section">
     <div class="container">
         <form action="{{ route('akomodasi') }}" method="GET">
+
+            <div class="category-tabs">
+
+                <a href="{{ route('akomodasi', request()->except('kategori')) }}"
+                    class="tab-item {{ !request('kategori') ? 'active' : '' }}">
+                    Semua
+                </a>
+
+                @foreach($kategoriList as $kat)
+                <a href="{{ route('akomodasi', array_merge(request()->all(), ['kategori' => $kat])) }}"
+                    class="tab-item {{ request('kategori') == $kat ? 'active' : '' }}">
+                    {{ $kat }}
+                </a>
+                @endforeach
+
+            </div>
+
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" name="search" placeholder="Cari akomodasi (contoh: twin bed, deluxe, 5000000)"
@@ -43,7 +59,6 @@
     </div>
 </section>
 
-<!-- Rooms Section -->
 <section class="rooms-section">
     <div class="container">
         @forelse($rooms as $room)
@@ -66,7 +81,6 @@
                             @endif
                             @endfor
                     </span>
-
                 </div>
                 <p class="room-description">
                     @php
@@ -107,17 +121,14 @@
         </div>
         @endforelse
 
-
-        <!-- Pagination -->
         @if($rooms->hasPages())
         <div class="pagination">
-
             @if($rooms->onFirstPage())
             <button disabled>
                 <i class="fa-solid fa-chevron-left"></i>
             </button>
             @else
-            <a href="{{ $rooms->previousPageUrl() }}">
+            <a href="{{ $rooms->appends(request()->query())->previousPageUrl() }}">
                 <button>
                     <i class="fa-solid fa-chevron-left"></i>
                 </button>
@@ -128,12 +139,12 @@
             @if($page == $rooms->currentPage())
             <span class="active">{{ $page }}</span>
             @else
-            <a href="{{ $url }}"><span>{{ $page }}</span></a>
+            <a href="{{ $rooms->appends(request()->query())->url($page) }}"><span>{{ $page }}</span></a>
             @endif
             @endforeach
 
             @if($rooms->hasMorePages())
-            <a href="{{ $rooms->nextPageUrl() }}">
+            <a href="{{ $rooms->appends(request()->query())->nextPageUrl() }}">
                 <button>
                     <i class="fa-solid fa-chevron-right"></i>
                 </button>
@@ -143,10 +154,9 @@
                 <i class="fa-solid fa-chevron-right"></i>
             </button>
             @endif
-
         </div>
         @endif
-
+    </div>
 </section>
 
 <script>

@@ -8,7 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Tambahkan 'Dibayar' ke enum status
         DB::statement("
             ALTER TABLE refund 
             MODIFY COLUMN status ENUM('Menunggu','Disetujui','Ditolak','Dibayar') 
@@ -18,7 +17,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        // Hapus 'Dibayar' dari enum jika rollback
         DB::statement("
             ALTER TABLE refund 
             MODIFY COLUMN status ENUM('Menunggu','Disetujui','Ditolak') 
