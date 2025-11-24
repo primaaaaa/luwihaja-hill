@@ -14,7 +14,9 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
         "phpoffice/phpspreadsheet": "^5.2",
-        "tightenco/ziggy": "^2.0"
+        "tightenco/ziggy": "^2.0",
+        "ext-pgsql": "*",
+        "ext-redis": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.6",
