@@ -141,13 +141,18 @@ a {
 /* Hero */
 .hero {
     position: relative;
-    min-height: 45vh;
-    background: var(--bg) url('https://www.rumah123.com/seo-cms/assets/Luwihaja_Hill_ea834e4998/Luwihaja_Hill_ea834e4998.jpg') center/cover no-repeat;
+    height: calc(100vh - 40px);
+    padding-top: 70px;
+    background: var(--bg)
+        url('https://www.rumah123.com/seo-cms/assets/Luwihaja_Hill_ea834e4998/Luwihaja_Hill_ea834e4998.jpg')
+        center / cover no-repeat;
     color: #fff;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 60px;
+
+    padding-top: 60px; /* jika ada navbar fixed */
 }
 
 .hero .overlay {
@@ -187,6 +192,50 @@ a {
     max-width: 900px;
 }
 
+/* Ini Page Header, kayak hero section tapi ga full se layar. buat judul tiap halaman */
+.page-header {
+    position: relative;
+    height: 280px; /* tidak full layar */
+    background: var(--bg)
+        url('https://www.rumah123.com/seo-cms/assets/Luwihaja_Hill_ea834e4998/Luwihaja_Hill_ea834e4998.jpg')
+        center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    color: #fff;
+    padding: 40px 20px;
+
+    /* optional: tambahkan overlay gelap */
+    overflow: hidden;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45); /* overlay */
+    z-index: 1;
+}
+
+.page-header h1 {
+    position: relative;
+    z-index: 2;
+    font-size: 2.8rem;
+    font-weight: 700;
+}
+
+.page-header h1 .accent {
+    color: var(--accent);
+}
+
+.page-header .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(64, 114, 63, 0.6);
+    /* #40723F @ 20% */
+}
 .btn {
     display: inline-block;
     padding: 9px 19px;
@@ -336,7 +385,7 @@ a {
     direction: rtl;
 }
 
-.content-block.reverse>* {
+.content-block.reverse > * {
     direction: ltr;
 }
 
@@ -371,7 +420,7 @@ a {
     color: #6d6c6c;
 }
 
-.content-text p+p {
+.content-text p + p {
     margin-top: 12px;
 }
 
@@ -2195,9 +2244,6 @@ input[type='date']::-webkit-calendar-picker-indicator {
     transform: translateY(-1px);
 }
 
-
-
-
 .success-section {
     padding: 90px 0;
     background: white;
@@ -2279,7 +2325,6 @@ input[type='date']::-webkit-calendar-picker-indicator {
     color: #252b17;
     font-weight: 500;
 }
-
 
 /* Table Section */
 .table-section {
@@ -2828,7 +2873,7 @@ tbody tr:last-child td {
 
 /* Underline highlight on active */
 .tab-item.active::after {
-    content: "";
+    content: '';
     position: absolute;
     left: 0;
     bottom: -3px;
@@ -2949,15 +2994,19 @@ tbody tr:last-child td {
     }
 
     .nav-menu {
-        position: absolute;
-        top: 70px;
+        position: fixed; /* agar ikut scroll ke bawah */
+        top: 70px; /* jarak dari atas (misalnya tinggi navbar) */
         left: 0;
         right: 0;
         width: 100%;
+
         background: #325832;
+
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.3s ease;
+
+        z-index: 999; /* wajib, supaya tidak ketutup elemen lain */
     }
 
     .brand img {
@@ -3475,31 +3524,12 @@ tbody tr:last-child td {
         content: 'Status';
     }
 
-
-    /* UNTUK TABEL RIWAYAT REFUND */
-    .refund-section tbody tr td:nth-child(1) {
-        order: 1;
-    }
-
-    .refund-section tbody tr td:nth-child(2) {
-        order: 2;
-    }
-
-    .refund-section tbody tr td:nth-child(3) {
-        order: 3;
-    }
-
-    .refund-section tbody tr td:nth-child(4) {
-        order: 4;
-    }
-
-    .refund-section tbody tr td:nth-child(5) {
-        order: 5;
-    }
-
-    .refund-section tbody tr td:nth-child(6) {
-        order: 6;
-    }
+     .refund-section tbody tr td:nth-child(1) { order: 1; }
+    .refund-section tbody tr td:nth-child(2) { order: 2; }
+    .refund-section tbody tr td:nth-child(3) { order: 3; }
+    .refund-section tbody tr td:nth-child(4) { order: 4; }
+    .refund-section tbody tr td:nth-child(5) { order: 5; }
+    .refund-section tbody tr td:nth-child(6) { order: 6; }
 
     .refund-section tbody tr td:nth-child(1)::before {
         content: 'Nama Tamu';

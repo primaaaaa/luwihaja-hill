@@ -4,7 +4,7 @@
 
 @section('content')
 
-<section class="hero">
+<section class="page-header">
     <div class="overlay"></div>
     <div class="hero-inner">
         <h1>Galeri <span class="accent">Villa</span></h1>

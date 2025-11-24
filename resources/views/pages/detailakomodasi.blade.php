@@ -6,7 +6,7 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<section class="hero">
+<section class="page-header">
     <div class="overlay"></div>
     <div class="hero-inner">
         <h1>Detail <span class="accent">Akomodasi</span></h1>
