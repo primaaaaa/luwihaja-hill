@@ -215,7 +215,7 @@ a {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45); /* overlay */
+    background: rgba(64, 114, 63, 0.3); /* overlay ini gue ubah lagi ya ke waran awal */
     z-index: 1;
 }
 
@@ -234,7 +234,6 @@ a {
     position: absolute;
     inset: 0;
     background: rgba(64, 114, 63, 0.6);
-    /* #40723F @ 20% */
 }
 .btn {
     display: inline-block;
@@ -3006,7 +3005,7 @@ tbody tr:last-child td {
         overflow: hidden;
         transition: max-height 0.3s ease;
 
-        z-index: 999; /* wajib, supaya tidak ketutup elemen lain */
+        z-index: 999; 
     }
 
     .brand img {
