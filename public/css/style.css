@@ -2791,6 +2791,7 @@ tbody tr:last-child td {
 .link-white-underline:hover {
     opacity: 0.85;
 }
+
 .btn-refund.disabled,
 .btn-refund:disabled {
     opacity: 0.5;
@@ -2799,43 +2800,43 @@ tbody tr:last-child td {
 }
 
 .category-tabs {
-        display: flex;
-        justify-content: center;
-        gap: 40px;
-        margin-bottom: 25px;
-    }
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 25px;
+}
 
-    .tab-item {
-        font-size: 16px;
-        color: #555;
-        text-decoration: none;
-        font-weight: 500;
-        padding-bottom: 6px;
-        position: relative;
-        transition: all 0.3s ease;
-    }
+.tab-item {
+    font-size: 16px;
+    color: #555;
+    text-decoration: none;
+    font-weight: 500;
+    padding-bottom: 6px;
+    position: relative;
+    transition: all 0.3s ease;
+}
 
-    .tab-item:hover {
-        color: #e5962e;
-    }
+.tab-item:hover {
+    color: #e5962e;
+}
 
-    .tab-item.active {
-        color: #e5962e;
-        /* Warna ungu lembut */
-        font-weight: 600;
-    }
+.tab-item.active {
+    color: #e5962e;
+    /* Warna ungu lembut */
+    font-weight: 600;
+}
 
-    /* Underline highlight on active */
-    .tab-item.active::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: -3px;
-        width: 100%;
-        height: 2px;
-        background-color: #e5962e;
-        border-radius: 2px;
-    }
+/* Underline highlight on active */
+.tab-item.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 2px;
+    background-color: #e5962e;
+    border-radius: 2px;
+}
 
 /* Responsive */
 
@@ -3066,22 +3067,22 @@ tbody tr:last-child td {
         font-size: 0.85rem;
     }
 
-       .filter-container {
-            padding: 15px;
-        }
+    .filter-container {
+        padding: 15px;
+    }
 
-        .category-pills {
-            gap: 8px;
-        }
+    .category-pills {
+        gap: 8px;
+    }
 
-        .category-pill span {
-            padding: 10px 18px;
-            font-size: 14px;
-        }
+    .category-pill span {
+        padding: 10px 18px;
+        font-size: 14px;
+    }
 
-        .filter-label {
-            font-size: 14px;
-        }
+    .filter-label {
+        font-size: 14px;
+    }
 }
 
 /* Akomodasi Rooms */
@@ -3389,10 +3390,12 @@ tbody tr:last-child td {
 
     .table-section tbody tr:has(button) td:nth-child(5) {
         order: 6;
+        /* Status dipindah ke bawah */
     }
 
     .table-section tbody tr:has(button) td:nth-child(6) {
         order: 5;
+        /* Aksi di atas Status */
     }
 
     .table-section tbody tr:has(button) td:nth-child(1)::before {
@@ -3400,25 +3403,30 @@ tbody tr:last-child td {
     }
 
     .table-section tbody tr:has(button) td:nth-child(2)::before {
-        content: 'Kode Reservasi';
+        content: 'Kode Pembayaran';
+        /* INI YANG DIPERBAIKI */
     }
 
     .table-section tbody tr:has(button) td:nth-child(3)::before {
-        content: 'Check-in';
+        content: 'Kode Reservasi';
+        /* INI YANG DIPERBAIKI */
     }
 
     .table-section tbody tr:has(button) td:nth-child(4)::before {
-        content: 'Check-out';
+        content: 'Total Harga';
+        /* INI YANG DIPERBAIKI */
     }
 
     .table-section tbody tr:has(button) td:nth-child(5)::before {
-        content: 'Aksi';
-    }
-
-    .table-section tbody tr:has(button) td:nth-child(6)::before {
         content: 'Status';
     }
 
+    .table-section tbody tr:has(button) td:nth-child(6)::before {
+        content: 'Aksi';
+    }
+
+
+    /* UNTUK TABEL RIWAYAT RESERVASI (yang tidak ada button) */
     .table-section tbody tr:not(:has(button)) td:nth-child(1) {
         order: 1;
     }
@@ -3467,28 +3475,52 @@ tbody tr:last-child td {
         content: 'Status';
     }
 
-     .refund-section tbody tr td:nth-child(1) { order: 1; }
-    .refund-section tbody tr td:nth-child(2) { order: 2; }
-    .refund-section tbody tr td:nth-child(3) { order: 3; }
-    .refund-section tbody tr td:nth-child(4) { order: 4; }
-    .refund-section tbody tr td:nth-child(5) { order: 5; }
-    .refund-section tbody tr td:nth-child(6) { order: 6; }
+
+    /* UNTUK TABEL RIWAYAT REFUND */
+    .refund-section tbody tr td:nth-child(1) {
+        order: 1;
+    }
+
+    .refund-section tbody tr td:nth-child(2) {
+        order: 2;
+    }
+
+    .refund-section tbody tr td:nth-child(3) {
+        order: 3;
+    }
+
+    .refund-section tbody tr td:nth-child(4) {
+        order: 4;
+    }
+
+    .refund-section tbody tr td:nth-child(5) {
+        order: 5;
+    }
+
+    .refund-section tbody tr td:nth-child(6) {
+        order: 6;
+    }
 
     .refund-section tbody tr td:nth-child(1)::before {
         content: 'Nama Tamu';
     }
+
     .refund-section tbody tr td:nth-child(2)::before {
         content: 'Kode Refund';
     }
+
     .refund-section tbody tr td:nth-child(3)::before {
         content: 'Kode Reservasi';
     }
+
     .refund-section tbody tr td:nth-child(4)::before {
         content: 'Kode Pembayaran';
     }
+
     .refund-section tbody tr td:nth-child(5)::before {
         content: 'Tanggal Pengajuan';
     }
+
     .refund-section tbody tr td:nth-child(6)::before {
         content: 'Status';
     }
@@ -3595,14 +3627,14 @@ tbody tr:last-child td {
         border-radius: 20px;
     }
 
-     .category-pill span {
-            padding: 8px 16px;
-            font-size: 13px;
-        }
+    .category-pill span {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
 
-        .category-pill span i {
-            font-size: 14px;
-        }
+    .category-pill span i {
+        font-size: 14px;
+    }
 
     .search-box i {
         display: none;
