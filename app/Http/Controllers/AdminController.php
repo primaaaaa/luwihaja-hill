@@ -54,6 +54,9 @@ class AdminController extends Controller
             $query->where('status', $request->status);
         }
 
+        $categories = Kamar::select('kategori')->distinct()->pluck('kategori')->toArray();
+
+
         $rooms = $query->paginate(10)->appends($request->except('page'));
 
         $lastKamar = Kamar::orderBy('id_tipe_villa', 'desc')->first();
@@ -63,6 +66,7 @@ class AdminController extends Controller
         return view('pages.admin.manajemenkamar', [
             'rooms' => $rooms,
             'nextKodeTipe' => $nextKodeTipe,
+            'categories' => $categories,
             'tableHeader' => ['Kode Kamar', 'Unit', 'Kapasitas', 'Kategori', 'Status']
         ]);
     }
@@ -74,11 +78,17 @@ class AdminController extends Controller
             $request->merge(['kode_tipe' => 'K' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT)]);
         }
 
+        $categories = Kamar::select('kategori')->distinct()->pluck('kategori')->toArray();
+
+        if (empty($categories)) {
+            $categories = ['Deluxe Bed', 'Queen Bed', 'Twin Bed', 'Super Deluxe', 'Family Room'];
+        }
+
         $validated = $request->validate([
             'kode_tipe' => 'required|unique:tipe_villa,kode_tipe|max:10',
             'nama_unit' => 'required|max:100',
             'kapasitas' => 'required|integer|min:1',
-            'kategori' => 'required|in:Deluxe Bed,Queen Bed,Twin Bed,Super Deluxe,Family Room',
+            'kategori' => 'required|in:' . implode(',', $categories),
             'deskripsi' => 'nullable',
             'harga_weekday' => 'required|numeric|min:0',
             'harga_weekend' => 'required|numeric|min:0',
@@ -102,16 +112,22 @@ class AdminController extends Controller
     {
         $kamar = Kamar::findOrFail($id);
 
+        $categories = Kamar::select('kategori')->distinct()->pluck('kategori')->toArray();
+
+        if (empty($categories)) {
+            $categories = ['Deluxe Bed', 'Queen Bed', 'Twin Bed', 'Super Deluxe', 'Family Room'];
+        }
+
         $validated = $request->validate([
             'kode_tipe' => 'required|max:10|unique:tipe_villa,kode_tipe,' . $id . ',id_tipe_villa',
             'nama_unit' => 'required|max:100',
             'kapasitas' => 'required|integer|min:1',
-            'kategori' => 'required|in:Deluxe Bed,Queen Bed,Twin Bed,Super Deluxe,Family Room',
+            'kategori' => 'required|in:' . implode(',', $categories),
             'deskripsi' => 'nullable',
             'harga_weekday' => 'required|numeric|min:0',
             'harga_weekend' => 'required|numeric|min:0',
             'foto_kamar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'status' => 'required|in:Tersedia,Terisi,Dipesan,Nonaktif'
+            'status' => 'required|in:Tersedia,Nonaktif'
         ]);
 
         if ($request->hasFile('foto_kamar')) {
@@ -130,7 +146,6 @@ class AdminController extends Controller
         return redirect()->route('admin.kamar')
             ->with('success', 'Kamar berhasil diupdate!');
     }
-
     public function updateStatusKamar(Request $request, $id)
     {
         $kamar = Kamar::findOrFail($id);

@@ -122,14 +122,13 @@
             </div>
 
             <div class="mt-3">
-                <x-select-field label="Kategori" name="kategori" required="true"
-                    :option="['Deluxe Bed', 'Queen Bed', 'Twin Bed', 'Super Deluxe', 'Family Room']"
+                <x-select-field label="Kategori" name="kategori" required="true" :option="$categories"
                     value="{{ $room->kategori }}"></x-select-field>
             </div>
 
             <div class="mt-3">
-                <x-select-field label="Status" name="status" required="true"
-                    :option="['Tersedia', 'Terisi', 'Dipesan', 'Nonaktif']" value="{{ $room->status }}">
+                <x-select-field label="Status" name="status" required="true" :option="['Tersedia', 'Nonaktif']"
+                    value="{{ $room->status }}">
                 </x-select-field>
             </div>
 
@@ -145,13 +144,14 @@
                 </div>
                 <div class="col-md-6">
                     <x-input-field label="Kode Tipe" name="kode_tipe" type="text" value="{{ $room->kode_tipe }}"
-                        required="true"></x-input-field>
+                        required="true" readonly="true"></x-input-field>
                 </div>
             </div>
         </x-edit-modal>
 
         <!-- Modal Delete -->
-        <x-delete-modal :id="$room->id_tipe_villa" :nama="$room->nama_tipe" route="admin.kamar.delete" page="kamar">
+        <x-delete-modal :id="$room->id_tipe_villa" :nama="$room->kode_tipe . ' - ' . $room->nama_unit"
+            route="admin.kamar.delete" page="kamar">
         </x-delete-modal>
         @endforeach
 
@@ -175,10 +175,9 @@
                 required="true"></x-input-field>
         </div>
         <div class="col-md-6">
-            <x-select-field label="Kategori" name="kategori" required="true"
-                :option="['Deluxe Bed', 'Queen Bed', 'Twin Bed', 'Super Deluxe', 'Family Room']"
-                placeholder="Pilih Kategori Kamar"></x-select-field>
-        </div>
+             <x-select-field label="Kategori" name="kategori" required="true"
+        :option="$categories"
+        placeholder="Pilih Kategori Kamar"></x-select-field>
     </div>
 
     <div class="row g-3 mt-1">
