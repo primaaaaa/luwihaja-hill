@@ -106,7 +106,7 @@
                         readonly="true"></x-input-field>
                 </div>
                 <div class="col-md-6">
-                    <x-input-field type="text" label="Nama Unit" name="nama_unit" placeholder="Masukkan nama unit kamar"
+                    <x-input-field type="text" label="Nomor unit" name="nama_unit" placeholder="Masukkan nomor unit kamar"
                         required="true"></x-input-field>
                 </div>
             </div>

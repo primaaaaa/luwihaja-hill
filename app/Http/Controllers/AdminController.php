@@ -31,7 +31,6 @@ class AdminController extends Controller
             $count = Reservasi::whereDate('created_at', $date->format('Y-m-d'))->count();
             $dataChart[] = $count;
 
-            // Format label: "Sen, 18 Nov"
             $labels[] = $date->locale('id')->isoFormat('ddd, D MMM');
         }
 
