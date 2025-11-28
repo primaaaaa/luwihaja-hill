@@ -39,6 +39,7 @@ class Kamar extends Model
         return 'Rp ' . number_format($this->harga_weekday, 0, ',', '.');
     }
 
+
     public function getFormattedHargaWeekendAttribute()
     {
         return 'Rp ' . number_format($this->harga_weekend, 0, ',', '.');

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('tipe_villa', function (Blueprint $table) {
             $table->id('id_tipe_villa'); // Primary Key, Auto Increment
-            $table->string('kode_tipe', 10)->unique();            $table->string('nama_unit', 100);
+            $table->string('kode_tipe', 10)->unique();            
+            $table->string('nama_unit', 100);
             $table->integer('kapasitas')->length(2);
             $table->string('kategori', 50);
             $table->text('deskripsi')->nullable();

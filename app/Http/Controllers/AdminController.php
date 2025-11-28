@@ -53,7 +53,13 @@ class AdminController extends Controller
             $query->where('status', $request->status);
         }
 
-        $categories = Kamar::select('kategori')->distinct()->pluck('kategori')->toArray();
+        $categories = [
+            'Deluxe Bed',
+            'Queen Bed',
+            'Twin Bed',
+            'Super Deluxe',
+            'Family Room'
+        ];
 
 
         $rooms = $query->paginate(10)->appends($request->except('page'));
@@ -77,7 +83,13 @@ class AdminController extends Controller
             $request->merge(['kode_tipe' => 'K' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT)]);
         }
 
-        $categories = Kamar::select('kategori')->distinct()->pluck('kategori')->toArray();
+        $categories = [
+            'Deluxe Bed',
+            'Queen Bed',
+            'Twin Bed',
+            'Super Deluxe',
+            'Family Room'
+        ];
 
         if (empty($categories)) {
             $categories = ['Deluxe Bed', 'Queen Bed', 'Twin Bed', 'Super Deluxe', 'Family Room'];
@@ -111,8 +123,13 @@ class AdminController extends Controller
     {
         $kamar = Kamar::findOrFail($id);
 
-        $categories = Kamar::select('kategori')->distinct()->pluck('kategori')->toArray();
-
+        $categories = [
+            'Deluxe Bed',
+            'Queen Bed',
+            'Twin Bed',
+            'Super Deluxe',
+            'Family Room'
+        ];
         if (empty($categories)) {
             $categories = ['Deluxe Bed', 'Queen Bed', 'Twin Bed', 'Super Deluxe', 'Family Room'];
         }
@@ -220,6 +237,44 @@ class AdminController extends Controller
         ]);
     }
 
+    private function updateRoomStatusAfterReservationChange($roomId, $oldStatus, $newStatus)
+    {
+        $kamar = Kamar::findOrFail($roomId);
+
+        // Jika kamar nonaktif, tidak perlu update
+        if ($kamar->status == 'Nonaktif') {
+            return;
+        }
+
+        $today = date('Y-m-d');
+
+        // Cek apakah ada tamu yang sedang menginap (status Dikonfirmasi dan sedang dalam periode checkin-checkout)
+        $isCurrentlyOccupied = Reservasi::where('id_tipe_villa', $roomId)
+            ->where('status', 'Dikonfirmasi')
+            ->where('tgl_checkin', '<=', $today)
+            ->where('tgl_checkout', '>=', $today)
+            ->exists();
+
+        if ($isCurrentlyOccupied) {
+            $kamar->update(['status' => 'Terisi']);
+            return;
+        }
+
+        // Cek apakah ada reservasi yang menunggu atau dikonfirmasi untuk masa mendatang
+        $hasFutureReservation = Reservasi::where('id_tipe_villa', $roomId)
+            ->whereIn('status', ['Menunggu', 'Dikonfirmasi'])
+            ->where('tgl_checkin', '>', $today)
+            ->exists();
+
+        if ($hasFutureReservation) {
+            $kamar->update(['status' => 'Dipesan']);
+            return;
+        }
+
+        // Jika tidak ada reservasi aktif atau masa depan, kamar tersedia
+        $kamar->update(['status' => 'Tersedia']);
+    }
+
 
     public function updateStatusReservasi(Request $request, $id)
     {
@@ -229,14 +284,15 @@ class AdminController extends Controller
             'status' => 'required|in:Menunggu,Dikonfirmasi,Selesai,Dibatalkan'
         ]);
 
+        $oldStatus = $reservasi->status;
         $reservasi->status = $request->status;
         $reservasi->save();
 
-        $this->updateRoomStatus($reservasi->id_tipe_villa);
+        // Update status kamar setelah perubahan status reservasi
+        $this->updateRoomStatusAfterReservationChange($reservasi->id_tipe_villa, $oldStatus, $request->status);
 
         return redirect()->back()->with('success', 'Status reservasi berhasil diupdate!');
     }
-
     public function deleteReservasi($id)
     {
         $reservasi = Reservasi::findOrFail($id);
@@ -341,45 +397,7 @@ class AdminController extends Controller
 
     private function updateRoomStatus($roomId)
     {
-        $kamar = Kamar::findOrFail($roomId);
-
-        if ($kamar->status == 'Nonaktif') {
-            return;
-        }
-
-        $today = date('Y-m-d');
-
-        $isOccupied = Reservasi::where('id_tipe_villa', $kamar->id_tipe_villa)
-            ->where('status', 'Dikonfirmasi')
-            ->where('tgl_checkin', '<=', $today)
-            ->where('tgl_checkout', '>=', $today) // Ubah dari '>' menjadi '>=' agar terisi sampai hari checkout
-            ->exists();
-
-        if ($isOccupied) {
-            $kamar->update(['status' => 'Terisi']);
-            return;
-        }
-
-        $completedReservations = Reservasi::where('id_tipe_villa', $kamar->id_tipe_villa)
-            ->where('status', 'Dikonfirmasi')
-            ->where('tgl_checkout', '<', $today) // Sudah lewat tanggal checkout
-            ->get();
-
-        foreach ($completedReservations as $reservation) {
-            $reservation->update(['status' => 'Selesai']);
-        }
-
-        $hasReservation = Reservasi::where('id_tipe_villa', $kamar->id_tipe_villa)
-            ->whereIn('status', ['Menunggu', 'Dikonfirmasi'])
-            ->where('tgl_checkin', '>', $today)
-            ->exists();
-
-        if ($hasReservation) {
-            $kamar->update(['status' => 'Dipesan']);
-            return;
-        }
-
-        $kamar->update(['status' => 'Tersedia']);
+        $this->updateRoomStatusAfterReservationChange($roomId, null, null);
     }
 
     private function updateAllRoomStatus()
